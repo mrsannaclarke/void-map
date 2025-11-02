@@ -11,7 +11,7 @@
     body{
       margin:0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-      background:#0b0b12;
+      background:#121319;
       color:#e9e9ef;
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
@@ -53,7 +53,7 @@
     // If you prefer a CDN path, set the three URLs to absolute HTTPS paths from the same origin.
     const MAP_CONFIG_URL = "./void_map_configv2.json";      // JSON config
     const SVG_URL        = "./voidjupiterbookingmap.svg";   // Interactive SVG (contains its own scripts)
-    const PNG_OVERLAY_URL= "./Overlay-Map.png";             // Transparent overlay on top
+    const PNG_OVERLAY_URL= "./Overlay%20Map.png";             // Transparent overlay on top
 
     const obj = document.getElementById("void-map");
     const overlay = document.getElementById("void-map-top");
@@ -71,6 +71,7 @@
 
     // 2) When the SVG loads, fetch and expose config
     obj.addEventListener("load", function(){
+      console.log("[map] SVG object loaded");
       // Try to set a reference inside the embedded SVG (works only if same-origin)
       let svgWin = null;
       try { svgWin = obj.contentWindow || null; } catch(e) {}
@@ -81,6 +82,7 @@
           return r.json();
         })
         .then(cfg => {
+          console.log("[map] Config fetched", cfg);
           // Expose to parent window
           window.VOID_MAP_CONFIG = cfg;
 
