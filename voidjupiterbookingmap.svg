@@ -14,29 +14,6 @@
         outline-offset: 2px;
         filter: brightness(1.12); /* slight lightening = white overlay look */
       }
-      .legend {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        font-size: 10px;
-        line-height: 1.2;
-      }
-      .legend .bg {
-        fill: #ffffff;
-        fill-opacity: .92;
-        stroke: #333333;
-        stroke-width: .5;
-      }
-      .legend .title {
-        font-weight: 700;
-      }
-      .legend .swatch {
-        stroke: #333333;
-        stroke-width: .3;
-      }
-      .legend .note {
-        font-size: 9px;
-        fill: #333333;
-        opacity: .9;
-      }
       .label {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         font-size: 10px;
@@ -398,20 +375,4 @@
   });
 })();
 ]]></script>
-  <g id="legend" class="legend" transform="translate(10,10)">
-    <rect class="bg" x="0" y="0" width="190" height="82" rx="6" ry="6"/>
-    <text class="title" x="10" y="16">Legend</text>
-
-    <!-- Status swatches (representative shades) -->
-    <rect class="swatch" x="12" y="24" width="12" height="12" fill="#0099ff"/>
-    <text x="30" y="34">Available (room-type color)</text>
-
-    <rect class="swatch" x="12" y="40" width="12" height="12" fill="#66ccff"/>
-    <text x="30" y="50">Partially booked (lighter shade)</text>
-
-    <rect class="swatch" x="12" y="56" width="12" height="12" fill="#99ccff"/>
-    <text x="30" y="66">Fully booked (lightest shade)</text>
-
-    <text class="note" x="10" y="78">Color family = booth type; shade = status</text>
-  </g>
 </svg>
