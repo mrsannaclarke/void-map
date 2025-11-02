@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>VOID Tattoo Fest — Booking Map</title>
+  <meta name="robots" content="noindex,nofollow">
+  <style>
+    :root { --maxw: 1100px; }
+    html,body{height:100%;}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background:#0b0b12;
+      color:#e9e9ef;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+    header,footer{max-width:var(--maxw);margin:0 auto;padding:16px;}
+    header h1{font-size:18px;font-weight:600;margin:8px 0 0;}
+    header p{opacity:.75;margin:6px 0 0;font-size:14px}
+    #void-map-wrap{position:relative;max-width:var(--maxw);margin:8px auto 24px;padding:0 12px}
+    .void-map-layer{display:block;width:100%;height:auto;aspect-ratio:606/677.6}
+    #void-map{position:relative;z-index:2;background:#0b0b12}
+    #void-map-top{position:absolute;inset:0;z-index:3;pointer-events:none}
+    .note{max-width:var(--maxw);margin:0 auto 28px;padding:0 12px;font-size:13px;opacity:.8}
+    .hidden{display:none !important}
+    .error{color:#ffb4b4}
+    a{color:#9ad1ff;text-decoration:underline}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>VOID Tattoo Fest — Booking Map</h1>
+    <p>This page is a standalone map for internal linking. If nothing appears, check that the SVG/JSON files exist next to this file.</p>
+  </header>
+
+  <div id="void-map-wrap" aria-label="VOID Booking Map">
+    <object id="void-map" class="void-map-layer" type="image/svg+xml" data="" aria-label="Interactive booth map"></object>
+    <img id="void-map-top" class="void-map-layer" src="" alt="Wayfinding overlay (exits, food, restrooms, outlines)">
+    <noscript>Please enable JavaScript to view the booking map.</noscript>
+  </div>
+
+  <div id="status" class="note">Loading map…</div>
+
+  <footer>
+    <small>© VOID Tattoo Fest</small>
+  </footer>
+
+  <script>
+  (function () {
+    // Host the assets in the SAME folder as this HTML for best results (same-origin access)
+    // If you prefer a CDN path, set the three URLs to absolute HTTPS paths from the same origin.
+    const MAP_CONFIG_URL = "./void_map_configv2.json";      // JSON config
+    const SVG_URL        = "./voidjupiterbookingmap.svg";   // Interactive SVG (contains its own scripts)
+    const PNG_OVERLAY_URL= "./Overlay-Map.png";             // Transparent overlay on top
+
+    const obj = document.getElementById("void-map");
+    const overlay = document.getElementById("void-map-top");
+    const statusEl = document.getElementById("status");
+
+    // Utility
+    function setStatus(msg, isError){
+      if(!statusEl) return;
+      statusEl.textContent = msg;
+      statusEl.classList.toggle("error", !!isError);
+    }
+
+    // 1) Set overlay image
+    overlay.src = PNG_OVERLAY_URL;
+
+    // 2) When the SVG loads, fetch and expose config
+    obj.addEventListener("load", function(){
+      // Try to set a reference inside the embedded SVG (works only if same-origin)
+      let svgWin = null;
+      try { svgWin = obj.contentWindow || null; } catch(e) {}
+
+      fetch(MAP_CONFIG_URL, { cache: "no-cache" })
+        .then(r => {
+          if(!r.ok) throw new Error("Config fetch failed: " + r.status);
+          return r.json();
+        })
+        .then(cfg => {
+          // Expose to parent window
+          window.VOID_MAP_CONFIG = cfg;
+
+          // Pass to SVG via same-origin reference
+          try {
+            if (svgWin) svgWin.VOID_MAP_CONFIG = cfg;
+          } catch(e) { /* cross-origin, ignore */ }
+
+          // Also broadcast via postMessage in case the SVG listens for it
+          try {
+            if (svgWin && typeof svgWin.postMessage === "function") {
+              svgWin.postMessage({type:"VOID_MAP_CONFIG", payload: cfg}, "*");
+            }
+          } catch(e) {}
+
+          setStatus("Map loaded.");
+          setTimeout(() => statusEl.classList.add("hidden"), 800);
+        })
+        .catch(err => {
+          setStatus("Loaded SVG, but couldn’t fetch config. The map will show without names/links.", true);
+          console.error(err);
+        });
+    });
+
+    // 3) Kick off the SVG load AFTER we attach listeners
+    obj.data = SVG_URL;
+
+    // 4) Basic network sanity checks (optional)
+    function ping(url){
+      return fetch(url, {method:"HEAD"}).then(r => r.ok).catch(() => false);
+    }
+    Promise.all([ping(SVG_URL), ping(MAP_CONFIG_URL), ping(PNG_OVERLAY_URL)]).then(([okSvg, okJson, okPng]) => {
+      if(!okSvg) setStatus("SVG not found: " + SVG_URL, true);
+      else if(!okJson) setStatus("Config not found: " + MAP_CONFIG_URL + " (map can still render)", true);
+      else if(!okPng) setStatus("Overlay not found: " + PNG_OVERLAY_URL + " (optional)", true);
+    });
+  })();
+  </script>
+</body>
+</html>
