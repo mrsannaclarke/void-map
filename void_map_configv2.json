@@ -58,8 +58,8 @@
     }
   },
   "feeds": {
-    "status": "/data/void_map_status.json",
-    "bookings": "/data/void_bookings.json",
+    "status": "data/void_map_status.json",
+    "bookings": "data/void_bookings.json",
     "ttlSeconds": 30
   },
   "legend": {
