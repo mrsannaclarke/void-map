@@ -1,0 +1,797 @@
+{
+  "updated": "2025-11-03T06:35:39Z",
+  "source_csv": "VOID_booth_type_inventory - Svg Map.csv",
+  "paths": {
+    "DT-001": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-sl980-20260522000000",
+      "label": "1",
+      "booth_code": "DT-001",
+      "booth_name": "Booth 1",
+      "building": "Dream Tent",
+      "floor": "L1",
+      "booth_type": "STD10TENT",
+      "color_name": "Light Blue"
+    },
+    "DT-002": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-sboxn-20260522000000",
+      "label": "2",
+      "booth_code": "DT-002",
+      "booth_name": "Booth 2",
+      "building": "Dream Tent",
+      "floor": "L1",
+      "booth_type": "STD10TENT",
+      "color_name": "Light Blue"
+    },
+    "DT-003": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-sdvk7-20260522000000",
+      "label": "3",
+      "booth_code": "DT-003",
+      "booth_name": "Booth 3",
+      "building": "Dream Tent",
+      "floor": "L1",
+      "booth_type": "STD10TENT",
+      "color_name": "Light Blue"
+    },
+    "DT-004": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-sqvvl-20260522000000",
+      "label": "4",
+      "booth_code": "DT-004",
+      "booth_name": "Booth 4",
+      "building": "Dream Tent",
+      "floor": "L1",
+      "booth_type": "STD10TENT",
+      "color_name": "Light Blue"
+    },
+    "DT-005": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-sijqu-20260522000000",
+      "label": "5",
+      "booth_code": "DT-005",
+      "booth_name": "Booth 5",
+      "building": "Dream Tent",
+      "floor": "L1",
+      "booth_type": "STD10TENT",
+      "color_name": "Light Blue"
+    },
+    "DT-006": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-s7ddc-20260522000000",
+      "label": "6",
+      "booth_code": "DT-006",
+      "booth_name": "Booth 6",
+      "building": "Dream Tent",
+      "floor": "L1",
+      "booth_type": "STD10TENT",
+      "color_name": "Light Blue"
+    },
+    "DT-V-A": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-se21i-20260522000000",
+      "label": "A",
+      "booth_code": "DT-V-A",
+      "booth_name": "Vendor A",
+      "building": "Dream Tent",
+      "floor": "L1",
+      "booth_type": "VND10TENT",
+      "color_name": "Orange"
+    },
+    "DT-V-B": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-s4fzp-20260522000000",
+      "label": "B",
+      "booth_code": "DT-V-B",
+      "booth_name": "Vendor B",
+      "building": "Dream Tent",
+      "floor": "L1",
+      "booth_type": "VND10TENT",
+      "color_name": "Orange"
+    },
+    "DT-V-C": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-sqrej-20260522000000",
+      "label": "C",
+      "booth_code": "DT-V-C",
+      "booth_name": "Vendor C",
+      "building": "Dream Tent",
+      "floor": "L1",
+      "booth_type": "VND10TENT",
+      "color_name": "Orange"
+    },
+    "DT-V-D": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-sx3im-20260522000000",
+      "label": "D",
+      "booth_code": "DT-V-D",
+      "booth_name": "Vendor D",
+      "building": "Dream Tent",
+      "floor": "L1",
+      "booth_type": "VND10TENT",
+      "color_name": "Orange"
+    },
+    "DT-V-E": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-sv81j-20260522000000",
+      "label": "E",
+      "booth_code": "DT-V-E",
+      "booth_name": "Vendor E",
+      "building": "Dream Tent",
+      "floor": "L1",
+      "booth_type": "VND10TENT",
+      "color_name": "Orange"
+    },
+    "DT-V-F": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-sg71n-20260522000000",
+      "label": "F",
+      "booth_code": "DT-V-F",
+      "booth_name": "Vendor F",
+      "building": "Dream Tent",
+      "floor": "L1",
+      "booth_type": "VND10TENT",
+      "color_name": "Orange"
+    },
+    "DT-V-G": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-s1zh4-20260522000000",
+      "label": "G",
+      "booth_code": "DT-V-G",
+      "booth_name": "Vendor G",
+      "building": "Dream Tent",
+      "floor": "L1",
+      "booth_type": "VND10TENT",
+      "color_name": "Orange"
+    },
+    "JN-L2-A1": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-sdooy-20260522000000",
+      "label": "1",
+      "booth_code": "JN-L2-A1",
+      "booth_name": "Booth A1",
+      "building": "Jupiter NEXT",
+      "floor": "L2",
+      "booth_type": "STD10IN",
+      "color_name": "Dark Blue"
+    },
+    "JN-L2-A10": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-sbxzh-20260522000000",
+      "label": "10",
+      "booth_code": "JN-L2-A10",
+      "booth_name": "Booth A10",
+      "building": "Jupiter NEXT",
+      "floor": "L2",
+      "booth_type": "STD10IN",
+      "color_name": "Dark Blue"
+    },
+    "JN-L2-A11": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-sq5ng-20260522000000",
+      "label": "11",
+      "booth_code": "JN-L2-A11",
+      "booth_name": "Booth A11",
+      "building": "Jupiter NEXT",
+      "floor": "L2",
+      "booth_type": "STD10IN",
+      "color_name": "Dark Blue"
+    },
+    "JN-L2-A12": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-sorx6-20260522000000",
+      "label": "12",
+      "booth_code": "JN-L2-A12",
+      "booth_name": "Booth A12",
+      "building": "Jupiter NEXT",
+      "floor": "L2",
+      "booth_type": "STD10IN",
+      "color_name": "Dark Blue"
+    },
+    "JN-L2-A13": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-sh0kz-20260522000000",
+      "label": "13",
+      "booth_code": "JN-L2-A13",
+      "booth_name": "Booth A13",
+      "building": "Jupiter NEXT",
+      "floor": "L2",
+      "booth_type": "STD10IN",
+      "color_name": "Dark Blue"
+    },
+    "JN-L2-A2": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-sfn8v-20260522000000",
+      "label": "2",
+      "booth_code": "JN-L2-A2",
+      "booth_name": "Booth A2",
+      "building": "Jupiter NEXT",
+      "floor": "L2",
+      "booth_type": "STD10IN",
+      "color_name": "Dark Blue"
+    },
+    "JN-L2-A3": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-ss44y-20260522000000",
+      "label": "3",
+      "booth_code": "JN-L2-A3",
+      "booth_name": "Booth A3",
+      "building": "Jupiter NEXT",
+      "floor": "L2",
+      "booth_type": "STD10IN",
+      "color_name": "Dark Blue"
+    },
+    "JN-L2-A4": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-shu2u-20260522000000",
+      "label": "4",
+      "booth_code": "JN-L2-A4",
+      "booth_name": "Booth A4",
+      "building": "Jupiter NEXT",
+      "floor": "L2",
+      "booth_type": "STD10IN",
+      "color_name": "Dark Blue"
+    },
+    "JN-L2-A5": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-sfop7-20260522000000",
+      "label": "5",
+      "booth_code": "JN-L2-A5",
+      "booth_name": "Booth A5",
+      "building": "Jupiter NEXT",
+      "floor": "L2",
+      "booth_type": "STD10IN",
+      "color_name": "Dark Blue"
+    },
+    "JN-L2-A6": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-sowqg-20260522000000",
+      "label": "6",
+      "booth_code": "JN-L2-A6",
+      "booth_name": "Booth A6",
+      "building": "Jupiter NEXT",
+      "floor": "L2",
+      "booth_type": "STD10IN",
+      "color_name": "Dark Blue"
+    },
+    "JN-L2-A7": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-s9zfa-20260522000000",
+      "label": "7",
+      "booth_code": "JN-L2-A7",
+      "booth_name": "Booth A7",
+      "building": "Jupiter NEXT",
+      "floor": "L2",
+      "booth_type": "STD10IN",
+      "color_name": "Dark Blue"
+    },
+    "JN-L2-A8": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-srojz-20260522000000",
+      "label": "8",
+      "booth_code": "JN-L2-A8",
+      "booth_name": "Booth A8",
+      "building": "Jupiter NEXT",
+      "floor": "L2",
+      "booth_type": "STD10IN",
+      "color_name": "Dark Blue"
+    },
+    "JN-L2-A9": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-syavx-20260522000000",
+      "label": "9",
+      "booth_code": "JN-L2-A9",
+      "booth_name": "Booth A9",
+      "building": "Jupiter NEXT",
+      "floor": "L2",
+      "booth_type": "STD10IN",
+      "color_name": "Dark Blue"
+    },
+    "JN-V-AA": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-sxxhy-20260522000000",
+      "label": "AA",
+      "booth_code": "JN-V-AA",
+      "booth_name": "Vendor AA",
+      "building": "Jupiter NEXT",
+      "floor": "L2",
+      "booth_type": "VND10IN",
+      "color_name": "Orange"
+    },
+    "JN-V-BB": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-ssnh1-20260522000000",
+      "label": "BB",
+      "booth_code": "JN-V-BB",
+      "booth_name": "Vendor BB",
+      "building": "Jupiter NEXT",
+      "floor": "L2",
+      "booth_type": "VND10IN",
+      "color_name": "Orange"
+    },
+    "JN-V-CC": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-sz5h5-20260522000000",
+      "label": "CC",
+      "booth_code": "JN-V-CC",
+      "booth_name": "Vendor CC",
+      "building": "Jupiter NEXT",
+      "floor": "L2",
+      "booth_type": "VND10IN",
+      "color_name": "Orange"
+    },
+    "JN-V-DD": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-s97d4-20260522000000",
+      "label": "DD",
+      "booth_code": "JN-V-DD",
+      "booth_name": "Vendor DD",
+      "building": "Jupiter NEXT",
+      "floor": "L2",
+      "booth_type": "VND10IN",
+      "color_name": "Orange"
+    },
+    "JN-V-EE": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-ssywk-20260522000000",
+      "label": "EE",
+      "booth_code": "JN-V-EE",
+      "booth_name": "Vendor EE",
+      "building": "Jupiter NEXT",
+      "floor": "L2",
+      "booth_type": "VND10IN",
+      "color_name": "Orange"
+    },
+    "JN-V-FF": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-sthmy-20260522000000",
+      "label": "FF",
+      "booth_code": "JN-V-FF",
+      "booth_name": "Vendor FF",
+      "building": "Jupiter NEXT",
+      "floor": "L2",
+      "booth_type": "VND10IN",
+      "color_name": "Orange"
+    },
+    "JN-V-GG": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-sbw97-20260522000000",
+      "label": "GG",
+      "booth_code": "JN-V-GG",
+      "booth_name": "Vendor GG",
+      "building": "Jupiter NEXT",
+      "floor": "L2",
+      "booth_type": "VND10IN",
+      "color_name": "Orange"
+    },
+    "JN-V-HH": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-s91lq-20260522000000",
+      "label": "HH",
+      "booth_code": "JN-V-HH",
+      "booth_name": "Vendor HH",
+      "building": "Jupiter NEXT",
+      "floor": "L2",
+      "booth_type": "VND10IN",
+      "color_name": "Orange"
+    },
+    "JN-V-II": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-scwfc-20260522000000",
+      "label": "II",
+      "booth_code": "JN-V-II",
+      "booth_name": "Vendor II",
+      "building": "Jupiter NEXT",
+      "floor": "L2",
+      "booth_type": "VND10IN",
+      "color_name": "Orange"
+    },
+    "JO-GROUND-108": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-s2tk6-20260522000000",
+      "label": "108",
+      "booth_code": "JO-GROUND-108",
+      "booth_name": "Room 108",
+      "building": "Jupiter Original",
+      "floor": "L1",
+      "booth_type": "LDL",
+      "color_name": "Lavender"
+    },
+    "JO-GROUND-112": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-srtlw-20260522000000",
+      "label": "112",
+      "booth_code": "JO-GROUND-112",
+      "booth_name": "Room 112",
+      "building": "Jupiter Original",
+      "floor": "L1",
+      "booth_type": "LDL",
+      "color_name": "Lavender"
+    },
+    "JO-GROUND-113": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-s37cv-20260522000000",
+      "label": "113",
+      "booth_code": "JO-GROUND-113",
+      "booth_name": "Room 113",
+      "building": "Jupiter Original",
+      "floor": "L1",
+      "booth_type": "SDL",
+      "color_name": "Green"
+    },
+    "JO-GROUND-114": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-sgc6c-20260522000000",
+      "label": "114",
+      "booth_code": "JO-GROUND-114",
+      "booth_name": "Room 114",
+      "building": "Jupiter Original",
+      "floor": "L1",
+      "booth_type": "LDL",
+      "color_name": "Lavender"
+    },
+    "JO-GROUND-115": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-s20sf-20260522000000",
+      "label": "115",
+      "booth_code": "JO-GROUND-115",
+      "booth_name": "Room 115",
+      "building": "Jupiter Original",
+      "floor": "L1",
+      "booth_type": "SDL",
+      "color_name": "Green"
+    },
+    "JO-GROUND-116": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-sz1n1-20260522000000",
+      "label": "116",
+      "booth_code": "JO-GROUND-116",
+      "booth_name": "Room 116",
+      "building": "Jupiter Original",
+      "floor": "L1",
+      "booth_type": "LDL",
+      "color_name": "Lavender"
+    },
+    "JO-GROUND-118": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-sk33q-20260522000000",
+      "label": "118",
+      "booth_code": "JO-GROUND-118",
+      "booth_name": "Room 118",
+      "building": "Jupiter Original",
+      "floor": "L1",
+      "booth_type": "MDL",
+      "color_name": "Pink"
+    },
+    "JO-GROUND-120": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-sqcqn-20260522000000",
+      "label": "120",
+      "booth_code": "JO-GROUND-120",
+      "booth_name": "Room 120",
+      "building": "Jupiter Original",
+      "floor": "L1",
+      "booth_type": "MDL",
+      "color_name": "Pink"
+    },
+    "JO-GROUND-120-2": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-sqcqn-20260522000000",
+      "label": "120",
+      "booth_code": "JO-GROUND-120",
+      "booth_name": "Room 120",
+      "building": "Jupiter Original",
+      "floor": "L1",
+      "booth_type": "MDL",
+      "color_name": "Pink"
+    },
+    "JO-GROUND-121": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-s5o4x-20260522000000",
+      "label": "121",
+      "booth_code": "JO-GROUND-121",
+      "booth_name": "Room 121",
+      "building": "Jupiter Original",
+      "floor": "L1",
+      "booth_type": "MDL",
+      "color_name": "Pink"
+    },
+    "JO-GROUND-122": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-sdgh0-20260522000000",
+      "label": "122",
+      "booth_code": "JO-GROUND-122",
+      "booth_name": "Room 122",
+      "building": "Jupiter Original",
+      "floor": "L1",
+      "booth_type": "MDL",
+      "color_name": "Pink"
+    },
+    "JO-GROUND-123": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-s1hs9-20260522000000",
+      "label": "123",
+      "booth_code": "JO-GROUND-123",
+      "booth_name": "Room 123",
+      "building": "Jupiter Original",
+      "floor": "L1",
+      "booth_type": "MDL",
+      "color_name": "Pink"
+    },
+    "JO-GROUND-124": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-sh00r-20260522000000",
+      "label": "124",
+      "booth_code": "JO-GROUND-124",
+      "booth_name": "Room 124",
+      "building": "Jupiter Original",
+      "floor": "L1",
+      "booth_type": "MDL",
+      "color_name": "Pink"
+    },
+    "JO-GROUND-126": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-szf9q-20260522000000",
+      "label": "126",
+      "booth_code": "JO-GROUND-126",
+      "booth_name": "Room 126",
+      "building": "Jupiter Original",
+      "floor": "L1",
+      "booth_type": "MDL",
+      "color_name": "Pink"
+    },
+    "JO-GROUND-127": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-szf9q-20260522000000",
+      "label": "127",
+      "booth_code": "JO-GROUND-127",
+      "booth_name": "Room 127",
+      "building": "Jupiter Original",
+      "floor": "L1",
+      "booth_type": "MDL",
+      "color_name": "Pink"
+    },
+    "JO-GROUND-128": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-swc3i-20260522000000",
+      "label": "128",
+      "booth_code": "JO-GROUND-128",
+      "booth_name": "Room 128",
+      "building": "Jupiter Original",
+      "floor": "L1",
+      "booth_type": "MDL",
+      "color_name": "Pink"
+    },
+    "JO-GROUND-128-2": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-swc3i-20260522000000",
+      "label": "128",
+      "booth_code": "JO-GROUND-128",
+      "booth_name": "Room 128",
+      "building": "Jupiter Original",
+      "floor": "L1",
+      "booth_type": "MDL",
+      "color_name": "Pink"
+    },
+    "JO-GROUND-129": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-s6p3e-20260522000000",
+      "label": "129",
+      "booth_code": "JO-GROUND-129",
+      "booth_name": "Room 129",
+      "building": "Jupiter Original",
+      "floor": "L1",
+      "booth_type": "MDL",
+      "color_name": "Pink"
+    },
+    "JO-GROUND-131": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-sadue-20260522000000",
+      "label": "131",
+      "booth_code": "JO-GROUND-131",
+      "booth_name": "Room 131",
+      "building": "Jupiter Original",
+      "floor": "L1",
+      "booth_type": "LDL",
+      "color_name": "Lavender"
+    },
+    "JO-GROUND-132": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-sx2ce-20260522000000",
+      "label": "132",
+      "booth_code": "JO-GROUND-132",
+      "booth_name": "Room 132",
+      "building": "Jupiter Original",
+      "floor": "L1",
+      "booth_type": "MDL",
+      "color_name": "Pink"
+    },
+    "JO-GROUND-133": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-spvj8-20260522000000",
+      "label": "133",
+      "booth_code": "JO-GROUND-133",
+      "booth_name": "Room 133",
+      "building": "Jupiter Original",
+      "floor": "L1",
+      "booth_type": "SDL",
+      "color_name": "Green"
+    },
+    "JO-GROUND-134": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-s2aq1-20260522000000",
+      "label": "134",
+      "booth_code": "JO-GROUND-134",
+      "booth_name": "Room 134",
+      "building": "Jupiter Original",
+      "floor": "L1",
+      "booth_type": "LDL",
+      "color_name": "Lavender"
+    },
+    "JO-GROUND-135": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-s514w-20260522000000",
+      "label": "135",
+      "booth_code": "JO-GROUND-135",
+      "booth_name": "Room 135",
+      "building": "Jupiter Original",
+      "floor": "L1",
+      "booth_type": "SDL",
+      "color_name": "Green"
+    },
+    "JO-GROUND-136": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-swzrc-20260522000000",
+      "label": "136",
+      "booth_code": "JO-GROUND-136",
+      "booth_name": "Room 136",
+      "building": "Jupiter Original",
+      "floor": "L1",
+      "booth_type": "LDL",
+      "color_name": "Lavender"
+    },
+    "JO-GROUND-137": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-s0ywg-20260522000000",
+      "label": "137",
+      "booth_code": "JO-GROUND-137",
+      "booth_name": "Room 137",
+      "building": "Jupiter Original",
+      "floor": "L1",
+      "booth_type": "SDL",
+      "color_name": "Green"
+    },
+    "JO-GROUNDVO-H": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-stb9b-20260522000000",
+      "label": "H",
+      "booth_code": "JO-GROUNDVO-H",
+      "booth_name": "Vendor H",
+      "building": "Jupiter Original",
+      "floor": "L1",
+      "booth_type": "VND10OUT",
+      "color_name": "Orange"
+    },
+    "JO-GROUNDVO-I": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-sy0w9-20260522000000",
+      "label": "I",
+      "booth_code": "JO-GROUNDVO-I",
+      "booth_name": "Vendor I",
+      "building": "Jupiter Original",
+      "floor": "L1",
+      "booth_type": "VND10OUT",
+      "color_name": "Orange"
+    },
+    "JO-GROUNDVO-J": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-sr086-20260522000000",
+      "label": "J",
+      "booth_code": "JO-GROUNDVO-J",
+      "booth_name": "Vendor J",
+      "building": "Jupiter Original",
+      "floor": "L1",
+      "booth_type": "VND10OUT",
+      "color_name": "Orange"
+    },
+    "JO-GROUNDVO-K": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-sktik-20260522000000",
+      "label": "K",
+      "booth_code": "JO-GROUNDVO-K",
+      "booth_name": "Vendor K",
+      "building": "Jupiter Original",
+      "floor": "L1",
+      "booth_type": "VND10OUT",
+      "color_name": "Orange"
+    },
+    "JO-GROUNDVO-L": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-s236t-20260522000000",
+      "label": "L",
+      "booth_code": "JO-GROUNDVO-L",
+      "booth_name": "Vendor L",
+      "building": "Jupiter Original",
+      "floor": "L1",
+      "booth_type": "VND10OUT",
+      "color_name": "Orange"
+    },
+    "JO-GROUNDVO-M": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-std51-20260522000000",
+      "label": "M",
+      "booth_code": "JO-GROUNDO-M",
+      "booth_name": "Vendor M",
+      "building": "Jupiter Original",
+      "floor": "L1",
+      "booth_type": "VND10OUT",
+      "color_name": "Orange"
+    },
+    "JO-GROUNDVO-N": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-sx94r-20260522000000",
+      "label": "N",
+      "booth_code": "JO-GROUNDO-N",
+      "booth_name": "Vendor N",
+      "building": "Jupiter Original",
+      "floor": "L1",
+      "booth_type": "VND10OUT",
+      "color_name": "Orange"
+    },
+    "SF-S01": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-sf7wi-20260523120000",
+      "label": "1",
+      "booth_code": "SF-S01",
+      "booth_name": "Vendor 1",
+      "building": "Street Fair",
+      "floor": "L1",
+      "booth_type": "VND10STREET",
+      "color_name": "Red"
+    },
+    "SF-S02": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-siydb-20260523120000",
+      "label": "2",
+      "booth_code": "SF-S02",
+      "booth_name": "Vendor 2",
+      "building": "Street Fair",
+      "floor": "L1",
+      "booth_type": "VND10STREET",
+      "color_name": "Red"
+    },
+    "SF-S03": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-siqw1-20260523120000",
+      "label": "3",
+      "booth_code": "SF-S03",
+      "booth_name": "Vendor 3",
+      "building": "Street Fair",
+      "floor": "L1",
+      "booth_type": "VND10STREET",
+      "color_name": "Red"
+    },
+    "SF-S04": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-s1jvy-20260523120000",
+      "label": "4",
+      "booth_code": "SF-S04",
+      "booth_name": "Vendor 4",
+      "building": "Street Fair",
+      "floor": "L1",
+      "booth_type": "VND10STREET",
+      "color_name": "Red"
+    },
+    "SF-S05": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-skv64-20260523120000",
+      "label": "5",
+      "booth_code": "SF-S05",
+      "booth_name": "Vendor 5",
+      "building": "Street Fair",
+      "floor": "L1",
+      "booth_type": "VND10STREET",
+      "color_name": "Red"
+    },
+    "SF-S06": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-s0t5a-20260523120000",
+      "label": "6",
+      "booth_code": "SF-S06",
+      "booth_name": "Vendor 6",
+      "building": "Street Fair",
+      "floor": "L1",
+      "booth_type": "VND10STREET",
+      "color_name": "Red"
+    },
+    "SF-S07": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-skun4-20260523120000",
+      "label": "7",
+      "booth_code": "SF-S07",
+      "booth_name": "Vendor 7",
+      "building": "Street Fair",
+      "floor": "L1",
+      "booth_type": "VND10STREET",
+      "color_name": "Red"
+    },
+    "SF-S08": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-sba8l-20260523120000",
+      "label": "8",
+      "booth_code": "SF-S08",
+      "booth_name": "Vendor 8",
+      "building": "Street Fair",
+      "floor": "L1",
+      "booth_type": "VND10STREET",
+      "color_name": "Red"
+    },
+    "SF-S09": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-srq93-20260523120000",
+      "label": "9",
+      "booth_code": "SF-S09",
+      "booth_name": "Vendor 9",
+      "building": "Street Fair",
+      "floor": "L1",
+      "booth_type": "VND10STREET",
+      "color_name": "Red"
+    },
+    "SF-S10": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-s27fb-20260523120000",
+      "label": "10",
+      "booth_code": "SF-S10",
+      "booth_name": "Vendor 10",
+      "building": "Street Fair",
+      "floor": "L1",
+      "booth_type": "VND10STREET",
+      "color_name": "Red"
+    },
+    "SF-S11": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-sm87c-20260523120000",
+      "label": "11",
+      "booth_code": "SF-S11",
+      "booth_name": "Vendor 11",
+      "building": "Street Fair",
+      "floor": "L1",
+      "booth_type": "VND10STREET",
+      "color_name": "Red"
+    }
+  },
+  "unmatched_svg_ids": [
+    "JO-GROUND-103",
+    "JO-GROUND-104",
+    "JO-GROUND-105",
+    "JO-GROUND-106",
+    "JO-GROUND-107",
+    "JO-GROUND-117",
+    "JO-GROUND-139",
+    "JO-GROUND-140"
+  ],
+  "skipped_no_link": []
+}
