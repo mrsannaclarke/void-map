@@ -19,10 +19,10 @@
     header,footer{max-width:var(--maxw);margin:0 auto;padding:16px;}
     header h1{font-size:18px;font-weight:600;margin:8px 0 0;}
     header p{opacity:.75;margin:6px 0 0;font-size:14px}
-    #void-map-wrap{position:relative;max-width:var(--maxw);margin:8px auto 24px;padding:0 12px}
-    .void-map-layer{display:block;width:100%;height:auto;aspect-ratio:606/677.6}
-    #void-map{position:relative;z-index:2;background:transparent}
-    #void-map-top{position:absolute;inset:0;z-index:3;pointer-events:none}
+    #void-map-wrap{position:relative;margin:0;padding:0;max-width:none;overflow:visible}
+    .void-map-layer{display:block;width:100%;height:auto}
+    #void-map{position:relative;z-index:0;background:transparent}
+    #void-map-top{position:absolute;inset:0;z-index:1;pointer-events:none;transform:none;width:100%;height:auto}
     .note{max-width:var(--maxw);margin:0 auto 28px;padding:0 12px;font-size:13px;opacity:.8}
     .hidden{display:none !important}
     .error{color:#ffb4b4}
