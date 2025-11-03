@@ -122,6 +122,137 @@
     const obj = document.getElementById("void-map");
     const overlay = document.getElementById("void-map-top");
     const statusEl = document.getElementById("status");
+    const svgNS = "http://www.w3.org/2000/svg";
+    const xlinkNS = "http://www.w3.org/1999/xlink";
+    let latestConfig = null;
+
+    function chooseTextColor(hex) {
+      if (!hex) return "#111111";
+      let value = hex.replace("#", "").trim();
+      if (value.length === 3) value = value.split("").map(ch => ch + ch).join("");
+      const r = parseInt(value.slice(0, 2), 16);
+      const g = parseInt(value.slice(2, 4), 16);
+      const b = parseInt(value.slice(4, 6), 16);
+      const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+      return brightness < 140 ? "#ffffff" : "#111111";
+    }
+
+    function computeFontSize(label, bbox) {
+      const textLength = Math.max(label.length, 1);
+      const widthBased = bbox.width / textLength * 1.8;
+      const heightBased = bbox.height * 0.75;
+      const rawSize = Math.min(widthBased, heightBased);
+      return Math.max(7, Math.min(36, rawSize));
+    }
+
+    function ensureLabelLayer(doc) {
+      const existing = doc.getElementById("void-label-layer");
+      if (existing) return existing;
+      const layer = doc.createElementNS(svgNS, "g");
+      layer.setAttribute("id", "void-label-layer");
+      layer.setAttribute("class", "void-label-layer");
+      layer.setAttribute("aria-hidden", "true");
+      layer.style.pointerEvents = "none";
+      layer.style.fontFamily = "inherit";
+      const svgRoot = doc.documentElement;
+      svgRoot.appendChild(layer);
+      return layer;
+    }
+
+    function wrapWithLink(pathEl, href) {
+      if (!pathEl || !href) return null;
+      const parent = pathEl.parentNode;
+      if (parent && parent.nodeName.toLowerCase() === "a") {
+        parent.setAttributeNS(xlinkNS, "xlink:href", href);
+        parent.setAttribute("target", "_blank");
+        parent.setAttribute("rel", "noopener noreferrer");
+        return parent;
+      }
+      const anchor = pathEl.ownerDocument.createElementNS(svgNS, "a");
+      anchor.setAttributeNS(xlinkNS, "xlink:href", href);
+      anchor.setAttribute("target", "_blank");
+      anchor.setAttribute("rel", "noopener noreferrer");
+      if (parent) {
+        parent.replaceChild(anchor, pathEl);
+      }
+      anchor.appendChild(pathEl);
+      return anchor;
+    }
+
+    function decorateShape(id, data) {
+      if (!id || !data) return;
+      const doc = obj.contentDocument;
+      if (!doc) return;
+      const svgEl = doc.getElementById(id);
+      if (!svgEl) return;
+      const labelText = (data.label || "").toString().trim();
+      const link = data.link;
+      if (!labelText || !link) return;
+
+      const textColor = chooseTextColor(data.color);
+      const outlineColor = textColor === "#ffffff" ? "#111111" : "#ffffff";
+
+      svgEl.setAttribute("fill", data.color || "#666666");
+      svgEl.style.fill = data.color || "#666666";
+      if (data.color) {
+        svgEl.style.stroke = outlineColor;
+        svgEl.style.strokeWidth = "1.5";
+        svgEl.style.strokeOpacity = "0.85";
+      }
+      svgEl.style.cursor = "pointer";
+      svgEl.setAttribute("data-void-label", labelText);
+      svgEl.setAttribute("data-void-link", link);
+
+      wrapWithLink(svgEl, link);
+
+      let bbox;
+      try {
+        bbox = svgEl.getBBox();
+      } catch (err) {
+        return;
+      }
+      if (!bbox || !bbox.width || !bbox.height) return;
+
+      const labelLayer = ensureLabelLayer(obj.contentDocument);
+      const textEl = obj.contentDocument.createElementNS(svgNS, "text");
+      const fontSize = computeFontSize(labelText, bbox);
+      const fill = textColor;
+      const outline = outlineColor;
+      const strokeWidth = Math.max(0.8, fontSize * 0.18);
+
+      textEl.textContent = labelText;
+      textEl.setAttribute("x", (bbox.x + bbox.width / 2).toFixed(2));
+      textEl.setAttribute("y", (bbox.y + bbox.height / 2).toFixed(2));
+      textEl.setAttribute("text-anchor", "middle");
+      textEl.setAttribute("dominant-baseline", "middle");
+      textEl.setAttribute("font-weight", "700");
+      textEl.setAttribute("font-size", fontSize.toFixed(2));
+      textEl.setAttribute("fill", fill);
+      textEl.setAttribute("data-booth-id", id);
+      textEl.style.pointerEvents = "none";
+      textEl.style.paintOrder = "stroke";
+      textEl.style.stroke = outline;
+      textEl.style.strokeWidth = strokeWidth.toFixed(2);
+      textEl.style.strokeOpacity = "0.85";
+
+      labelLayer.appendChild(textEl);
+    }
+
+    function applyConfig(cfg) {
+      latestConfig = cfg;
+      const doc = obj.contentDocument;
+      if (!doc) {
+        console.warn("[map] SVG document not ready for config application");
+        return;
+      }
+      ensureLabelLayer(doc); // make sure layer exists even if there are no paths yet
+      const labelLayer = doc.getElementById("void-label-layer");
+      while (labelLayer.firstChild) {
+        labelLayer.removeChild(labelLayer.firstChild);
+      }
+      const paths = (cfg && cfg.paths) ? cfg.paths : {};
+      Object.keys(paths).forEach(id => decorateShape(id, paths[id]));
+    }
 
     // Utility
     function setStatus(msg, isError){
@@ -162,6 +293,7 @@
             }
           } catch(e) {}
 
+          applyConfig(cfg);
           setStatus("Map loaded.");
           setTimeout(() => statusEl.classList.add("hidden"), 800);
         })
@@ -172,6 +304,10 @@
     });
 
     // 3) Kick off the SVG load AFTER we attach listeners
+    obj.addEventListener("load", function(){
+      if (latestConfig) applyConfig(latestConfig);
+    }, { once: false });
+
     obj.data = SVG_URL;
 
     // 4) Basic network sanity checks (optional)
