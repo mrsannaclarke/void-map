@@ -1,142 +1,155 @@
-&lt;!doctype html&gt;
-
-
-
-
-<style>
-    :root { --maxw: 1100px; }<br />
-    @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap");<br />
-    html,body{height:100%;}<br />
-    body{<br />
-      margin:0;<br />
-      font-family: "Calibri", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;<br />
-      background:#ffffff;<br />
-      color:#1a1a1a;<br />
-      -webkit-font-smoothing:antialiased;<br />
-      -moz-osx-font-smoothing:grayscale;<br />
-    }<br />
-    header,footer{max-width:var(--maxw);margin:0 auto;padding:10px;text-align:center;color:#0a0a0a;}<br />
-    header h1{font-size:18px;font-weight:600;margin:8px 0 0;color:#0a0a0a;}<br />
-    header p{opacity:.85;margin:6px 0 0;font-size:14px;color:#1a1a1a;}<br />
-    #void-map-wrap{position:relative;margin:0;padding:0;max-width:none;overflow:visible}<br />
-    .void-map-layer{display:block;width:100%;height:auto}<br />
-    #void-map{position:relative;z-index:1;background:transparent}<br />
-    #void-map-top{position:absolute;inset:0;z-index:0;pointer-events:none;transform:none;width:100%;height:auto}<br />
-    .legend{width:65%;max-width:var(--maxw);margin:8px auto 10px;padding: 2px;color:#1a1a1a;text-align:center}<br />
-    .legend h2{font-size:16px;font-weight:600;margin:0 0 08px}<br />
-    .legend-grid{display:flex;flex-direction:column;gap:08px}<br />
-    .legend-row{display:flex;flex-wrap:wrap;gap:08px;align-items:center;justify-content:center;border:1px solid #d7dde3;border-radius:6px;padding:10px;background:#f7f9fb}<br />
-    .legend-label{flex:1 1 220px;font-size:14px;font-weight:600;color:#141b29;text-align:center}<br />
-    .legend-swatches{display:flex;flex:2 1 300px;gap:8px;flex-wrap:wrap;justify-content:center}<br />
-    .legend-swatch{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:500;color:#1a1a1a;padding:6px 10px;border-radius:4px;background:#ffffff;border:1px solid #d7dde3}<br />
-    .legend-chip{width:18px;height:18px;border-radius:3px;border:1px solid rgba(0,0,0,.12)}<br />
-    .tag-links{width:65%;max-width:var(--maxw);margin:10px auto 10px;padding:8px;text-align:center}<br />
-    .tag-links h2{font-size:16px;font-weight:600;margin:0 0 12px}<br />
-    .tag-list{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:0;padding:0;list-style:none}<br />
-    .tag-list li{background:#f7f9fb;border:1px solid #d7dde3;border-radius:4px;padding:8px;font-size:13px;font-weight:500;color:#141b29}<br />
-    .tag-list a{color:#141b29;text-decoration:none}<br />
-    .tag-list a:hover{text-decoration:underline}<br />
-    .note{max-width:var(--maxw);margin:0 auto 28px;padding:0 12px;font-size:13px;opacity:.8}<br />
-    .hidden{display:none !important}<br />
-    .error{color:#ffb4b4}<br />
-    a{color:#9ad1ff;text-decoration:underline}<br />
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>VOID Tattoo Fest — Booking Map</title>
+  <meta name="robots" content="noindex,nofollow">
+  <style>
+    :root { --maxw: 1100px; }
+    @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap");
+    html,body{height:100%;}
+    body{
+      margin:0;
+      font-family: "Calibri", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background:#ffffff;
+      color:#1a1a1a;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+    header,footer{max-width:var(--maxw);margin:0 auto;padding:10px;text-align:center;color:#0a0a0a;}
+    header h1{font-size:18px;font-weight:600;margin:8px 0 0;color:#0a0a0a;}
+    header p{opacity:.85;margin:6px 0 0;font-size:14px;color:#1a1a1a;}
+    #void-map-wrap{position:relative;margin:0;padding:0;max-width:none;overflow:visible}
+    .void-map-layer{display:block;width:100%;height:auto}
+    #void-map{position:relative;z-index:1;background:transparent}
+    #void-map-top{position:absolute;inset:0;z-index:0;pointer-events:none;transform:none;width:100%;height:auto}
+    .legend{width:65%;max-width:var(--maxw);margin:8px auto 10px;padding: 2px;color:#1a1a1a;text-align:center}
+    .legend h2{font-size:16px;font-weight:600;margin:0 0 08px}
+    .legend-grid{display:flex;flex-direction:column;gap:08px}
+    .legend-row{display:flex;flex-wrap:wrap;gap:08px;align-items:center;justify-content:center;border:1px solid #d7dde3;border-radius:6px;padding:10px;background:#f7f9fb}
+    .legend-label{flex:1 1 220px;font-size:14px;font-weight:600;color:#141b29;text-align:center}
+    .legend-swatches{display:flex;flex:2 1 300px;gap:8px;flex-wrap:wrap;justify-content:center}
+    .legend-swatch{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:500;color:#1a1a1a;padding:6px 10px;border-radius:4px;background:#ffffff;border:1px solid #d7dde3}
+    .legend-chip{width:18px;height:18px;border-radius:3px;border:1px solid rgba(0,0,0,.12)}
+    .tag-links{width:65%;max-width:var(--maxw);margin:10px auto 10px;padding:8px;text-align:center}
+    .tag-links h2{font-size:16px;font-weight:600;margin:0 0 12px}
+    .tag-list{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:0;padding:0;list-style:none}
+    .tag-list li{background:#f7f9fb;border:1px solid #d7dde3;border-radius:4px;padding:8px;font-size:13px;font-weight:500;color:#141b29}
+    .tag-list a{color:#141b29;text-decoration:none}
+    .tag-list a:hover{text-decoration:underline}
+    .note{max-width:var(--maxw);margin:0 auto 28px;padding:0 12px;font-size:13px;opacity:.8}
+    .hidden{display:none !important}
+    .error{color:#ffb4b4}
+    a{color:#9ad1ff;text-decoration:underline}
   </style>
+</head>
+<body>
+  <header>
+    <h1>VOID Tattoo Fest — Booking Map</h1>
+   </header>
 
-<header>
-<h1 style="text-align: center;">VOID Tattoo Fest
-Booking Map</h1>
-</header><section class="legend" aria-label="Booth legend">
-<h2 style="text-align: center;">Key</h2>
-<div class="legend-grid" style="text-align: center;">
-<div class="legend-row">
-<div class="legend-label">Artist – Jupiter Next – Arium/Flex 10×10 Indoor</div>
-<div class="legend-swatches">
-<div class="legend-swatch">Available</div>
-<div class="legend-swatch">Full</div>
-</div>
-</div>
-<div class="legend-row">
-<div class="legend-label">Artist – Jupiter Original – 10×10 – Dream Tent</div>
-<div class="legend-swatches">
-<div class="legend-swatch">Available</div>
-<div class="legend-swatch">Full</div>
-</div>
-</div>
-<div class="legend-row">
-<div class="legend-label">Artist – Jupiter Original – Small Deluxe Booth</div>
-<div class="legend-swatches">
-<div class="legend-swatch">Available</div>
-<div class="legend-swatch">Full</div>
-</div>
-</div>
-<div class="legend-row">
-<div class="legend-label">Artist – Jupiter Original – Medium Deluxe Booth</div>
-<div class="legend-swatches">
-<div class="legend-swatch">Available</div>
-<div class="legend-swatch">Full</div>
-</div>
-</div>
-<div class="legend-row">
-<div class="legend-label">Artist – Jupiter Original – Large Deluxe Booth</div>
-<div class="legend-swatches">
-<div class="legend-swatch">Available</div>
-<div class="legend-swatch">Full</div>
-</div>
-</div>
-<div class="legend-row">
-<div class="legend-label">Vendor</div>
-<div class="legend-swatches">
-<div class="legend-swatch">Available</div>
-<div class="legend-swatch">Full</div>
-</div>
-</div>
-<div class="legend-row">
-<div class="legend-label">Street Fair Vendor – Saturday Only</div>
-<div class="legend-swatches">
-<div class="legend-swatch">Available</div>
-<div class="legend-swatch">Full</div>
-</div>
-</div>
-<div class="legend-row">
-<div class="legend-label">Wayfinding</div>
-<div class="legend-swatches">
-<div class="legend-swatch">Exits</div>
-<div class="legend-swatch">Restrooms</div>
-<div class="legend-swatch">VOID Activities</div>
-<div class="legend-swatch">"Hey Love" Bar &amp; Restaurant</div>
-</div>
-</div>
-</div>
-</section>
-<div id="void-map-wrap" style="text-align: center;" aria-label="VOID Booking Map"><object id="void-map" class="void-map-layer" data="" type="image/svg+xml" width="300" height="150" aria-label="Interactive booth map"></object>
-<img id="void-map-top" class="void-map-layer" alt="Wayfinding overlay (exits, food, restrooms, outlines)" />
-<noscript>Please enable JavaScript to view the booking map.</noscript></div>
-<section class="tag-links" aria-label="Bookwhen tag shortcuts">
-<h2>Tag Links</h2>
-<ol class="tag-list">
- 	<li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=arium" target="_blank" rel="noopener noreferrer">arium</a></li>
- 	<li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=arium%2Fflex" target="_blank" rel="noopener noreferrer">arium/flex</a></li>
- 	<li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=artist-booth" target="_blank" rel="noopener noreferrer">artist-booth</a></li>
- 	<li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=deluxe-room" target="_blank" rel="noopener noreferrer">deluxe-room</a></li>
- 	<li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=dream-tent" target="_blank" rel="noopener noreferrer">dream-tent</a></li>
- 	<li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=Flex-Lounge" target="_blank" rel="noopener noreferrer">Flex-Lounge</a></li>
- 	<li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=indoor" target="_blank" rel="noopener noreferrer">indoor</a></li>
- 	<li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=jupiter-next" target="_blank" rel="noopener noreferrer">jupiter-next</a></li>
- 	<li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=jupiter-original" target="_blank" rel="noopener noreferrer">jupiter-original</a></li>
- 	<li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=large-deluxe-room" target="_blank" rel="noopener noreferrer">large-deluxe-room</a></li>
- 	<li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=medium-deluxe-room" target="_blank" rel="noopener noreferrer">medium-deluxe-room</a></li>
- 	<li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=Outside" target="_blank" rel="noopener noreferrer">Outside</a></li>
- 	<li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=pipe-and-drape" target="_blank" rel="noopener noreferrer">pipe-and-drape</a></li>
- 	<li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=small-deluxe-room" target="_blank" rel="noopener noreferrer">small-deluxe-room</a></li>
- 	<li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=standard-10x10" target="_blank" rel="noopener noreferrer">standard-10x10</a></li>
- 	<li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=street-fair" target="_blank" rel="noopener noreferrer">street-fair</a></li>
- 	<li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=super-small-deluxe-room" target="_blank" rel="noopener noreferrer">super-small-deluxe-room</a></li>
- 	<li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=Vendor" target="_blank" rel="noopener noreferrer">Vendor</a></li>
-</ol>
-</section>
-<div id="status" class="note" style="text-align: center;">Loading map…</div>
-<footer><small>© VOID Tattoo Fest</small></footer>
-<p style="text-align: center;"><script>
+  <section class="legend" aria-label="Booth legend">
+    <h2>Key</h2>
+    <div class="legend-grid">
+      <div class="legend-row">
+        <div class="legend-label">Artist – Jupiter Next – Arium/Flex 10×10 Indoor</div>
+        <div class="legend-swatches">
+          <div class="legend-swatch"><span class="legend-chip" style="background:#0099ff;"></span>Available</div>
+          <div class="legend-swatch"><span class="legend-chip" style="background:#99ccff;"></span>Full</div>
+        </div>
+      </div>
+      <div class="legend-row">
+        <div class="legend-label">Artist – Jupiter Original – 10×10 – Dream Tent</div>
+        <div class="legend-swatches">
+          <div class="legend-swatch"><span class="legend-chip" style="background:#66cccc;"></span>Available</div>
+          <div class="legend-swatch"><span class="legend-chip" style="background:#ccffff;"></span>Full</div>
+        </div>
+      </div>
+      <div class="legend-row">
+        <div class="legend-label">Artist – Jupiter Original – Small Deluxe Booth</div>
+        <div class="legend-swatches">
+          <div class="legend-swatch"><span class="legend-chip" style="background:#80c03f;"></span>Available</div>
+          <div class="legend-swatch"><span class="legend-chip" style="background:#ccff99;"></span>Full</div>
+        </div>
+      </div>
+      <div class="legend-row">
+        <div class="legend-label">Artist – Jupiter Original – Medium Deluxe Booth</div>
+        <div class="legend-swatches">
+          <div class="legend-swatch"><span class="legend-chip" style="background:#ff3399;"></span>Available</div>
+          <div class="legend-swatch"><span class="legend-chip" style="background:#ffcccc;"></span>Full</div>
+        </div>
+      </div>
+      <div class="legend-row">
+        <div class="legend-label">Artist – Jupiter Original – Large Deluxe Booth</div>
+        <div class="legend-swatches">
+          <div class="legend-swatch"><span class="legend-chip" style="background:#9393f7;"></span>Available</div>
+          <div class="legend-swatch"><span class="legend-chip" style="background:#ccccff;"></span>Full</div>
+        </div>
+      </div>
+      <div class="legend-row">
+        <div class="legend-label">Vendor</div>
+        <div class="legend-swatches">
+          <div class="legend-swatch"><span class="legend-chip" style="background:#e97d13;"></span>Available</div>
+          <div class="legend-swatch"><span class="legend-chip" style="background:#ed9c4d;"></span>Full</div>
+        </div>
+      </div>
+      <div class="legend-row">
+        <div class="legend-label">Street Fair Vendor – Saturday Only</div>
+        <div class="legend-swatches">
+          <div class="legend-swatch"><span class="legend-chip" style="background:#cc0000;"></span>Available</div>
+          <div class="legend-swatch"><span class="legend-chip" style="background:#ff9999;"></span>Full</div>
+        </div>
+      </div>
+      <div class="legend-row">
+        <div class="legend-label">Wayfinding</div>
+        <div class="legend-swatches">
+          <div class="legend-swatch"><span class="legend-chip" style="background:#ffff00;"></span>Exits</div>
+          <div class="legend-swatch"><span class="legend-chip" style="background:#4001be;"></span>Restrooms</div>
+          <div class="legend-swatch"><span class="legend-chip" style="background:#c59900;"></span>VOID Activities</div>
+          <div class="legend-swatch"><span class="legend-chip" style="background:#466154;"></span>"Hey Love" Bar &amp; Restaurant</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="void-map-wrap" aria-label="VOID Booking Map">
+    <object id="void-map" class="void-map-layer" type="image/svg+xml" data="" aria-label="Interactive booth map"></object>
+    <img id="void-map-top" class="void-map-layer" src="" alt="Wayfinding overlay (exits, food, restrooms, outlines)">
+    <noscript>Please enable JavaScript to view the booking map.</noscript>
+  </div>
+
+  <section class="tag-links" aria-label="Bookwhen tag shortcuts">
+    <h2>Tag Links</h2>
+    <ol class="tag-list">
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=arium" target="_blank" rel="noopener noreferrer">arium</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=arium%2Fflex" target="_blank" rel="noopener noreferrer">arium/flex</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=artist-booth" target="_blank" rel="noopener noreferrer">artist-booth</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=deluxe-room" target="_blank" rel="noopener noreferrer">deluxe-room</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=dream-tent" target="_blank" rel="noopener noreferrer">dream-tent</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=Flex-Lounge" target="_blank" rel="noopener noreferrer">Flex-Lounge</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=indoor" target="_blank" rel="noopener noreferrer">indoor</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=jupiter-next" target="_blank" rel="noopener noreferrer">jupiter-next</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=jupiter-original" target="_blank" rel="noopener noreferrer">jupiter-original</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=large-deluxe-room" target="_blank" rel="noopener noreferrer">large-deluxe-room</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=medium-deluxe-room" target="_blank" rel="noopener noreferrer">medium-deluxe-room</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=Outside" target="_blank" rel="noopener noreferrer">Outside</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=pipe-and-drape" target="_blank" rel="noopener noreferrer">pipe-and-drape</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=small-deluxe-room" target="_blank" rel="noopener noreferrer">small-deluxe-room</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=standard-10x10" target="_blank" rel="noopener noreferrer">standard-10x10</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=street-fair" target="_blank" rel="noopener noreferrer">street-fair</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=super-small-deluxe-room" target="_blank" rel="noopener noreferrer">super-small-deluxe-room</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=Vendor" target="_blank" rel="noopener noreferrer">Vendor</a></li>
+    </ol>
+  </section>
+
+  <div id="status" class="note">Loading map…</div>
+
+  <footer>
+    <small>© VOID Tattoo Fest</small>
+  </footer>
+
+  <script>
   (function () {
     // Host the assets in the SAME folder as this HTML for best results (same-origin access)
     // If you prefer a CDN path, set the three URLs to absolute HTTPS paths from the same origin.
@@ -160,7 +173,13 @@ Booking Map</h1>
       const g = parseInt(value.slice(2, 4), 16);
       const b = parseInt(value.slice(4, 6), 16);
       const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-      return brightness < 140 ? "#ffffff" : "#111111"; } function lightenColor(hex, amount = 0.18) { if (!hex) return "#777777"; let value = hex.replace("#", "").trim(); if (value.length === 3) value = value.split("").map(ch => ch + ch).join("");
+      return brightness < 140 ? "#ffffff" : "#111111";
+    }
+
+    function lightenColor(hex, amount = 0.18) {
+      if (!hex) return "#777777";
+      let value = hex.replace("#", "").trim();
+      if (value.length === 3) value = value.split("").map(ch => ch + ch).join("");
       const clamp = v => Math.max(0, Math.min(255, v));
       const mix = val => clamp(Math.round(val + (255 - val) * amount));
       const r = parseInt(value.slice(0, 2), 16);
@@ -371,6 +390,5 @@ Booking Map</h1>
     });
   })();
   </script>
-
-
-</p>
+</body>
+</html>
