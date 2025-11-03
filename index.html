@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>VOID Tattoo Fest — Booking Map</title>
+  <meta name="robots" content="noindex,nofollow">
+  <style>
+    :root { --maxw: 1100px; }
+    html,body{height:100%;}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background:#ffffff;
+      color:#e9e9ef;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+    header,footer{max-width:var(--maxw);margin:0 auto;padding:16px;}
+    header h1{font-size:18px;font-weight:600;margin:8px 0 0;}
+    header p{opacity:.75;margin:6px 0 0;font-size:14px}
+    #void-map-wrap{position:relative;margin:0;padding:0;max-width:none;overflow:visible}
+    .void-map-layer{display:block;width:100%;height:auto}
+    #void-map{position:relative;z-index:0;background:transparent}
+    #void-map-top{position:absolute;inset:0;z-index:1;pointer-events:none;transform:none;width:100%;height:auto}
+    .legend{max-width:var(--maxw);margin:12px auto 24px;padding:0 12px;color:#1a1a1a}
+    .legend h2{font-size:16px;font-weight:600;margin:0 0 12px}
+    .legend-grid{display:flex;flex-direction:column;gap:12px}
+    .legend-row{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-start;border:1px solid #d7dde3;border-radius:6px;padding:12px;background:#f7f9fb}
+    .legend-label{flex:1 1 220px;font-size:14px;font-weight:600;color:#141b29}
+    .legend-swatches{display:flex;flex:2 1 300px;gap:8px;flex-wrap:wrap}
+    .legend-swatch{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:500;color:#1a1a1a;padding:6px 10px;border-radius:4px;background:#ffffff;border:1px solid #d7dde3}
+    .legend-chip{width:18px;height:18px;border-radius:3px;border:1px solid rgba(0,0,0,.12)}
+    .note{max-width:var(--maxw);margin:0 auto 28px;padding:0 12px;font-size:13px;opacity:.8}
+    .hidden{display:none !important}
+    .error{color:#ffb4b4}
+    a{color:#9ad1ff;text-decoration:underline}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>VOID Tattoo Fest — Booking Map</h1>
+    <p>This page is a standalone map for internal linking. If nothing appears, check that the SVG/JSON files exist next to this file.</p>
+  </header>
+
+  <section class="legend" aria-label="Booth legend">
+    <h2>Booth Key</h2>
+    <div class="legend-grid">
+      <div class="legend-row">
+        <div class="legend-label">Artist – Jupiter Next – Arium/Flex 10×10 Indoor (2)</div>
+        <div class="legend-swatches">
+          <div class="legend-swatch"><span class="legend-chip" style="background:#0099ff;"></span>Available #0099FF</div>
+          <div class="legend-swatch"><span class="legend-chip" style="background:#66ccff;"></span>Partial #66CCFF</div>
+          <div class="legend-swatch"><span class="legend-chip" style="background:#99ccff;"></span>Full #99CCFF</div>
+        </div>
+      </div>
+      <div class="legend-row">
+        <div class="legend-label">Artist – Jupiter Original – 10×10 – Dream Tent (2)</div>
+        <div class="legend-swatches">
+          <div class="legend-swatch"><span class="legend-chip" style="background:#66cccc;"></span>Available #66CCCC</div>
+          <div class="legend-swatch"><span class="legend-chip" style="background:#99ffff;"></span>Partial #99FFFF</div>
+          <div class="legend-swatch"><span class="legend-chip" style="background:#ccffff;"></span>Full #CCFFFF</div>
+        </div>
+      </div>
+      <div class="legend-row">
+        <div class="legend-label">Artist – Jupiter Original – Small Deluxe Booth (2)</div>
+        <div class="legend-swatches">
+          <div class="legend-swatch"><span class="legend-chip" style="background:#669933;"></span>Available #669933</div>
+          <div class="legend-swatch"><span class="legend-chip" style="background:#99cc66;"></span>Partial #99CC66</div>
+          <div class="legend-swatch"><span class="legend-chip" style="background:#ccff99;"></span>Full #CCFF99</div>
+        </div>
+      </div>
+      <div class="legend-row">
+        <div class="legend-label">Artist – Jupiter Original – Medium Deluxe Booth (3)</div>
+        <div class="legend-swatches">
+          <div class="legend-swatch"><span class="legend-chip" style="background:#ff3399;"></span>Available #FF3399</div>
+          <div class="legend-swatch"><span class="legend-chip" style="background:#ff99cc;"></span>Partial #FF99CC</div>
+          <div class="legend-swatch"><span class="legend-chip" style="background:#ffcccc;"></span>Full #FFCCCC</div>
+        </div>
+      </div>
+      <div class="legend-row">
+        <div class="legend-label">Artist – Jupiter Original – Large Deluxe Booth (4)</div>
+        <div class="legend-swatches">
+          <div class="legend-swatch"><span class="legend-chip" style="background:#6666cc;"></span>Available #6666CC</div>
+          <div class="legend-swatch"><span class="legend-chip" style="background:#9999ff;"></span>Partial #9999FF</div>
+          <div class="legend-swatch"><span class="legend-chip" style="background:#ccccff;"></span>Full #CCCCFF</div>
+        </div>
+      </div>
+      <div class="legend-row">
+        <div class="legend-label">Vendor</div>
+        <div class="legend-swatches">
+          <div class="legend-swatch"><span class="legend-chip" style="background:#ff6600;"></span>Available #FF6600</div>
+          <div class="legend-swatch"><span class="legend-chip" style="background:#ff9933;"></span>Partial #FF9933</div>
+          <div class="legend-swatch"><span class="legend-chip" style="background:#ffcc99;"></span>Full #FFCC99</div>
+        </div>
+      </div>
+      <div class="legend-row">
+        <div class="legend-label">Street Fair Vendor – Saturday Only</div>
+        <div class="legend-swatches">
+          <div class="legend-swatch"><span class="legend-chip" style="background:#cc0000;"></span>Available #CC0000</div>
+          <div class="legend-swatch"><span class="legend-chip" style="background:#ff6666;"></span>Partial #FF6666</div>
+          <div class="legend-swatch"><span class="legend-chip" style="background:#ff9999;"></span>Full #FF9999</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="void-map-wrap" aria-label="VOID Booking Map">
+    <object id="void-map" class="void-map-layer" type="image/svg+xml" data="" aria-label="Interactive booth map"></object>
+    <img id="void-map-top" class="void-map-layer" src="" alt="Wayfinding overlay (exits, food, restrooms, outlines)">
+    <noscript>Please enable JavaScript to view the booking map.</noscript>
+  </div>
+
+  <div id="status" class="note">Loading map…</div>
+
+  <footer>
+    <small>© VOID Tattoo Fest</small>
+  </footer>
+
+  <script>
+  (function () {
+    // Host the assets in the SAME folder as this HTML for best results (same-origin access)
+    // If you prefer a CDN path, set the three URLs to absolute HTTPS paths from the same origin.
+    // HALF-MAP asset targets
+    const MAP_CONFIG_URL = "./halfmap_config.json";            // New pruned config for the half map
+    const SVG_URL        = "./halfmapvoidjupiterbookingmap.svg"; // Half-map SVG (centered version)
+    const PNG_OVERLAY_URL= "./overlayhalfmap.png";             // Half-map transparent overlay
+
+    const obj = document.getElementById("void-map");
+    const overlay = document.getElementById("void-map-top");
+    const statusEl = document.getElementById("status");
+
+    // Utility
+    function setStatus(msg, isError){
+      if(!statusEl) return;
+      statusEl.textContent = msg;
+      statusEl.classList.toggle("error", !!isError);
+    }
+
+    // 1) Set overlay image
+    overlay.src = PNG_OVERLAY_URL;
+
+    // 2) When the SVG loads, fetch and expose config
+    obj.addEventListener("load", function(){
+      console.log("[map] SVG object loaded");
+      // Try to set a reference inside the embedded SVG (works only if same-origin)
+      let svgWin = null;
+      try { svgWin = obj.contentWindow || null; } catch(e) {}
+
+      fetch(MAP_CONFIG_URL, { cache: "no-cache" })
+        .then(r => {
+          if(!r.ok) throw new Error("Config fetch failed: " + r.status);
+          return r.json();
+        })
+        .then(cfg => {
+          console.log("[map] Config fetched", cfg);
+          // Expose to parent window
+          window.VOID_MAP_CONFIG = cfg;
+
+          // Pass to SVG via same-origin reference
+          try {
+            if (svgWin) svgWin.VOID_MAP_CONFIG = cfg;
+          } catch(e) { /* cross-origin, ignore */ }
+
+          // Also broadcast via postMessage in case the SVG listens for it
+          try {
+            if (svgWin && typeof svgWin.postMessage === "function") {
+              svgWin.postMessage({type:"VOID_MAP_CONFIG", payload: cfg}, "*");
+            }
+          } catch(e) {}
+
+          setStatus("Map loaded.");
+          setTimeout(() => statusEl.classList.add("hidden"), 800);
+        })
+        .catch(err => {
+          setStatus("Loaded SVG, but couldn’t fetch config. The map will show without names/links.", true);
+          console.error(err);
+        });
+    });
+
+    // 3) Kick off the SVG load AFTER we attach listeners
+    obj.data = SVG_URL;
+
+    // 4) Basic network sanity checks (optional)
+    function ping(url){
+      return fetch(url, {method:"HEAD"}).then(r => r.ok).catch(() => false);
+    }
+    Promise.all([ping(SVG_URL), ping(MAP_CONFIG_URL), ping(PNG_OVERLAY_URL)]).then(([okSvg, okJson, okPng]) => {
+      if(!okSvg) setStatus("SVG not found: " + SVG_URL, true);
+      else if(!okJson) setStatus("Config not found: " + MAP_CONFIG_URL + " (map can still render)", true);
+      else if(!okPng) setStatus("Overlay not found: " + PNG_OVERLAY_URL + " (optional)", true);
+    });
+  })();
+  </script>
+</body>
+</html>
