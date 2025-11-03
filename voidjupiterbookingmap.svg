@@ -280,7 +280,7 @@
 
     // Auto font-size based on smallest dimension; clamp to [6,18] px
     var smallest = Math.min(bbox.width, bbox.height);
-    var size = Math.max(6, Math.min(18, Math.round(smallest * 0.5)));
+    var size = Math.max(8, Math.min(22, Math.round(smallest * 0.6)));
 
     var g = document.getElementById('labels-layer');
     if (!g){

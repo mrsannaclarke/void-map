@@ -78,391 +78,391 @@
   },
   "booths": {
     "JN-L2-A1": {
-      "category": "light_blue",
+      "category": "dark_blue",
       "status": "available",
       "label": "A1",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-sdooy-20260522000000"
     },
     "JN-L2-A2": {
-      "category": "light_blue",
+      "category": "dark_blue",
       "status": "available",
       "label": "A2",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-sfn8v-20260522000000"
     },
     "JN-L2-A3": {
-      "category": "light_blue",
+      "category": "dark_blue",
       "status": "available",
       "label": "A3",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-ss44y-20260522000000"
     },
     "JN-L2-A4": {
-      "category": "light_blue",
+      "category": "dark_blue",
       "status": "available",
       "label": "A4",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-shu2u-20260522000000"
     },
     "JN-L2-A5": {
-      "category": "light_blue",
+      "category": "dark_blue",
       "status": "available",
       "label": "A5",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-sfop7-20260522000000"
     },
     "JN-L2-A6": {
-      "category": "light_blue",
+      "category": "dark_blue",
       "status": "available",
       "label": "A6",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-sowqg-20260522000000"
     },
     "JN-L2-A7": {
-      "category": "light_blue",
+      "category": "dark_blue",
       "status": "available",
       "label": "A7",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-s9zfa-20260522000000"
     },
     "JN-L2-A8": {
-      "category": "light_blue",
+      "category": "dark_blue",
       "status": "available",
       "label": "A8",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-srojz-20260522000000"
     },
     "JN-L2-A9": {
-      "category": "light_blue",
+      "category": "dark_blue",
       "status": "available",
       "label": "A9",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-syavx-20260522000000"
     },
     "JN-L2-A10": {
-      "category": "light_blue",
+      "category": "dark_blue",
       "status": "available",
       "label": "A10",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-sbxzh-20260522000000"
     },
     "JN-L2-A11": {
-      "category": "light_blue",
+      "category": "dark_blue",
       "status": "available",
       "label": "A11",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-sq5ng-20260522000000"
     },
     "JN-L2-A12": {
-      "category": "light_blue",
+      "category": "dark_blue",
       "status": "available",
       "label": "A12",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-sorx6-20260522000000"
     },
     "JN-L2-A13": {
-      "category": "light_blue",
+      "category": "dark_blue",
       "status": "available",
       "label": "A13",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-sh0kz-20260522000000"
     },
     "JO-GROUND-115": {
-      "category": "dark_blue",
+      "category": "green",
       "status": "available",
       "label": "115",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-s20sf-20260522000000"
     },
     "JO-GROUND-133": {
-      "category": "dark_blue",
+      "category": "green",
       "status": "available",
       "label": "133",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-spvj8-20260522000000"
     },
     "JO-GROUND-135": {
-      "category": "dark_blue",
+      "category": "green",
       "status": "available",
       "label": "135",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-s514w-20260522000000"
     },
     "JO-GROUND-137": {
-      "category": "dark_blue",
+      "category": "green",
       "status": "available",
       "label": "137",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-s0ywg-20260522000000"
     },
     "JO-GROUND-113": {
-      "category": "dark_blue",
+      "category": "green",
       "status": "available",
       "label": "113",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-s37cv-20260522000000"
     },
     "JO-L2-204": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "204",
       "book_link": "-"
     },
     "JO-L2-206": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "206",
       "book_link": "-"
     },
     "JO-L2-208": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "208",
       "book_link": "-"
     },
     "JO-L2-214": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "214",
       "book_link": "-"
     },
     "JO-L2-216": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "216",
       "book_link": "-"
     },
     "JO-L2-234": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "234",
       "book_link": "-"
     },
     "JO-L2-236": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "236",
       "book_link": "-"
     },
     "JO-L2-238": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "238",
       "book_link": "-"
     },
     "JO-L2-240": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "240",
       "book_link": "-"
     },
     "JO-L2-244": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "244",
       "book_link": "-"
     },
     "JO-L2-245": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "245",
       "book_link": "-"
     },
     "JO-L2-246": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "246",
       "book_link": "-"
     },
     "JO-L2-248": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "248",
       "book_link": "-"
     },
     "JO-L2-250": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "250",
       "book_link": "-"
     },
     "JO-L2-218": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "218",
       "book_link": "-"
     },
     "JO-L2-219": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "219",
       "book_link": "-"
     },
     "JO-L2-220": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "220",
       "book_link": "-"
     },
     "JO-L2-221": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "221",
       "book_link": "-"
     },
     "JO-L2-226": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "226",
       "book_link": "-"
     },
     "JO-L2-227": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "227",
       "book_link": "-"
     },
     "JO-L2-228": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "228",
       "book_link": "-"
     },
     "JO-L2-229": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "229",
       "book_link": "-"
     },
     "JO-L2-232": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "232",
       "book_link": "-"
     },
     "JO-L2-242": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "242",
       "book_link": "-"
     },
     "JO-L2-243": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "243",
       "book_link": "-"
     },
     "JO-L2-252": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "252",
       "book_link": "-"
     },
     "JO-L2-254": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "254",
       "book_link": "-"
     },
     "JO-L2-205": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "205",
       "book_link": "-"
     },
     "JO-L2-207": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "207",
       "book_link": "-"
     },
     "JO-L2-215": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "215",
       "book_link": "-"
     },
     "JO-L2-231": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "231",
       "book_link": "-"
     },
     "JO-L2-233": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "233",
       "book_link": "-"
     },
     "JO-L2-235": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "235",
       "book_link": "-"
     },
     "JO-L2-237": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "237",
       "book_link": "-"
     },
     "JO-L2-239": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "239",
       "book_link": "-"
     },
     "JO-L2-247": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "247",
       "book_link": "-"
     },
     "JO-L2-249": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "249",
       "book_link": "-"
     },
     "JO-L2-251": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "251",
       "book_link": "-"
     },
     "JO-L2-253": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "253",
       "book_link": "-"
     },
     "JO-GROUND-108": {
-      "category": "dark_blue",
+      "category": "lavender",
       "status": "available",
       "label": "108",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-s2tk6-20260522000000"
     },
     "JO-GROUND-112": {
-      "category": "dark_blue",
+      "category": "lavender",
       "status": "available",
       "label": "112",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-srtlw-20260522000000"
     },
     "JO-GROUND-114": {
-      "category": "dark_blue",
+      "category": "lavender",
       "status": "available",
       "label": "114",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-sgc6c-20260522000000"
     },
     "JO-GROUND-116": {
-      "category": "dark_blue",
+      "category": "lavender",
       "status": "available",
       "label": "116",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-sz1n1-20260522000000"
     },
     "JO-GROUND-131": {
-      "category": "dark_blue",
+      "category": "lavender",
       "status": "available",
       "label": "131",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-sadue-20260522000000"
     },
     "JO-GROUND-134": {
-      "category": "dark_blue",
+      "category": "lavender",
       "status": "available",
       "label": "134",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-s2aq1-20260522000000"
     },
     "JO-GROUND-136": {
-      "category": "dark_blue",
+      "category": "lavender",
       "status": "available",
       "label": "136",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-swzrc-20260522000000"
     },
     "JO-GROUND-138": {
-      "category": "dark_blue",
+      "category": "lavender",
       "status": "available",
       "label": "138",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-sxs6o-20260522000000"
@@ -504,31 +504,31 @@
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-s7ddc-20260522000000"
     },
     "JO-GROUND-104": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "104",
       "book_link": "-"
     },
     "JO-GROUND-106": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "106",
       "book_link": "-"
     },
     "JO-GROUND-103": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "103",
       "book_link": "-"
     },
     "JO-GROUND-105": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "105",
       "book_link": "-"
     },
     "JO-GROUND-107": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "107",
       "book_link": "-"
@@ -617,18 +617,6 @@
       "label": "L",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-s236t-20260522000000"
     },
-    "JO-GROUNDO-M1": {
-      "category": "orange",
-      "status": "available",
-      "label": "M",
-      "book_link": "https://bookwhen.com/voidtattoofest/e/ev-std51-20260522000000"
-    },
-    "JO-GROUNDO-N1": {
-      "category": "orange",
-      "status": "available",
-      "label": "N",
-      "book_link": "https://bookwhen.com/voidtattoofest/e/ev-sx94r-20260522000000"
-    },
     "JO-GROUNDVO-H": {
       "category": "orange",
       "status": "available",
@@ -658,18 +646,6 @@
       "status": "available",
       "label": "L",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-s236t-20260522000000"
-    },
-    "JO-GROUNDO-M": {
-      "category": "orange",
-      "status": "available",
-      "label": "M",
-      "book_link": "https://bookwhen.com/voidtattoofest/e/ev-std51-20260522000000"
-    },
-    "JO-GROUNDO-N": {
-      "category": "orange",
-      "status": "available",
-      "label": "N",
-      "book_link": "https://bookwhen.com/voidtattoofest/e/ev-sx94r-20260522000000"
     },
     "DT-V-A": {
       "category": "orange",
@@ -714,232 +690,256 @@
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-s1zh4-20260522000000"
     },
     "JO-GROUND-118": {
-      "category": "dark_blue",
+      "category": "pink",
       "status": "available",
       "label": "118",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-sk33q-20260522000000"
     },
     "JO-GROUND-119": {
-      "category": "dark_blue",
+      "category": "pink",
       "status": "available",
       "label": "119",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-swhph-20260522000000"
     },
     "JO-GROUND-120": {
-      "category": "dark_blue",
+      "category": "pink",
       "status": "available",
       "label": "120",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-sqcqn-20260522000000"
     },
     "JO-GROUND-121": {
-      "category": "dark_blue",
+      "category": "pink",
       "status": "available",
       "label": "121",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-s5o4x-20260522000000"
     },
     "JO-GROUND-122": {
-      "category": "dark_blue",
+      "category": "pink",
       "status": "available",
       "label": "122",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-sdgh0-20260522000000"
     },
     "JO-GROUND-123": {
-      "category": "dark_blue",
+      "category": "pink",
       "status": "available",
       "label": "123",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-s1hs9-20260522000000"
     },
     "JO-GROUND-124": {
-      "category": "dark_blue",
+      "category": "pink",
       "status": "available",
       "label": "124",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-sh00r-20260522000000"
     },
     "JO-GROUND-126": {
-      "category": "dark_blue",
+      "category": "pink",
       "status": "available",
       "label": "126",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-szf9q-20260522000000"
     },
     "JO-GROUND-127": {
-      "category": "dark_blue",
+      "category": "pink",
       "status": "available",
       "label": "127",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-szf9q-20260522000000"
     },
     "JO-GROUND-128": {
-      "category": "dark_blue",
+      "category": "pink",
       "status": "available",
       "label": "128",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-swc3i-20260522000000"
     },
     "JO-GROUND-129": {
-      "category": "dark_blue",
+      "category": "pink",
       "status": "available",
       "label": "129",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-s6p3e-20260522000000"
     },
     "JO-GROUND-132": {
-      "category": "dark_blue",
+      "category": "pink",
       "status": "available",
       "label": "132",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-sx2ce-20260522000000"
     },
     "SF-S01-1": {
-      "category": "orange",
+      "category": "red",
       "status": "available",
       "label": "1",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-sf7wi-20260523120000"
     },
     "SF-S02-1": {
-      "category": "orange",
+      "category": "red",
       "status": "available",
       "label": "2",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-siydb-20260523120000"
     },
     "SF-S03-1": {
-      "category": "orange",
+      "category": "red",
       "status": "available",
       "label": "3",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-siqw1-20260523120000"
     },
     "SF-S04-1": {
-      "category": "orange",
+      "category": "red",
       "status": "available",
       "label": "4",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-s1jvy-20260523120000"
     },
     "SF-S05-1": {
-      "category": "orange",
+      "category": "red",
       "status": "available",
       "label": "5",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-skv64-20260523120000"
     },
     "SF-S06-1": {
-      "category": "orange",
+      "category": "red",
       "status": "available",
       "label": "6",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-s0t5a-20260523120000"
     },
     "SF-S07-1": {
-      "category": "orange",
+      "category": "red",
       "status": "available",
       "label": "7",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-skun4-20260523120000"
     },
     "SF-S08-1": {
-      "category": "orange",
+      "category": "red",
       "status": "available",
       "label": "8",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-sba8l-20260523120000"
     },
     "SF-S09-1": {
-      "category": "orange",
+      "category": "red",
       "status": "available",
       "label": "9",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-srq93-20260523120000"
     },
     "SF-S10-1": {
-      "category": "orange",
+      "category": "red",
       "status": "available",
       "label": "10",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-s27fb-20260523120000"
     },
     "SF-S11-1": {
-      "category": "orange",
+      "category": "red",
       "status": "available",
       "label": "11",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-sm87c-20260523120000"
     },
     "SF-S01": {
-      "category": "orange",
+      "category": "red",
       "status": "available",
       "label": "1",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-sf7wi-20260523120000"
     },
     "SF-S02": {
-      "category": "orange",
+      "category": "red",
       "status": "available",
       "label": "2",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-siydb-20260523120000"
     },
     "SF-S03": {
-      "category": "orange",
+      "category": "red",
       "status": "available",
       "label": "3",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-siqw1-20260523120000"
     },
     "SF-S04": {
-      "category": "orange",
+      "category": "red",
       "status": "available",
       "label": "4",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-s1jvy-20260523120000"
     },
     "SF-S05": {
-      "category": "orange",
+      "category": "red",
       "status": "available",
       "label": "5",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-skv64-20260523120000"
     },
     "SF-S06": {
-      "category": "orange",
+      "category": "red",
       "status": "available",
       "label": "6",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-s0t5a-20260523120000"
     },
     "SF-S07": {
-      "category": "orange",
+      "category": "red",
       "status": "available",
       "label": "7",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-skun4-20260523120000"
     },
     "SF-S08": {
-      "category": "orange",
+      "category": "red",
       "status": "available",
       "label": "8",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-sba8l-20260523120000"
     },
     "SF-S09": {
-      "category": "orange",
+      "category": "red",
       "status": "available",
       "label": "9",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-srq93-20260523120000"
     },
     "SF-S10": {
-      "category": "orange",
+      "category": "red",
       "status": "available",
       "label": "10",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-s27fb-20260523120000"
     },
     "SF-S11": {
-      "category": "orange",
+      "category": "red",
       "status": "available",
       "label": "11",
       "book_link": "https://bookwhen.com/voidtattoofest/e/ev-sm87c-20260523120000"
     },
     "JO-L2-217": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "217",
       "book_link": "-"
     },
     "JO-GROUND-117": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "117",
       "book_link": "-"
     },
     "JO-GROUND-140": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "140",
       "book_link": "-"
     },
     "JO-GROUND-139": {
-      "category": "dark_blue",
+      "category": "inactive",
       "status": "inactive",
       "label": "139",
       "book_link": "-"
+    },
+    "JO-GROUNDVO-M1": {
+      "category": "orange",
+      "status": "available",
+      "label": "M",
+      "book_link": "https://bookwhen.com/voidtattoofest/e/ev-std51-20260522000000"
+    },
+    "JO-GROUNDVO-N1": {
+      "category": "orange",
+      "status": "available",
+      "label": "N",
+      "book_link": "https://bookwhen.com/voidtattoofest/e/ev-sx94r-20260522000000"
+    },
+    "JO-GROUNDVO-M": {
+      "category": "orange",
+      "status": "available",
+      "label": "M",
+      "book_link": "https://bookwhen.com/voidtattoofest/e/ev-std51-20260522000000"
+    },
+    "JO-GROUNDVO-N": {
+      "category": "orange",
+      "status": "available",
+      "label": "N",
+      "book_link": "https://bookwhen.com/voidtattoofest/e/ev-sx94r-20260522000000"
     }
   }
 }
