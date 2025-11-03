@@ -7,30 +7,37 @@
   <meta name="robots" content="noindex,nofollow">
   <style>
     :root { --maxw: 1100px; }
+    @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap");
     html,body{height:100%;}
     body{
       margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      font-family: "Montserrat", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background:#ffffff;
-      color:#e9e9ef;
+      color:#1a1a1a;
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
     }
-    header,footer{max-width:var(--maxw);margin:0 auto;padding:16px;}
-    header h1{font-size:18px;font-weight:600;margin:8px 0 0;}
-    header p{opacity:.75;margin:6px 0 0;font-size:14px}
+    header,footer{max-width:var(--maxw);margin:0 auto;padding:16px;text-align:center;color:#0a0a0a;}
+    header h1{font-size:18px;font-weight:600;margin:8px 0 0;color:#0a0a0a;}
+    header p{opacity:.85;margin:6px 0 0;font-size:14px;color:#1a1a1a;}
     #void-map-wrap{position:relative;margin:0;padding:0;max-width:none;overflow:visible}
     .void-map-layer{display:block;width:100%;height:auto}
-    #void-map{position:relative;z-index:0;background:transparent}
-    #void-map-top{position:absolute;inset:0;z-index:1;pointer-events:none;transform:none;width:100%;height:auto}
-    .legend{max-width:var(--maxw);margin:12px auto 24px;padding:0 12px;color:#1a1a1a}
+    #void-map{position:relative;z-index:1;background:transparent}
+    #void-map-top{position:absolute;inset:0;z-index:0;pointer-events:none;transform:none;width:100%;height:auto}
+    .legend{width:65%;max-width:var(--maxw);margin:12px auto 24px;padding:0 8px;color:#1a1a1a;text-align:center}
     .legend h2{font-size:16px;font-weight:600;margin:0 0 12px}
     .legend-grid{display:flex;flex-direction:column;gap:12px}
-    .legend-row{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-start;border:1px solid #d7dde3;border-radius:6px;padding:12px;background:#f7f9fb}
-    .legend-label{flex:1 1 220px;font-size:14px;font-weight:600;color:#141b29}
-    .legend-swatches{display:flex;flex:2 1 300px;gap:8px;flex-wrap:wrap}
+    .legend-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:center;border:1px solid #d7dde3;border-radius:6px;padding:10px;background:#f7f9fb}
+    .legend-label{flex:1 1 220px;font-size:14px;font-weight:600;color:#141b29;text-align:center}
+    .legend-swatches{display:flex;flex:2 1 300px;gap:8px;flex-wrap:wrap;justify-content:center}
     .legend-swatch{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:500;color:#1a1a1a;padding:6px 10px;border-radius:4px;background:#ffffff;border:1px solid #d7dde3}
     .legend-chip{width:18px;height:18px;border-radius:3px;border:1px solid rgba(0,0,0,.12)}
+    .tag-links{width:65%;max-width:var(--maxw);margin:24px auto 36px;padding:0 8px;text-align:center}
+    .tag-links h2{font-size:16px;font-weight:600;margin:0 0 12px}
+    .tag-list{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:0;padding:0;list-style:none}
+    .tag-list li{background:#f7f9fb;border:1px solid #d7dde3;border-radius:4px;padding:8px 12px;font-size:13px;font-weight:500;color:#141b29}
+    .tag-list a{color:#141b29;text-decoration:none}
+    .tag-list a:hover{text-decoration:underline}
     .note{max-width:var(--maxw);margin:0 auto 28px;padding:0 12px;font-size:13px;opacity:.8}
     .hidden{display:none !important}
     .error{color:#ffb4b4}
@@ -40,59 +47,67 @@
 <body>
   <header>
     <h1>VOID Tattoo Fest — Booking Map</h1>
-    <p>This page is a standalone map for internal linking. If nothing appears, check that the SVG/JSON files exist next to this file.</p>
-  </header>
+   </header>
 
   <section class="legend" aria-label="Booth legend">
     <h2>Booth Key</h2>
     <div class="legend-grid">
       <div class="legend-row">
-        <div class="legend-label">Artist – Jupiter Next – Arium/Flex 10×10 Indoor (2)</div>
+        <div class="legend-label">Artist – Jupiter Next – Arium/Flex 10×10 Indoor</div>
         <div class="legend-swatches">
-          <div class="legend-swatch"><span class="legend-chip" style="background:#0099ff;"></span>Available #0099FF</div>
-          <div class="legend-swatch"><span class="legend-chip" style="background:#99ccff;"></span>Full #99CCFF</div>
+          <div class="legend-swatch"><span class="legend-chip" style="background:#0099ff;"></span>Available</div>
+          <div class="legend-swatch"><span class="legend-chip" style="background:#99ccff;"></span>Full</div>
         </div>
       </div>
       <div class="legend-row">
-        <div class="legend-label">Artist – Jupiter Original – 10×10 – Dream Tent (2)</div>
+        <div class="legend-label">Artist – Jupiter Original – 10×10 – Dream Tent</div>
         <div class="legend-swatches">
-          <div class="legend-swatch"><span class="legend-chip" style="background:#66cccc;"></span>Available #66CCCC</div>
-          <div class="legend-swatch"><span class="legend-chip" style="background:#ccffff;"></span>Full #CCFFFF</div>
+          <div class="legend-swatch"><span class="legend-chip" style="background:#66cccc;"></span>Available</div>
+          <div class="legend-swatch"><span class="legend-chip" style="background:#ccffff;"></span>Full</div>
         </div>
       </div>
       <div class="legend-row">
-        <div class="legend-label">Artist – Jupiter Original – Small Deluxe Booth (2)</div>
+        <div class="legend-label">Artist – Jupiter Original – Small Deluxe Booth</div>
         <div class="legend-swatches">
-          <div class="legend-swatch"><span class="legend-chip" style="background:#669933;"></span>Available #669933</div>
-          <div class="legend-swatch"><span class="legend-chip" style="background:#ccff99;"></span>Full #CCFF99</div>
+          <div class="legend-swatch"><span class="legend-chip" style="background:#80c03f;"></span>Available</div>
+          <div class="legend-swatch"><span class="legend-chip" style="background:#ccff99;"></span>Full</div>
         </div>
       </div>
       <div class="legend-row">
-        <div class="legend-label">Artist – Jupiter Original – Medium Deluxe Booth (3)</div>
+        <div class="legend-label">Artist – Jupiter Original – Medium Deluxe Booth</div>
         <div class="legend-swatches">
-          <div class="legend-swatch"><span class="legend-chip" style="background:#ff3399;"></span>Available #FF3399</div>
-          <div class="legend-swatch"><span class="legend-chip" style="background:#ffcccc;"></span>Full #FFCCCC</div>
+          <div class="legend-swatch"><span class="legend-chip" style="background:#ff3399;"></span>Available</div>
+          <div class="legend-swatch"><span class="legend-chip" style="background:#ffcccc;"></span>Full</div>
         </div>
       </div>
       <div class="legend-row">
-        <div class="legend-label">Artist – Jupiter Original – Large Deluxe Booth (4)</div>
+        <div class="legend-label">Artist – Jupiter Original – Large Deluxe Booth</div>
         <div class="legend-swatches">
-          <div class="legend-swatch"><span class="legend-chip" style="background:#6666cc;"></span>Available #6666CC</div>
-          <div class="legend-swatch"><span class="legend-chip" style="background:#ccccff;"></span>Full #CCCCFF</div>
+          <div class="legend-swatch"><span class="legend-chip" style="background:#9393f7;"></span>Available</div>
+          <div class="legend-swatch"><span class="legend-chip" style="background:#ccccff;"></span>Full</div>
         </div>
       </div>
       <div class="legend-row">
         <div class="legend-label">Vendor</div>
         <div class="legend-swatches">
-          <div class="legend-swatch"><span class="legend-chip" style="background:#ff6600;"></span>Available #FF6600</div>
-          <div class="legend-swatch"><span class="legend-chip" style="background:#ffcc99;"></span>Full #FFCC99</div>
+          <div class="legend-swatch"><span class="legend-chip" style="background:#ff6600;"></span>Available</div>
+          <div class="legend-swatch"><span class="legend-chip" style="background:#ffcc99;"></span>Full</div>
         </div>
       </div>
       <div class="legend-row">
         <div class="legend-label">Street Fair Vendor – Saturday Only</div>
         <div class="legend-swatches">
-          <div class="legend-swatch"><span class="legend-chip" style="background:#cc0000;"></span>Available #CC0000</div>
-          <div class="legend-swatch"><span class="legend-chip" style="background:#ff9999;"></span>Full #FF9999</div>
+          <div class="legend-swatch"><span class="legend-chip" style="background:#cc0000;"></span>Available</div>
+          <div class="legend-swatch"><span class="legend-chip" style="background:#ff9999;"></span>Full</div>
+        </div>
+      </div>
+      <div class="legend-row">
+        <div class="legend-label">Wayfinding</div>
+        <div class="legend-swatches">
+          <div class="legend-swatch"><span class="legend-chip" style="background:#ffff00;"></span>Exits</div>
+          <div class="legend-swatch"><span class="legend-chip" style="background:#4001be;"></span>Restrooms</div>
+          <div class="legend-swatch"><span class="legend-chip" style="background:#c59900;"></span>VOID Activities</div>
+          <div class="legend-swatch"><span class="legend-chip" style="background:#466154;"></span>"Hey Love" Bar &amp; Restaurant</div>
         </div>
       </div>
     </div>
@@ -103,6 +118,30 @@
     <img id="void-map-top" class="void-map-layer" src="" alt="Wayfinding overlay (exits, food, restrooms, outlines)">
     <noscript>Please enable JavaScript to view the booking map.</noscript>
   </div>
+
+  <section class="tag-links" aria-label="Bookwhen tag shortcuts">
+    <h2>🎟️ Static Tag Links</h2>
+    <ol class="tag-list">
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=arium" target="_blank" rel="noopener noreferrer">arium</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=arium%2Fflex" target="_blank" rel="noopener noreferrer">arium/flex</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=artist-booth" target="_blank" rel="noopener noreferrer">artist-booth</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=deluxe-room" target="_blank" rel="noopener noreferrer">deluxe-room</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=dream-tent" target="_blank" rel="noopener noreferrer">dream-tent</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=Flex-Lounge" target="_blank" rel="noopener noreferrer">Flex-Lounge</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=indoor" target="_blank" rel="noopener noreferrer">indoor</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=jupiter-next" target="_blank" rel="noopener noreferrer">jupiter-next</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=jupiter-original" target="_blank" rel="noopener noreferrer">jupiter-original</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=large-deluxe-room" target="_blank" rel="noopener noreferrer">large-deluxe-room</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=medium-deluxe-room" target="_blank" rel="noopener noreferrer">medium-deluxe-room</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=Outside" target="_blank" rel="noopener noreferrer">Outside</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=pipe-and-drape" target="_blank" rel="noopener noreferrer">pipe-and-drape</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=small-deluxe-room" target="_blank" rel="noopener noreferrer">small-deluxe-room</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=standard-10x10" target="_blank" rel="noopener noreferrer">standard-10x10</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=street-fair" target="_blank" rel="noopener noreferrer">street-fair</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=super-small-deluxe-room" target="_blank" rel="noopener noreferrer">super-small-deluxe-room</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=Vendor" target="_blank" rel="noopener noreferrer">Vendor</a></li>
+    </ol>
+  </section>
 
   <div id="status" class="note">Loading map…</div>
 
@@ -137,11 +176,26 @@
       return brightness < 140 ? "#ffffff" : "#111111";
     }
 
+    function lightenColor(hex, amount = 0.18) {
+      if (!hex) return "#777777";
+      let value = hex.replace("#", "").trim();
+      if (value.length === 3) value = value.split("").map(ch => ch + ch).join("");
+      const clamp = v => Math.max(0, Math.min(255, v));
+      const mix = val => clamp(Math.round(val + (255 - val) * amount));
+      const r = parseInt(value.slice(0, 2), 16);
+      const g = parseInt(value.slice(2, 4), 16);
+      const b = parseInt(value.slice(4, 6), 16);
+      return "#" + [mix(r), mix(g), mix(b)].map(v => v.toString(16).padStart(2, "0")).join("").toUpperCase();
+    }
+
     function computeFontSize(label, bbox) {
       const textLength = Math.max(label.length, 1);
       const widthBased = bbox.width / textLength * 1.8;
       const heightBased = bbox.height * 0.75;
-      const rawSize = Math.min(widthBased, heightBased);
+      let rawSize = Math.min(widthBased, heightBased);
+      if (label.length === 1 && /[KLMN]/i.test(label)) {
+        rawSize = rawSize * 0.85;
+      }
       return Math.max(7, Math.min(36, rawSize));
     }
 
@@ -203,7 +257,7 @@
       svgEl.setAttribute("data-void-label", labelText);
       svgEl.setAttribute("data-void-link", link);
 
-      wrapWithLink(svgEl, link);
+      const anchorEl = wrapWithLink(svgEl, link) || svgEl;
 
       let bbox;
       try {
@@ -236,6 +290,22 @@
       textEl.style.strokeOpacity = "0.85";
 
       labelLayer.appendChild(textEl);
+
+      const hoverTarget = anchorEl.nodeName.toLowerCase() === "a" ? anchorEl : svgEl;
+      const hoverPath = svgEl;
+      const hoverFill = lightenColor(data.color || "#666666", 0.22);
+      hoverTarget.onmouseenter = () => {
+        hoverPath.style.fill = hoverFill;
+        hoverPath.style.filter = "drop-shadow(0 0 6px rgba(0,0,0,0.25))";
+        hoverPath.style.strokeWidth = "2";
+        textEl.style.filter = "drop-shadow(0 0 4px rgba(0,0,0,0.25))";
+      };
+      hoverTarget.onmouseleave = () => {
+        hoverPath.style.fill = data.color || "#666666";
+        hoverPath.style.filter = "";
+        hoverPath.style.strokeWidth = "1.5";
+        textEl.style.filter = "";
+      };
     }
 
     function applyConfig(cfg) {
@@ -298,8 +368,7 @@
           setTimeout(() => statusEl.classList.add("hidden"), 800);
         })
         .catch(err => {
-          setStatus("Loaded SVG, but couldn’t fetch config. The map will show without names/links.", true);
-          console.error(err);
+          console.warn("[map] Could not fetch map config; showing base SVG only.", err);
         });
     });
 

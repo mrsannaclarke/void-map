@@ -1,5 +1,5 @@
 {
-  "updated": "2025-11-03T06:35:39Z",
+  "updated": "2025-11-03T07:05:07Z",
   "source": {
     "svg": "halfmapvoidjupiterbookingmap.svg",
     "config": "void_map_configv2.json",
@@ -255,42 +255,42 @@
       "label": "108",
       "category": "lavender",
       "status": "available",
-      "color": "#6666CC",
+      "color": "#9393F7",
       "link": "https://bookwhen.com/voidtattoofest/e/ev-s2tk6-20260522000000"
     },
     "JO-GROUND-112": {
       "label": "112",
       "category": "lavender",
       "status": "available",
-      "color": "#6666CC",
+      "color": "#9393F7",
       "link": "https://bookwhen.com/voidtattoofest/e/ev-srtlw-20260522000000"
     },
     "JO-GROUND-113": {
       "label": "113",
       "category": "green",
       "status": "available",
-      "color": "#669933",
+      "color": "#80C03F",
       "link": "https://bookwhen.com/voidtattoofest/e/ev-s37cv-20260522000000"
     },
     "JO-GROUND-114": {
       "label": "114",
       "category": "lavender",
       "status": "available",
-      "color": "#6666CC",
+      "color": "#9393F7",
       "link": "https://bookwhen.com/voidtattoofest/e/ev-sgc6c-20260522000000"
     },
     "JO-GROUND-115": {
       "label": "115",
       "category": "green",
       "status": "available",
-      "color": "#669933",
+      "color": "#80C03F",
       "link": "https://bookwhen.com/voidtattoofest/e/ev-s20sf-20260522000000"
     },
     "JO-GROUND-116": {
       "label": "116",
       "category": "lavender",
       "status": "available",
-      "color": "#6666CC",
+      "color": "#9393F7",
       "link": "https://bookwhen.com/voidtattoofest/e/ev-sz1n1-20260522000000"
     },
     "JO-GROUND-118": {
@@ -383,7 +383,7 @@
       "label": "131",
       "category": "lavender",
       "status": "available",
-      "color": "#6666CC",
+      "color": "#9393F7",
       "link": "https://bookwhen.com/voidtattoofest/e/ev-sadue-20260522000000"
     },
     "JO-GROUND-132": {
@@ -397,35 +397,35 @@
       "label": "133",
       "category": "green",
       "status": "available",
-      "color": "#669933",
+      "color": "#80C03F",
       "link": "https://bookwhen.com/voidtattoofest/e/ev-spvj8-20260522000000"
     },
     "JO-GROUND-134": {
       "label": "134",
       "category": "lavender",
       "status": "available",
-      "color": "#6666CC",
+      "color": "#9393F7",
       "link": "https://bookwhen.com/voidtattoofest/e/ev-s2aq1-20260522000000"
     },
     "JO-GROUND-135": {
       "label": "135",
       "category": "green",
       "status": "available",
-      "color": "#669933",
+      "color": "#80C03F",
       "link": "https://bookwhen.com/voidtattoofest/e/ev-s514w-20260522000000"
     },
     "JO-GROUND-136": {
       "label": "136",
       "category": "lavender",
       "status": "available",
-      "color": "#6666CC",
+      "color": "#9393F7",
       "link": "https://bookwhen.com/voidtattoofest/e/ev-swzrc-20260522000000"
     },
     "JO-GROUND-137": {
       "label": "137",
       "category": "green",
       "status": "available",
-      "color": "#669933",
+      "color": "#80C03F",
       "link": "https://bookwhen.com/voidtattoofest/e/ev-s0ywg-20260522000000"
     },
     "JO-GROUNDVO-H": {
