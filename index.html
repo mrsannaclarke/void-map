@@ -11,31 +11,31 @@
     html,body{height:100%;}
     body{
       margin:0;
-      font-family: "Montserrat", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: "Calibri", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background:#ffffff;
       color:#1a1a1a;
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
     }
-    header,footer{max-width:var(--maxw);margin:0 auto;padding:16px;text-align:center;color:#0a0a0a;}
+    header,footer{max-width:var(--maxw);margin:0 auto;padding:10px;text-align:center;color:#0a0a0a;}
     header h1{font-size:18px;font-weight:600;margin:8px 0 0;color:#0a0a0a;}
     header p{opacity:.85;margin:6px 0 0;font-size:14px;color:#1a1a1a;}
     #void-map-wrap{position:relative;margin:0;padding:0;max-width:none;overflow:visible}
     .void-map-layer{display:block;width:100%;height:auto}
     #void-map{position:relative;z-index:1;background:transparent}
     #void-map-top{position:absolute;inset:0;z-index:0;pointer-events:none;transform:none;width:100%;height:auto}
-    .legend{width:65%;max-width:var(--maxw);margin:12px auto 24px;padding:0 8px;color:#1a1a1a;text-align:center}
-    .legend h2{font-size:16px;font-weight:600;margin:0 0 12px}
-    .legend-grid{display:flex;flex-direction:column;gap:12px}
-    .legend-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:center;border:1px solid #d7dde3;border-radius:6px;padding:10px;background:#f7f9fb}
+    .legend{width:65%;max-width:var(--maxw);margin:8px auto 10px;padding: 2px;color:#1a1a1a;text-align:center}
+    .legend h2{font-size:16px;font-weight:600;margin:0 0 08px}
+    .legend-grid{display:flex;flex-direction:column;gap:08px}
+    .legend-row{display:flex;flex-wrap:wrap;gap:08px;align-items:center;justify-content:center;border:1px solid #d7dde3;border-radius:6px;padding:10px;background:#f7f9fb}
     .legend-label{flex:1 1 220px;font-size:14px;font-weight:600;color:#141b29;text-align:center}
     .legend-swatches{display:flex;flex:2 1 300px;gap:8px;flex-wrap:wrap;justify-content:center}
     .legend-swatch{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:500;color:#1a1a1a;padding:6px 10px;border-radius:4px;background:#ffffff;border:1px solid #d7dde3}
     .legend-chip{width:18px;height:18px;border-radius:3px;border:1px solid rgba(0,0,0,.12)}
-    .tag-links{width:65%;max-width:var(--maxw);margin:24px auto 36px;padding:0 8px;text-align:center}
+    .tag-links{width:65%;max-width:var(--maxw);margin:10px auto 10px;padding:8px;text-align:center}
     .tag-links h2{font-size:16px;font-weight:600;margin:0 0 12px}
     .tag-list{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:0;padding:0;list-style:none}
-    .tag-list li{background:#f7f9fb;border:1px solid #d7dde3;border-radius:4px;padding:8px 12px;font-size:13px;font-weight:500;color:#141b29}
+    .tag-list li{background:#f7f9fb;border:1px solid #d7dde3;border-radius:4px;padding:8px;font-size:13px;font-weight:500;color:#141b29}
     .tag-list a{color:#141b29;text-decoration:none}
     .tag-list a:hover{text-decoration:underline}
     .note{max-width:var(--maxw);margin:0 auto 28px;padding:0 12px;font-size:13px;opacity:.8}
@@ -50,7 +50,7 @@
    </header>
 
   <section class="legend" aria-label="Booth legend">
-    <h2>Booth Key</h2>
+    <h2>Key</h2>
     <div class="legend-grid">
       <div class="legend-row">
         <div class="legend-label">Artist – Jupiter Next – Arium/Flex 10×10 Indoor</div>
@@ -90,8 +90,8 @@
       <div class="legend-row">
         <div class="legend-label">Vendor</div>
         <div class="legend-swatches">
-          <div class="legend-swatch"><span class="legend-chip" style="background:#ff6600;"></span>Available</div>
-          <div class="legend-swatch"><span class="legend-chip" style="background:#ffcc99;"></span>Full</div>
+          <div class="legend-swatch"><span class="legend-chip" style="background:#e97d13;"></span>Available</div>
+          <div class="legend-swatch"><span class="legend-chip" style="background:#ed9c4d;"></span>Full</div>
         </div>
       </div>
       <div class="legend-row">
@@ -120,26 +120,26 @@
   </div>
 
   <section class="tag-links" aria-label="Bookwhen tag shortcuts">
-    <h2>🎟️ Static Tag Links</h2>
+    <h2>Tag Links</h2>
     <ol class="tag-list">
-      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?options%5Bcontext%5D=schedule&options%5Btags%5D%5B%5D=arium" target="_blank" rel="noopener noreferrer">arium</a></li>
-      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?options%5Bcontext%5D=schedule&options%5Btags%5D%5B%5D=arium%2Fflex" target="_blank" rel="noopener noreferrer">arium/flex</a></li>
-      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?options%5Bcontext%5D=schedule&options%5Btags%5D%5B%5D=artist-booth" target="_blank" rel="noopener noreferrer">artist-booth</a></li>
-      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?options%5Bcontext%5D=schedule&options%5Btags%5D%5B%5D=deluxe-room" target="_blank" rel="noopener noreferrer">deluxe-room</a></li>
-      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?options%5Bcontext%5D=schedule&options%5Btags%5D%5B%5D=dream-tent" target="_blank" rel="noopener noreferrer">dream-tent</a></li>
-      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?options%5Bcontext%5D=schedule&options%5Btags%5D%5B%5D=Flex-Lounge" target="_blank" rel="noopener noreferrer">Flex-Lounge</a></li>
-      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?options%5Bcontext%5D=schedule&options%5Btags%5D%5B%5D=indoor" target="_blank" rel="noopener noreferrer">indoor</a></li>
-      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?options%5Bcontext%5D=schedule&options%5Btags%5D%5B%5D=jupiter-next" target="_blank" rel="noopener noreferrer">jupiter-next</a></li>
-      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?options%5Bcontext%5D=schedule&options%5Btags%5D%5B%5D=jupiter-original" target="_blank" rel="noopener noreferrer">jupiter-original</a></li>
-      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?options%5Bcontext%5D=schedule&options%5Btags%5D%5B%5D=large-deluxe-room" target="_blank" rel="noopener noreferrer">large-deluxe-room</a></li>
-      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?options%5Bcontext%5D=schedule&options%5Btags%5D%5B%5D=medium-deluxe-room" target="_blank" rel="noopener noreferrer">medium-deluxe-room</a></li>
-      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?options%5Bcontext%5D=schedule&options%5Btags%5D%5B%5D=Outside" target="_blank" rel="noopener noreferrer">Outside</a></li>
-      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?options%5Bcontext%5D=schedule&options%5Btags%5D%5B%5D=pipe-and-drape" target="_blank" rel="noopener noreferrer">pipe-and-drape</a></li>
-      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?options%5Bcontext%5D=schedule&options%5Btags%5D%5B%5D=small-deluxe-room" target="_blank" rel="noopener noreferrer">small-deluxe-room</a></li>
-      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?options%5Bcontext%5D=schedule&options%5Btags%5D%5B%5D=standard-10x10" target="_blank" rel="noopener noreferrer">standard-10x10</a></li>
-      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?options%5Bcontext%5D=schedule&options%5Btags%5D%5B%5D=street-fair" target="_blank" rel="noopener noreferrer">street-fair</a></li>
-      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?options%5Bcontext%5D=schedule&options%5Btags%5D%5B%5D=super-small-deluxe-room" target="_blank" rel="noopener noreferrer">super-small-deluxe-room</a></li>
-      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?options%5Bcontext%5D=schedule&options%5Btags%5D%5B%5D=Vendor" target="_blank" rel="noopener noreferrer">Vendor</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=arium" target="_blank" rel="noopener noreferrer">arium</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=arium%2Fflex" target="_blank" rel="noopener noreferrer">arium/flex</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=artist-booth" target="_blank" rel="noopener noreferrer">artist-booth</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=deluxe-room" target="_blank" rel="noopener noreferrer">deluxe-room</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=dream-tent" target="_blank" rel="noopener noreferrer">dream-tent</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=Flex-Lounge" target="_blank" rel="noopener noreferrer">Flex-Lounge</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=indoor" target="_blank" rel="noopener noreferrer">indoor</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=jupiter-next" target="_blank" rel="noopener noreferrer">jupiter-next</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=jupiter-original" target="_blank" rel="noopener noreferrer">jupiter-original</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=large-deluxe-room" target="_blank" rel="noopener noreferrer">large-deluxe-room</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=medium-deluxe-room" target="_blank" rel="noopener noreferrer">medium-deluxe-room</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=Outside" target="_blank" rel="noopener noreferrer">Outside</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=pipe-and-drape" target="_blank" rel="noopener noreferrer">pipe-and-drape</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=small-deluxe-room" target="_blank" rel="noopener noreferrer">small-deluxe-room</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=standard-10x10" target="_blank" rel="noopener noreferrer">standard-10x10</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=street-fair" target="_blank" rel="noopener noreferrer">street-fair</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=super-small-deluxe-room" target="_blank" rel="noopener noreferrer">super-small-deluxe-room</a></li>
+      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=Vendor" target="_blank" rel="noopener noreferrer">Vendor</a></li>
     </ol>
   </section>
 
@@ -243,8 +243,8 @@
       const link = data.link;
       if (!labelText || !link) return;
 
-      const textColor = chooseTextColor(data.color);
-      const outlineColor = textColor === "#ffffff" ? "#111111" : "#ffffff";
+      const textColor = "#111111";
+      const outlineColor = "#ffffff";
 
       svgEl.setAttribute("fill", data.color || "#666666");
       svgEl.style.fill = data.color || "#666666";
