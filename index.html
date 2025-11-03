@@ -6,148 +6,348 @@
   <title>VOID Tattoo Fest — Booking Map</title>
   <meta name="robots" content="noindex,nofollow">
   <style>
-    :root { --maxw: 1100px; }
+    :root {
+      --maxw: 1100px;
+      --bg-start: #050816;
+      --bg-mid: #14233f;
+      --bg-end: #271045;
+      --panel-bg: rgba(11, 19, 38, 0.72);
+      --panel-inner: rgba(17, 28, 52, 0.65);
+      --panel-border: rgba(255, 255, 255, 0.08);
+      --chip-border: rgba(255, 255, 255, 0.16);
+      --card-shadow: 0 24px 48px rgba(6, 10, 25, 0.55);
+      --text-primary: #f4f6ff;
+      --text-muted: rgba(244, 246, 255, 0.7);
+      --accent: #7cc9ff;
+      --accent-strong: #3fa1ff;
+    }
     @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap");
-    html,body{height:100%;}
+    *,*::before,*::after{box-sizing:border-box}
+    html,body{min-height:100%}
     body{
       margin:0;
-      font-family: "Calibri", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background:#ffffff;
-      color:#1a1a1a;
+      font-family:"Montserrat","Segoe UI",Helvetica,Arial,sans-serif;
+      background:linear-gradient(135deg,var(--bg-start) 0%,var(--bg-mid) 48%,var(--bg-end) 100%);
+      color:var(--text-primary);
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:28px;
+      padding:36px 18px 54px;
     }
-    header,footer{max-width:var(--maxw);margin:0 auto;padding:10px;text-align:center;color:#0a0a0a;}
-    header h1{font-size:18px;font-weight:600;margin:8px 0 0;color:#0a0a0a;}
-    header p{opacity:.85;margin:6px 0 0;font-size:14px;color:#1a1a1a;}
-    #void-map-wrap{position:relative;margin:0;padding:0;max-width:none;overflow:visible}
-    .void-map-layer{display:block;width:100%;height:auto}
-    #void-map{position:relative;z-index:1;background:transparent}
-    #void-map-top{position:absolute;inset:0;z-index:0;pointer-events:none;transform:none;width:100%;height:auto}
-    .legend{width:65%;max-width:var(--maxw);margin:8px auto 10px;padding: 2px;color:#1a1a1a;text-align:center}
-    .legend h2{font-size:16px;font-weight:600;margin:0 0 08px}
-    .legend-grid{display:flex;flex-direction:column;gap:08px}
-    .legend-row{display:flex;flex-wrap:wrap;gap:08px;align-items:center;justify-content:center;border:1px solid #d7dde3;border-radius:6px;padding:10px;background:#f7f9fb}
-    .legend-label{flex:1 1 220px;font-size:14px;font-weight:600;color:#141b29;text-align:center}
-    .legend-swatches{display:flex;flex:2 1 300px;gap:8px;flex-wrap:wrap;justify-content:center}
-    .legend-swatch{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:500;color:#1a1a1a;padding:6px 10px;border-radius:4px;background:#ffffff;border:1px solid #d7dde3}
-    .legend-chip{width:18px;height:18px;border-radius:3px;border:1px solid rgba(0,0,0,.12)}
-    .tag-links{width:65%;max-width:var(--maxw);margin:10px auto 10px;padding:8px;text-align:center}
-    .tag-links h2{font-size:16px;font-weight:600;margin:0 0 12px}
-    .tag-list{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:0;padding:0;list-style:none}
-    .tag-list li{background:#f7f9fb;border:1px solid #d7dde3;border-radius:4px;padding:8px;font-size:13px;font-weight:500;color:#141b29}
-    .tag-list a{color:#141b29;text-decoration:none}
-    .tag-list a:hover{text-decoration:underline}
-    .note{max-width:var(--maxw);margin:0 auto 28px;padding:0 12px;font-size:13px;opacity:.8}
+    header{
+      width:min(100%,var(--maxw));
+      margin:0 auto;
+      padding:18px 28px 26px;
+      text-align:center;
+      background:linear-gradient(160deg,rgba(27,43,73,0.92) 0%,rgba(15,26,48,0.75) 100%);
+      border:1px solid var(--panel-border);
+      border-radius:26px;
+      box-shadow:var(--card-shadow);
+      backdrop-filter:blur(14px);
+    }
+    header h1{
+      font-size:28px;
+      font-weight:700;
+      margin:4px 0 10px;
+      letter-spacing:0.04em;
+    }
+    header p{
+      margin:0;
+      font-size:15px;
+      color:var(--text-muted);
+    }
+    #void-map-wrap{
+      position:relative;
+      width:min(100%,var(--maxw));
+      margin:0;
+      padding:0;
+      border-radius:30px;
+      border:1px solid var(--panel-border);
+      background:radial-gradient(circle at top,rgba(88,155,255,0.22) 0%,rgba(9,16,32,0.9) 60%,rgba(4,8,18,0.95) 100%);
+      box-shadow:var(--card-shadow);
+      overflow:hidden;
+      transition:box-shadow .25s ease,transform .25s ease;
+    }
+    #void-map-wrap:hover{
+      transform:translateY(-4px);
+      box-shadow:0 32px 58px rgba(7, 12, 30, 0.6);
+    }
+    .void-map-layer{display:block;width:100%;height:auto;background:none}
+    #void-map{
+      position:relative;
+      z-index:1;
+      background:#ffffff;
+    }
+    #void-map-top{
+      position:absolute;
+      inset:0;
+      z-index:2;
+      pointer-events:none;
+      transform:none;
+      width:100%;
+      height:auto;
+      mix-blend-mode:normal;
+      opacity:0.94;
+    }
+    .map-top{
+      width:min(100%,var(--maxw));
+      display:grid;
+      grid-template-columns:repeat(2,minmax(280px,1fr));
+      gap:26px;
+      align-items:start;
+      margin:0 auto;
+    }
+    .legend{
+      width:100%;
+      margin:0;
+      padding:30px 34px;
+      color:var(--text-primary);
+      text-align:left;
+      background:var(--panel-bg);
+      border:1px solid var(--panel-border);
+      border-radius:26px;
+      box-shadow:var(--card-shadow);
+      backdrop-filter:blur(14px);
+    }
+    .legend h2{font-size:20px;font-weight:600;margin:0 0 16px;text-transform:uppercase;letter-spacing:0.08em;color:var(--accent)}
+    .legend-grid{display:flex;flex-direction:column;gap:14px}
+    .legend-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+      border:1px solid var(--panel-border);
+      border-radius:18px;
+      padding:16px 18px;
+      background:var(--panel-inner);
+      transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease,background .2s ease;
+    }
+    .legend-row:hover{
+      transform:translateY(-2px);
+      box-shadow:0 12px 24px rgba(7,13,26,0.45);
+      border-color:rgba(124,201,255,0.4);
+      background:rgba(22,36,64,0.82);
+    }
+    .legend-row.is-active{
+      transform:translateY(-2px);
+      box-shadow:0 16px 32px rgba(8,14,30,0.55);
+      border-color:rgba(124,201,255,0.65);
+      background:rgba(28,46,80,0.9);
+    }
+    .legend-label{
+      flex:1 1 220px;
+      font-size:15px;
+      font-weight:600;
+      color:var(--text-primary);
+    }
+    .legend-swatches{
+      display:flex;
+      flex:2 1 320px;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .legend-swatch{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      font-size:13px;
+      font-weight:500;
+      color:var(--text-primary);
+      padding:8px 14px;
+      border-radius:12px;
+      background:rgba(255,255,255,0.06);
+      border:1px solid var(--chip-border);
+      backdrop-filter:blur(10px);
+    }
+    .legend-chip{width:18px;height:18px;border-radius:5px;border:1px solid rgba(255,255,255,.25)}
+    button.legend-row:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+    .legend-row[data-tag]{cursor:pointer}
+    .results-panel{
+      width:100%;
+      margin:0;
+      padding:26px 30px 30px;
+      text-align:left;
+      background:var(--panel-bg);
+      border:1px solid var(--panel-border);
+      border-radius:24px;
+      box-shadow:var(--card-shadow);
+      backdrop-filter:blur(14px);
+      color:var(--text-primary);
+    }
+    .results-panel h2{
+      font-size:19px;
+      font-weight:600;
+      margin:0 0 18px;
+      text-transform:uppercase;
+      letter-spacing:0.1em;
+      color:var(--accent);
+    }
+    #bookwhen-results{
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+    #bookwhen-results p{
+      margin:0;
+      color:var(--text-muted);
+    }
+    #bookwhen-results .result{
+      padding:14px 16px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid var(--chip-border);
+      border-radius:16px;
+      box-shadow:0 10px 24px rgba(9,14,29,0.35);
+    }
+    #bookwhen-results .result h3{
+      margin:0 0 6px;
+      font-size:16px;
+      font-weight:600;
+    }
+    #bookwhen-results .result p{
+      font-size:13px;
+      color:var(--text-muted);
+    }
+    #bookwhen-results .result a{
+      color:var(--accent);
+      text-decoration:none;
+    }
+    #bookwhen-results .result a:hover{
+      color:var(--accent-strong);
+      text-decoration:underline;
+    }
+    .note{
+      width:min(100%,var(--maxw));
+      margin:0 auto;
+      padding:18px 24px;
+      font-size:14px;
+      color:var(--text-muted);
+      background:var(--panel-bg);
+      border:1px solid var(--panel-border);
+      border-radius:22px;
+      box-shadow:var(--card-shadow);
+      backdrop-filter:blur(14px);
+    }
+    footer{
+      width:min(100%,var(--maxw));
+      margin:0 auto;
+      padding:16px 22px;
+      text-align:center;
+      background:var(--panel-bg);
+      border:1px solid var(--panel-border);
+      border-radius:20px;
+      box-shadow:var(--card-shadow);
+      backdrop-filter:blur(14px);
+      color:var(--text-muted);
+    }
+    footer small{letter-spacing:0.12em;text-transform:uppercase}
     .hidden{display:none !important}
     .error{color:#ffb4b4}
-    a{color:#9ad1ff;text-decoration:underline}
+    a{color:var(--accent);text-decoration:underline}
+    a:hover{color:var(--accent-strong)}
+    @media (max-width: 900px){
+      body{padding:30px 14px 44px;gap:22px}
+      .map-top{
+        grid-template-columns:1fr;
+      }
+      .legend,.results-panel{padding:24px}
+    }
+    @media (max-width: 640px){
+      header h1{font-size:24px}
+      .legend-row{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:10px;
+      }
+      .legend-swatches{justify-content:flex-start}
+    }
+    @media (prefers-reduced-motion: reduce){
+      #void-map-wrap,.legend-row,#bookwhen-results .result{transition:none}
+    }
   </style>
 </head>
 <body>
-  <header>
-    <h1>VOID Tattoo Fest — Booking Map</h1>
-   </header>
+  <div class="map-top">
+    <section class="legend" aria-label="Booth legend">
+      <h2>Key</h2>
+      <div class="legend-grid">
+        <button type="button" class="legend-row" data-tag="arium/flex" aria-pressed="false">
+          <div class="legend-label">Artist – Jupiter Next – Arium/Flex 10×10 Indoor</div>
+          <div class="legend-swatches">
+            <div class="legend-swatch"><span class="legend-chip" style="background:#0099ff;"></span>Available</div>
+            <div class="legend-swatch"><span class="legend-chip" style="background:#99ccff;"></span>Full</div>
+          </div>
+        </button>
+        <button type="button" class="legend-row" data-tag="dream-tent" aria-pressed="false">
+          <div class="legend-label">Artist – Jupiter Original – 10×10 – Dream Tent</div>
+          <div class="legend-swatches">
+            <div class="legend-swatch"><span class="legend-chip" style="background:#66cccc;"></span>Available</div>
+            <div class="legend-swatch"><span class="legend-chip" style="background:#ccffff;"></span>Full</div>
+          </div>
+        </button>
+        <button type="button" class="legend-row" data-tag="small-deluxe-room" aria-pressed="false">
+          <div class="legend-label">Artist – Jupiter Original – Small Deluxe Booth</div>
+          <div class="legend-swatches">
+            <div class="legend-swatch"><span class="legend-chip" style="background:#80c03f;"></span>Available</div>
+            <div class="legend-swatch"><span class="legend-chip" style="background:#ccff99;"></span>Full</div>
+          </div>
+        </button>
+        <button type="button" class="legend-row" data-tag="medium-deluxe-room" aria-pressed="false">
+          <div class="legend-label">Artist – Jupiter Original – Medium Deluxe Booth</div>
+          <div class="legend-swatches">
+            <div class="legend-swatch"><span class="legend-chip" style="background:#ff3399;"></span>Available</div>
+            <div class="legend-swatch"><span class="legend-chip" style="background:#ffcccc;"></span>Full</div>
+          </div>
+        </button>
+        <button type="button" class="legend-row" data-tag="large-deluxe-room" aria-pressed="false">
+          <div class="legend-label">Artist – Jupiter Original – Large Deluxe Booth</div>
+          <div class="legend-swatches">
+            <div class="legend-swatch"><span class="legend-chip" style="background:#9393f7;"></span>Available</div>
+            <div class="legend-swatch"><span class="legend-chip" style="background:#ccccff;"></span>Full</div>
+          </div>
+        </button>
+        <button type="button" class="legend-row" data-tag="vendor" aria-pressed="false">
+          <div class="legend-label">Vendor</div>
+          <div class="legend-swatches">
+            <div class="legend-swatch"><span class="legend-chip" style="background:#e97d13;"></span>Available</div>
+            <div class="legend-swatch"><span class="legend-chip" style="background:#ed9c4d;"></span>Full</div>
+          </div>
+        </button>
+        <button type="button" class="legend-row" data-tag="street-fair" aria-pressed="false">
+          <div class="legend-label">Street Fair Vendor – Saturday Only</div>
+          <div class="legend-swatches">
+            <div class="legend-swatch"><span class="legend-chip" style="background:#cc0000;"></span>Available</div>
+            <div class="legend-swatch"><span class="legend-chip" style="background:#ff9999;"></span>Full</div>
+          </div>
+        </button>
+        <div class="legend-row" aria-hidden="true">
+          <div class="legend-label">Wayfinding</div>
+          <div class="legend-swatches">
+            <div class="legend-swatch"><span class="legend-chip" style="background:#ffff00;"></span>Exits</div>
+            <div class="legend-swatch"><span class="legend-chip" style="background:#4001be;"></span>Restrooms</div>
+            <div class="legend-swatch"><span class="legend-chip" style="background:#c59900;"></span>VOID Activities</div>
+            <div class="legend-swatch"><span class="legend-chip" style="background:#466154;"></span>"Hey Love" Bar &amp; Restaurant</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="results-panel" id="bookwhen-panel" aria-label="Bookwhen filtered results">
+      <h2>Matching Entries</h2>
+      <div id="bookwhen-results" aria-live="polite">Select a booth category to see matching bookings.</div>
+    </section>
+  </div>
 
-  <section class="legend" aria-label="Booth legend">
-    <h2>Key</h2>
-    <div class="legend-grid">
-      <div class="legend-row">
-        <div class="legend-label">Artist – Jupiter Next – Arium/Flex 10×10 Indoor</div>
-        <div class="legend-swatches">
-          <div class="legend-swatch"><span class="legend-chip" style="background:#0099ff;"></span>Available</div>
-          <div class="legend-swatch"><span class="legend-chip" style="background:#99ccff;"></span>Full</div>
-        </div>
-      </div>
-      <div class="legend-row">
-        <div class="legend-label">Artist – Jupiter Original – 10×10 – Dream Tent</div>
-        <div class="legend-swatches">
-          <div class="legend-swatch"><span class="legend-chip" style="background:#66cccc;"></span>Available</div>
-          <div class="legend-swatch"><span class="legend-chip" style="background:#ccffff;"></span>Full</div>
-        </div>
-      </div>
-      <div class="legend-row">
-        <div class="legend-label">Artist – Jupiter Original – Small Deluxe Booth</div>
-        <div class="legend-swatches">
-          <div class="legend-swatch"><span class="legend-chip" style="background:#80c03f;"></span>Available</div>
-          <div class="legend-swatch"><span class="legend-chip" style="background:#ccff99;"></span>Full</div>
-        </div>
-      </div>
-      <div class="legend-row">
-        <div class="legend-label">Artist – Jupiter Original – Medium Deluxe Booth</div>
-        <div class="legend-swatches">
-          <div class="legend-swatch"><span class="legend-chip" style="background:#ff3399;"></span>Available</div>
-          <div class="legend-swatch"><span class="legend-chip" style="background:#ffcccc;"></span>Full</div>
-        </div>
-      </div>
-      <div class="legend-row">
-        <div class="legend-label">Artist – Jupiter Original – Large Deluxe Booth</div>
-        <div class="legend-swatches">
-          <div class="legend-swatch"><span class="legend-chip" style="background:#9393f7;"></span>Available</div>
-          <div class="legend-swatch"><span class="legend-chip" style="background:#ccccff;"></span>Full</div>
-        </div>
-      </div>
-      <div class="legend-row">
-        <div class="legend-label">Vendor</div>
-        <div class="legend-swatches">
-          <div class="legend-swatch"><span class="legend-chip" style="background:#e97d13;"></span>Available</div>
-          <div class="legend-swatch"><span class="legend-chip" style="background:#ed9c4d;"></span>Full</div>
-        </div>
-      </div>
-      <div class="legend-row">
-        <div class="legend-label">Street Fair Vendor – Saturday Only</div>
-        <div class="legend-swatches">
-          <div class="legend-swatch"><span class="legend-chip" style="background:#cc0000;"></span>Available</div>
-          <div class="legend-swatch"><span class="legend-chip" style="background:#ff9999;"></span>Full</div>
-        </div>
-      </div>
-      <div class="legend-row">
-        <div class="legend-label">Wayfinding</div>
-        <div class="legend-swatches">
-          <div class="legend-swatch"><span class="legend-chip" style="background:#ffff00;"></span>Exits</div>
-          <div class="legend-swatch"><span class="legend-chip" style="background:#4001be;"></span>Restrooms</div>
-          <div class="legend-swatch"><span class="legend-chip" style="background:#c59900;"></span>VOID Activities</div>
-          <div class="legend-swatch"><span class="legend-chip" style="background:#466154;"></span>"Hey Love" Bar &amp; Restaurant</div>
-        </div>
-      </div>
-    </div>
-  </section>
+  <div id="status" class="note" role="status" aria-live="polite">Loading map…</div>
 
   <div id="void-map-wrap" aria-label="VOID Booking Map">
     <object id="void-map" class="void-map-layer" type="image/svg+xml" data="" aria-label="Interactive booth map"></object>
     <img id="void-map-top" class="void-map-layer" src="" alt="Wayfinding overlay (exits, food, restrooms, outlines)">
     <noscript>Please enable JavaScript to view the booking map.</noscript>
   </div>
-
-  <section class="tag-links" aria-label="Bookwhen tag shortcuts">
-    <h2>Tag Links</h2>
-    <ol class="tag-list">
-      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=arium" target="_blank" rel="noopener noreferrer">arium</a></li>
-      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=arium%2Fflex" target="_blank" rel="noopener noreferrer">arium/flex</a></li>
-      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=artist-booth" target="_blank" rel="noopener noreferrer">artist-booth</a></li>
-      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=deluxe-room" target="_blank" rel="noopener noreferrer">deluxe-room</a></li>
-      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=dream-tent" target="_blank" rel="noopener noreferrer">dream-tent</a></li>
-      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=Flex-Lounge" target="_blank" rel="noopener noreferrer">Flex-Lounge</a></li>
-      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=indoor" target="_blank" rel="noopener noreferrer">indoor</a></li>
-      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=jupiter-next" target="_blank" rel="noopener noreferrer">jupiter-next</a></li>
-      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=jupiter-original" target="_blank" rel="noopener noreferrer">jupiter-original</a></li>
-      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=large-deluxe-room" target="_blank" rel="noopener noreferrer">large-deluxe-room</a></li>
-      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=medium-deluxe-room" target="_blank" rel="noopener noreferrer">medium-deluxe-room</a></li>
-      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=Outside" target="_blank" rel="noopener noreferrer">Outside</a></li>
-      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=pipe-and-drape" target="_blank" rel="noopener noreferrer">pipe-and-drape</a></li>
-      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=small-deluxe-room" target="_blank" rel="noopener noreferrer">small-deluxe-room</a></li>
-      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=standard-10x10" target="_blank" rel="noopener noreferrer">standard-10x10</a></li>
-      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=street-fair" target="_blank" rel="noopener noreferrer">street-fair</a></li>
-      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=super-small-deluxe-room" target="_blank" rel="noopener noreferrer">super-small-deluxe-room</a></li>
-      <li><a href="https://voidtattoofest.bookwhen.com/schedules/dxai1grkiqrc?tags=Vendor" target="_blank" rel="noopener noreferrer">Vendor</a></li>
-    </ol>
-  </section>
-
-  <div id="status" class="note">Loading map…</div>
-
-  <footer>
-    <small>© VOID Tattoo Fest</small>
-  </footer>
 
   <script>
   (function () {
@@ -365,7 +565,7 @@
 
           applyConfig(cfg);
           setStatus("Map loaded.");
-          setTimeout(() => statusEl.classList.add("hidden"), 800);
+          if (statusEl) setTimeout(() => statusEl.classList.add("hidden"), 800);
         })
         .catch(err => {
           console.warn("[map] Could not fetch map config; showing base SVG only.", err);
@@ -387,6 +587,148 @@
       if(!okSvg) setStatus("SVG not found: " + SVG_URL, true);
       else if(!okJson) setStatus("Config not found: " + MAP_CONFIG_URL + " (map can still render)", true);
       else if(!okPng) setStatus("Overlay not found: " + PNG_OVERLAY_URL + " (optional)", true);
+    });
+  })();
+  </script>
+
+  <script>
+  (function(){
+    const legendButtons = Array.from(document.querySelectorAll('.legend button.legend-row[data-tag]'));
+    const resultsBox = document.getElementById('bookwhen-results');
+    if (!legendButtons.length || !resultsBox) return;
+
+    const BOOKWHEN_CALENDAR = "dxai1grkiqrc";
+    const BOOKWHEN_TOKEN = "rt45bufbvgoig1mzrlo9fm8e1zw9"; // Read-only; replace at runtime if needed.
+
+    const API_ROOT = "https://api.bookwhen.com/v2/events";
+    const escapeHtml = str => (str || "").replace(/[&<>"']/g, ch => (
+      { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch] || ch
+    ));
+    const norm = s => (s || "").toString().trim().toLowerCase().replace(/\s+/g, "-");
+    const variants = s => {
+      const base = norm(s);
+      return new Set([ base, base.replace(/\//g, "-"), base.replace(/\//g, "") ]);
+    };
+
+    function formatWhen(iso){
+      if (!iso) return "";
+      try {
+        return new Date(iso).toLocaleString(undefined, {
+          dateStyle: "medium",
+          timeStyle: "short"
+        });
+      } catch (err) {
+        return iso;
+      }
+    }
+
+    function setActiveButton(active){
+      legendButtons.forEach(btn => {
+        const isActive = btn === active;
+        btn.classList.toggle("is-active", isActive);
+        btn.setAttribute("aria-pressed", isActive ? "true" : "false");
+      });
+    }
+
+    async function loadBookwhenByTag(tag){
+      const label = tag || "";
+      if (!BOOKWHEN_TOKEN) {
+        resultsBox.innerHTML = '<p class="error">Missing Bookwhen token.</p>';
+        return;
+      }
+      resultsBox.innerHTML = `<p>Loading “${escapeHtml(label)}”&hellip;</p>`;
+
+      const url = new URL(API_ROOT);
+      url.searchParams.set("calendar", BOOKWHEN_CALENDAR);
+      url.searchParams.set("include", "tags");
+      url.searchParams.set("page[size]", "100");
+
+      try {
+        const response = await fetch(url.toString(), {
+          method: "GET",
+          mode: "cors",
+          headers: {
+            "Authorization": "Basic " + btoa(BOOKWHEN_TOKEN + ":"),
+            "Accept": "application/json"
+          }
+        });
+        if (!response.ok) {
+          const detail = `${response.status} ${response.statusText || ""}`.trim();
+          throw Object.assign(new Error("HTTP " + detail), { status: response.status });
+        }
+        const payload = await response.json();
+
+        const tagIndex = new Map();
+        (payload.included || []).forEach(item => {
+          if (item && item.type === "tags") {
+            const slug = item.attributes?.slug || "";
+            const name = item.attributes?.name || "";
+            tagIndex.set(item.id, { slug, name });
+          }
+        });
+
+        const desired = variants(label);
+        const expandTag = val => {
+          const normalized = norm(val);
+          return [
+            normalized,
+            normalized.replace(/\//g, "-"),
+            normalized.replace(/\//g, "")
+          ];
+        };
+
+        const events = (payload.data || []).filter(evt => {
+          const related = evt.relationships?.tags?.data || [];
+          const collected = [];
+          related.forEach(ref => {
+            const entry = tagIndex.get(ref.id);
+            if (entry) collected.push(entry.slug || entry.name);
+          });
+          const attributes = evt.attributes || {};
+          ["tags", "tag_list", "labels"].forEach(key => {
+            const val = attributes[key];
+            if (Array.isArray(val)) collected.push(...val);
+            else if (typeof val === "string" && val) {
+              collected.push(...val.split(",").map(v => v.trim()));
+            }
+          });
+
+          const normalized = new Set(collected.flatMap(expandTag));
+          for (const want of desired) if (normalized.has(want)) return true;
+          return false;
+        });
+
+        if (!events.length) {
+          resultsBox.innerHTML = `<p>No matching entries for “${escapeHtml(label)}”.</p>`;
+          return;
+        }
+
+        const list = events.map(evt => {
+          const attrs = evt.attributes || {};
+          const title = escapeHtml(attrs.title || "Untitled entry");
+          const when = escapeHtml(formatWhen(attrs.start_at));
+          const venue = attrs.location?.name ? ` • ${escapeHtml(attrs.location.name)}` : "";
+          const href = escapeHtml((evt.links?.public || evt.links?.self || "#").toString());
+          return `<article class="result"><h3><a href="${href}" target="_blank" rel="noopener">${title}</a></h3><p>${when}${venue}</p></article>`;
+        });
+
+        resultsBox.innerHTML = `<p><strong>${events.length}</strong> result(s) for “${escapeHtml(label)}”.</p>` + list.join("");
+      } catch (err) {
+        console.warn("[bookwhen] fetch failed", err);
+        const statusMsg = err && err.status ? ` (status ${err.status})` : "";
+        const advice = err && err.status === 401
+          ? " Check that the read-only token is still valid and has API access."
+          : " Verify network connectivity and that the page is served over HTTPS.";
+        resultsBox.innerHTML = `<p class="error">Failed to load entries from Bookwhen${statusMsg}.${advice}</p>`;
+      }
+    }
+
+    legendButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const tag = btn.dataset.tag || "";
+        setActiveButton(btn);
+        loadBookwhenByTag(tag);
+      });
     });
   })();
   </script>
