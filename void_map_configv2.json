@@ -4,11 +4,11 @@
   "palette": {
     "available": {
       "dark_blue": "#0099ff",
-      "green": "#669933",
+      "green": "#80C03F",
       "inactive": "#999999",
-      "lavender": "#6666cc",
+      "lavender": "#9393F7",
       "light_blue": "#66cccc",
-      "orange": "#ff6600",
+      "orange": "#E97D13",
       "pink": "#ff3399",
       "red": "#cc0000"
     },
@@ -28,7 +28,7 @@
       "inactive": "#999999",
       "lavender": "#ccccff",
       "light_blue": "#ccffff",
-      "orange": "#ffcc99",
+      "orange": "#ED9C4D",
       "pink": "#ffcccc",
       "red": "#ff9999"
     },

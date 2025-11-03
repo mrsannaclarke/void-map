@@ -1,5 +1,5 @@
 {
-  "updated": "2025-11-03T07:05:07Z",
+  "updated": "2025-11-03T08:19:48Z",
   "source_csv": "VOID_booth_type_inventory - Svg Map.csv",
   "paths": {
     "DT-001": {
@@ -422,17 +422,17 @@
       "booth_type": "MDL",
       "color_name": "Pink"
     },
-    "JO-GROUND-120": {
-      "link": "https://bookwhen.com/voidtattoofest/e/ev-sqcqn-20260522000000",
-      "label": "120",
-      "booth_code": "JO-GROUND-120",
-      "booth_name": "Room 120",
+    "JO-GROUND-119": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-swhph-20260522000000",
+      "label": "119",
+      "booth_code": "JO-GROUND-119",
+      "booth_name": "Room 119",
       "building": "Jupiter Original",
       "floor": "L1",
       "booth_type": "MDL",
       "color_name": "Pink"
     },
-    "JO-GROUND-120-2": {
+    "JO-GROUND-120": {
       "link": "https://bookwhen.com/voidtattoofest/e/ev-sqcqn-20260522000000",
       "label": "120",
       "booth_code": "JO-GROUND-120",
@@ -503,16 +503,6 @@
       "color_name": "Pink"
     },
     "JO-GROUND-128": {
-      "link": "https://bookwhen.com/voidtattoofest/e/ev-swc3i-20260522000000",
-      "label": "128",
-      "booth_code": "JO-GROUND-128",
-      "booth_name": "Room 128",
-      "building": "Jupiter Original",
-      "floor": "L1",
-      "booth_type": "MDL",
-      "color_name": "Pink"
-    },
-    "JO-GROUND-128-2": {
       "link": "https://bookwhen.com/voidtattoofest/e/ev-swc3i-20260522000000",
       "label": "128",
       "booth_code": "JO-GROUND-128",
@@ -601,6 +591,16 @@
       "floor": "L1",
       "booth_type": "SDL",
       "color_name": "Green"
+    },
+    "JO-GROUND-138": {
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-sxs6o-20260522000000",
+      "label": "138",
+      "booth_code": "JO-GROUND-138",
+      "booth_name": "Room 138",
+      "building": "Jupiter Original",
+      "floor": "L1",
+      "booth_type": "LDL",
+      "color_name": "Lavender"
     },
     "JO-GROUNDVO-H": {
       "link": "https://bookwhen.com/voidtattoofest/e/ev-stb9b-20260522000000",

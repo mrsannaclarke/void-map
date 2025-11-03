@@ -1,5 +1,5 @@
 {
-  "updated": "2025-11-03T07:05:07Z",
+  "updated": "2025-11-03T08:19:48Z",
   "source": {
     "svg": "halfmapvoidjupiterbookingmap.svg",
     "config": "void_map_configv2.json",
@@ -52,49 +52,49 @@
       "label": "A",
       "category": "orange",
       "status": "available",
-      "color": "#FF6600",
+      "color": "#E97D13",
       "link": "https://bookwhen.com/voidtattoofest/e/ev-se21i-20260522000000"
     },
     "DT-V-B": {
       "label": "B",
       "category": "orange",
       "status": "available",
-      "color": "#FF6600",
+      "color": "#E97D13",
       "link": "https://bookwhen.com/voidtattoofest/e/ev-s4fzp-20260522000000"
     },
     "DT-V-C": {
       "label": "C",
       "category": "orange",
       "status": "available",
-      "color": "#FF6600",
+      "color": "#E97D13",
       "link": "https://bookwhen.com/voidtattoofest/e/ev-sqrej-20260522000000"
     },
     "DT-V-D": {
       "label": "D",
       "category": "orange",
       "status": "available",
-      "color": "#FF6600",
+      "color": "#E97D13",
       "link": "https://bookwhen.com/voidtattoofest/e/ev-sx3im-20260522000000"
     },
     "DT-V-E": {
       "label": "E",
       "category": "orange",
       "status": "available",
-      "color": "#FF6600",
+      "color": "#E97D13",
       "link": "https://bookwhen.com/voidtattoofest/e/ev-sv81j-20260522000000"
     },
     "DT-V-F": {
       "label": "F",
       "category": "orange",
       "status": "available",
-      "color": "#FF6600",
+      "color": "#E97D13",
       "link": "https://bookwhen.com/voidtattoofest/e/ev-sg71n-20260522000000"
     },
     "DT-V-G": {
       "label": "G",
       "category": "orange",
       "status": "available",
-      "color": "#FF6600",
+      "color": "#E97D13",
       "link": "https://bookwhen.com/voidtattoofest/e/ev-s1zh4-20260522000000"
     },
     "JN-L2-A1": {
@@ -192,63 +192,63 @@
       "label": "AA",
       "category": "orange",
       "status": "available",
-      "color": "#FF6600",
+      "color": "#E97D13",
       "link": "https://bookwhen.com/voidtattoofest/e/ev-sxxhy-20260522000000"
     },
     "JN-V-BB": {
       "label": "BB",
       "category": "orange",
       "status": "available",
-      "color": "#FF6600",
+      "color": "#E97D13",
       "link": "https://bookwhen.com/voidtattoofest/e/ev-ssnh1-20260522000000"
     },
     "JN-V-CC": {
       "label": "CC",
       "category": "orange",
       "status": "available",
-      "color": "#FF6600",
+      "color": "#E97D13",
       "link": "https://bookwhen.com/voidtattoofest/e/ev-sz5h5-20260522000000"
     },
     "JN-V-DD": {
       "label": "DD",
       "category": "orange",
       "status": "available",
-      "color": "#FF6600",
+      "color": "#E97D13",
       "link": "https://bookwhen.com/voidtattoofest/e/ev-s97d4-20260522000000"
     },
     "JN-V-EE": {
       "label": "EE",
       "category": "orange",
       "status": "available",
-      "color": "#FF6600",
+      "color": "#E97D13",
       "link": "https://bookwhen.com/voidtattoofest/e/ev-ssywk-20260522000000"
     },
     "JN-V-FF": {
       "label": "FF",
       "category": "orange",
       "status": "available",
-      "color": "#FF6600",
+      "color": "#E97D13",
       "link": "https://bookwhen.com/voidtattoofest/e/ev-sthmy-20260522000000"
     },
     "JN-V-GG": {
       "label": "GG",
       "category": "orange",
       "status": "available",
-      "color": "#FF6600",
+      "color": "#E97D13",
       "link": "https://bookwhen.com/voidtattoofest/e/ev-sbw97-20260522000000"
     },
     "JN-V-HH": {
       "label": "HH",
       "category": "orange",
       "status": "available",
-      "color": "#FF6600",
+      "color": "#E97D13",
       "link": "https://bookwhen.com/voidtattoofest/e/ev-s91lq-20260522000000"
     },
     "JN-V-II": {
       "label": "II",
       "category": "orange",
       "status": "available",
-      "color": "#FF6600",
+      "color": "#E97D13",
       "link": "https://bookwhen.com/voidtattoofest/e/ev-scwfc-20260522000000"
     },
     "JO-GROUND-108": {
@@ -300,20 +300,19 @@
       "color": "#FF3399",
       "link": "https://bookwhen.com/voidtattoofest/e/ev-sk33q-20260522000000"
     },
+    "JO-GROUND-119": {
+      "label": "119",
+      "category": "pink",
+      "status": "available",
+      "color": "#FF3399",
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-swhph-20260522000000"
+    },
     "JO-GROUND-120": {
       "label": "120",
       "category": "pink",
       "status": "available",
       "color": "#FF3399",
       "link": "https://bookwhen.com/voidtattoofest/e/ev-sqcqn-20260522000000"
-    },
-    "JO-GROUND-120-2": {
-      "label": "120",
-      "category": "pink",
-      "status": "available",
-      "color": "#FF3399",
-      "link": "https://bookwhen.com/voidtattoofest/e/ev-sqcqn-20260522000000",
-      "source_booth": "JO-GROUND-120"
     },
     "JO-GROUND-121": {
       "label": "121",
@@ -363,14 +362,6 @@
       "status": "available",
       "color": "#FF3399",
       "link": "https://bookwhen.com/voidtattoofest/e/ev-swc3i-20260522000000"
-    },
-    "JO-GROUND-128-2": {
-      "label": "128",
-      "category": "pink",
-      "status": "available",
-      "color": "#FF3399",
-      "link": "https://bookwhen.com/voidtattoofest/e/ev-swc3i-20260522000000",
-      "source_booth": "JO-GROUND-128"
     },
     "JO-GROUND-129": {
       "label": "129",
@@ -428,46 +419,53 @@
       "color": "#80C03F",
       "link": "https://bookwhen.com/voidtattoofest/e/ev-s0ywg-20260522000000"
     },
+    "JO-GROUND-138": {
+      "label": "138",
+      "category": "lavender",
+      "status": "available",
+      "color": "#9393F7",
+      "link": "https://bookwhen.com/voidtattoofest/e/ev-sxs6o-20260522000000"
+    },
     "JO-GROUNDVO-H": {
       "label": "H",
       "category": "orange",
       "status": "available",
-      "color": "#FF6600",
+      "color": "#E97D13",
       "link": "https://bookwhen.com/voidtattoofest/e/ev-stb9b-20260522000000"
     },
     "JO-GROUNDVO-I": {
       "label": "I",
       "category": "orange",
       "status": "available",
-      "color": "#FF6600",
+      "color": "#E97D13",
       "link": "https://bookwhen.com/voidtattoofest/e/ev-sy0w9-20260522000000"
     },
     "JO-GROUNDVO-J": {
       "label": "J",
       "category": "orange",
       "status": "available",
-      "color": "#FF6600",
+      "color": "#E97D13",
       "link": "https://bookwhen.com/voidtattoofest/e/ev-sr086-20260522000000"
     },
     "JO-GROUNDVO-K": {
       "label": "K",
       "category": "orange",
       "status": "available",
-      "color": "#FF6600",
+      "color": "#E97D13",
       "link": "https://bookwhen.com/voidtattoofest/e/ev-sktik-20260522000000"
     },
     "JO-GROUNDVO-L": {
       "label": "L",
       "category": "orange",
       "status": "available",
-      "color": "#FF6600",
+      "color": "#E97D13",
       "link": "https://bookwhen.com/voidtattoofest/e/ev-s236t-20260522000000"
     },
     "JO-GROUNDVO-M": {
       "label": "M",
       "category": "orange",
       "status": "available",
-      "color": "#FF6600",
+      "color": "#E97D13",
       "link": "https://bookwhen.com/voidtattoofest/e/ev-std51-20260522000000",
       "source_booth": "JO-GROUNDO-M"
     },
@@ -475,7 +473,7 @@
       "label": "N",
       "category": "orange",
       "status": "available",
-      "color": "#FF6600",
+      "color": "#E97D13",
       "link": "https://bookwhen.com/voidtattoofest/e/ev-sx94r-20260522000000",
       "source_booth": "JO-GROUNDO-N"
     },
