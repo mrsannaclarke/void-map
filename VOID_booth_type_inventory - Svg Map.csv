@@ -1,0 +1,134 @@
+building_label,floor_code,shape name,booth_name,bookwhen_url,booth_type,capacity_1_to_4,buyout_price,ada_note,Color Code
+Dream Tent,L1,1,Booth 1,https://bookwhen.com/voidtattoofest/e/ev-sl980-20260522000000,STD10TENT,2,$824.30,ADA accessible path near tent,Light Blue
+Dream Tent,L1,2,Booth 2,https://bookwhen.com/voidtattoofest/e/ev-sboxn-20260522000000,STD10TENT,2,$824.30,ADA accessible path near tent,Light Blue
+Dream Tent,L1,3,Booth 3,https://bookwhen.com/voidtattoofest/e/ev-sdvk7-20260522000000,STD10TENT,2,$824.30,ADA accessible path near tent,Light Blue
+Dream Tent,L1,4,Booth 4,https://bookwhen.com/voidtattoofest/e/ev-sqvvl-20260522000000,STD10TENT,2,$824.30,ADA accessible path near tent,Light Blue
+Dream Tent,L1,5,Booth 5,https://bookwhen.com/voidtattoofest/e/ev-sijqu-20260522000000,STD10TENT,2,$824.30,ADA accessible path near tent,Light Blue
+Dream Tent,L1,6,Booth 6,https://bookwhen.com/voidtattoofest/e/ev-s7ddc-20260522000000,STD10TENT,2,$824.30,ADA accessible path near tent,Light Blue
+Jupiter NEXT,L2,a1,Booth A1,https://bookwhen.com/voidtattoofest/e/ev-sdooy-20260522000000,STD10IN,2,$824.30,ADA accessible,Dark Blue
+Jupiter NEXT,L2,a10,Booth A10,https://bookwhen.com/voidtattoofest/e/ev-sbxzh-20260522000000,STD10IN,2,$824.30,ADA accessible,Dark Blue
+Jupiter NEXT,L2,a11,Booth A11,https://bookwhen.com/voidtattoofest/e/ev-sq5ng-20260522000000,STD10IN,2,$824.30,ADA accessible,Dark Blue
+Jupiter NEXT,L2,a12,Booth A12,https://bookwhen.com/voidtattoofest/e/ev-sorx6-20260522000000,STD10IN,2,$824.30,ADA accessible,Dark Blue
+Jupiter NEXT,L2,a13,Booth A13,https://bookwhen.com/voidtattoofest/e/ev-sh0kz-20260522000000,STD10IN,2,$824.30,ADA accessible,Dark Blue
+Jupiter NEXT,L2,a2,Booth A2,https://bookwhen.com/voidtattoofest/e/ev-sfn8v-20260522000000,STD10IN,2,$824.30,ADA accessible,Dark Blue
+Jupiter NEXT,L2,a3,Booth A3,https://bookwhen.com/voidtattoofest/e/ev-ss44y-20260522000000,STD10IN,2,$824.30,ADA accessible,Dark Blue
+Jupiter NEXT,L2,a4,Booth A4,https://bookwhen.com/voidtattoofest/e/ev-shu2u-20260522000000,STD10IN,2,$824.30,ADA accessible,Dark Blue
+Jupiter NEXT,L2,a5,Booth A5,https://bookwhen.com/voidtattoofest/e/ev-sfop7-20260522000000,STD10IN,2,$824.30,ADA accessible,Dark Blue
+Jupiter NEXT,L2,a6,Booth A6,https://bookwhen.com/voidtattoofest/e/ev-sowqg-20260522000000,STD10IN,2,$824.30,ADA accessible,Dark Blue
+Jupiter NEXT,L2,a7,Booth A7,https://bookwhen.com/voidtattoofest/e/ev-s9zfa-20260522000000,STD10IN,2,$824.30,ADA accessible,Dark Blue
+Jupiter NEXT,L2,a8,Booth A8,https://bookwhen.com/voidtattoofest/e/ev-srojz-20260522000000,STD10IN,2,$824.30,ADA accessible,Dark Blue
+Jupiter NEXT,L2,a9,Booth A9,https://bookwhen.com/voidtattoofest/e/ev-syavx-20260522000000,STD10IN,2,$824.30,ADA accessible,Dark Blue
+Jupiter Original,L1,103,Room 103,-,SDL,2,,ADA accessible,not visible
+Jupiter Original,L1,104,Room 104,-,LDL,4,,ADA accessible,not visible
+Jupiter Original,L1,105,Room 105,-,SDL,2,,ADA accessible,not visible
+Jupiter Original,L1,106,Room 106,-,LDL,4,,ADA accessible,not visible
+Jupiter Original,L1,107,Room 107,-,SDL,2,,ADA accessible,not visible
+Jupiter Original,L1,108,Room 108,https://bookwhen.com/voidtattoofest/e/ev-s2tk6-20260522000000,XLDL,8,"$2,472.00",ADA accessible,Lavender
+Jupiter Original,L1,112,Room 112,https://bookwhen.com/voidtattoofest/e/ev-srtlw-20260522000000,LDL,4,"$1,236.30",ADA accessible,Lavender
+Jupiter Original,L1,113,Room 113,https://bookwhen.com/voidtattoofest/e/ev-s37cv-20260522000000,SDL,2,$927.30,ADA accessible,Green
+Jupiter Original,L1,114,Room 114,https://bookwhen.com/voidtattoofest/e/ev-sgc6c-20260522000000,LDL,4,"$1,236.30",ADA accessible,Lavender
+Jupiter Original,L1,115,Room 115,https://bookwhen.com/voidtattoofest/e/ev-s20sf-20260522000000,SDL,2,$927.30,ADA accessible,Green
+Jupiter Original,L1,116,Room 116,https://bookwhen.com/voidtattoofest/e/ev-sz1n1-20260522000000,LDL,4,"$1,236.30",ADA accessible,Lavender
+Jupiter Original,L1,117,Room 117,-,XSDL,1,,ADA accessible,tiny
+Jupiter Original,L1,118,Room 118,https://bookwhen.com/voidtattoofest/e/ev-sk33q-20260522000000,MDL,3,"$1,030.30",ADA accessible,Pink
+Jupiter Original,L1,119,Room 119,https://bookwhen.com/voidtattoofest/e/ev-swhph-20260522000000,MDL,3,"$1,030.30",ADA accessible,Pink
+Jupiter Original,L1,120,Room 120,https://bookwhen.com/voidtattoofest/e/ev-sqcqn-20260522000000,MDL,3,"$1,030.30",ADA accessible,Pink
+Jupiter Original,L1,121,Room 121,https://bookwhen.com/voidtattoofest/e/ev-s5o4x-20260522000000,MDL,3,"$1,030.30",ADA accessible,Pink
+Jupiter Original,L1,122,Room 122,https://bookwhen.com/voidtattoofest/e/ev-sdgh0-20260522000000,MDL,3,"$1,030.30",ADA accessible,Pink
+Jupiter Original,L1,123,Room 123,https://bookwhen.com/voidtattoofest/e/ev-s1hs9-20260522000000,MDL,3,"$1,030.30",ADA accessible,Pink
+Jupiter Original,L1,124,Room 124,https://bookwhen.com/voidtattoofest/e/ev-sh00r-20260522000000,MDL,3,"$1,030.30",ADA accessible,Pink
+Jupiter Original,L1,126,Room 126,https://bookwhen.com/voidtattoofest/e/ev-szf9q-20260522000000,MDL,3,"$1,030.30",ADA accessible,Pink
+Jupiter Original,L1,127,Room 127,https://bookwhen.com/voidtattoofest/e/ev-szf9q-20260522000000,MDL,3,"$1,030.30",ADA accessible,Pink
+Jupiter Original,L1,128,Room 128,https://bookwhen.com/voidtattoofest/e/ev-swc3i-20260522000000,MDL,3,"$1,030.30",ADA accessible,Pink
+Jupiter Original,L1,129,Room 129,https://bookwhen.com/voidtattoofest/e/ev-s6p3e-20260522000000,MDL,3,"$1,030.30",ADA accessible,Pink
+Jupiter Original,L1,131,Room 131,https://bookwhen.com/voidtattoofest/e/ev-sadue-20260522000000,SDL,4,"$1,236.30",ADA accessible,Green
+Jupiter Original,L1,132,Room 132,https://bookwhen.com/voidtattoofest/e/ev-sx2ce-20260522000000,MDL,3,"$1,030.30",ADA accessible,Pink
+Jupiter Original,L1,133,Room 133,https://bookwhen.com/voidtattoofest/e/ev-spvj8-20260522000000,SDL,2,$927.30,ADA accessible,Green
+Jupiter Original,L1,134,Room 134,https://bookwhen.com/voidtattoofest/e/ev-s2aq1-20260522000000,LDL,4,"$1,236.30",ADA accessible,Lavender
+Jupiter Original,L1,135,Room 135,https://bookwhen.com/voidtattoofest/e/ev-s514w-20260522000000,SDL,2,$927.30,ADA accessible,Green
+Jupiter Original,L1,136,Room 136,https://bookwhen.com/voidtattoofest/e/ev-swzrc-20260522000000,LDL,4,"$1,236.30",ADA accessible,Lavender
+Jupiter Original,L1,137,Room 137,https://bookwhen.com/voidtattoofest/e/ev-s0ywg-20260522000000,SDL,2,$927.30,ADA accessible,Green
+Jupiter Original,L1,138,Room 138,https://bookwhen.com/voidtattoofest/e/ev-sxs6o-20260522000000,LDL,4,"$1,236.30",ADA accessible,Lavender
+Jupiter Original,L1,139,Room 139,-,SDL,0,,ADA accessible,void
+Jupiter Original,L1,140,Room 140,-,LDL,0,,ADA accessible,void
+Jupiter Original,L2,204,Room 204,-,LDL,4,,Not ADA,ina
+Jupiter Original,L2,205,Room 205,-,SDL,2,,Not ADA,ina
+Jupiter Original,L2,206,Room 206,-,LDL,4,,Not ADA,ina
+Jupiter Original,L2,207,Room 207,-,SDL,2,,Not ADA,ina
+Jupiter Original,L2,208,Room 208,-,LDL,4,,Not ADA,ina
+Jupiter Original,L2,214,Room 214,-,LDL,4,,Not ADA,ina
+Jupiter Original,L2,215,Room 215,-,SDL,2,,Not ADA,ina
+Jupiter Original,L2,216,Room 216,-,LDL,4,,Not ADA,ina
+Jupiter Original,L2,217,Room 217,-,XSDL,1,,Not ADA,tiny
+Jupiter Original,L2,218,Room 218,-,SDL,3,,Not ADA,ina
+Jupiter Original,L2,219,Room 219,-,MDL,3,,Not ADA,ina
+Jupiter Original,L2,220,Room 220,-,LDL,3,,Not ADA,ina
+Jupiter Original,L2,221,Room 221,-,MDL,3,,Not ADA,ina
+Jupiter Original,L2,226,Room 226,-,MDL,3,,Not ADA,Pink
+Jupiter Original,L2,227,Room 227,-,MDL,3,,Not ADA,Pink
+Jupiter Original,L2,228,Room 228,-,MDL,3,,Not ADA,Pink
+Jupiter Original,L2,229,Room 229,-,MDL,3,,Not ADA,Pink
+Jupiter Original,L2,231,Room 231,-,SDL,2,,Not ADA,sleeping
+Jupiter Original,L2,232,Room 232,-,MDL,3,,Not ADA,Pink
+Jupiter Original,L2,233,Room 233,-,SDL,2,,Not ADA,sleeping
+Jupiter Original,L2,234,Room 234,-,LDL,4,,Not ADA,Lavender
+Jupiter Original,L2,235,Room 235,-,SDL,2,,Not ADA,sleeping
+Jupiter Original,L2,236,Room 236,-,LDL,4,,Not ADA,Lavender
+Jupiter Original,L2,237,Room 237,- Sharky,SDL,2,,Not ADA,green
+Jupiter Original,L2,238,Room 238,-,LDL,4,,Not ADA,Lavender
+Jupiter Original,L2,238,Room 239,-,SDL,2,,Not ADA,sleeping
+Jupiter Original,L2,240,Room 240,-,LDL,4,,Not ADA,Lavender
+Jupiter Original,L2,242,Room 242,-,MDL,3,,Not ADA,ina
+Jupiter Original,L2,243,Room 243,-,MDL,3,,Not ADA,ina
+Jupiter Original,L2,244,Room 244,-,LDL,4,,Not ADA,Lavender
+Jupiter Original,L2,245,Room 245,-,LDL,4,,Not ADA,Lavender
+Jupiter Original,L2,246,Room 246,-,LDL,4,,Not ADA,Lavender
+Jupiter Original,L2,247,Room 247,-,SDL,2,,Not ADA,sleeping
+Jupiter Original,L2,248,Room 248,-,LDL,4,,Not ADA,Lavender
+Jupiter Original,L2,249,Room 249,-,SDL,2,,Not ADA,sleeping
+Jupiter Original,L2,250,Room 250,-,LDL,4,,Not ADA,Lavender
+Jupiter Original,L2,251,Room 251,-,SDL,2,,Not ADA,sleeping
+Jupiter Original,L2,252,Room 252,-,MDL,3,,Not ADA,Pink
+Jupiter Original,L2,253,Room 253,-,SDL,2,,Not ADA,sleeping
+Jupiter Original,L2,254,Room 254,-,MDL,3,,Not ADA,Pink
+Street Fair,L1,sf1,Vendor 1,https://bookwhen.com/voidtattoofest/e/ev-sf7wi-20260523120000,VND10STREET,1,$206.30,ADA accessible,Red
+Street Fair,L1,sf10,Vendor 10,https://bookwhen.com/voidtattoofest/e/ev-s27fb-20260523120000,VND10STREET,1,$206.30,ADA accessible,Red
+Street Fair,L1,sf11,Vendor 11,https://bookwhen.com/voidtattoofest/e/ev-sm87c-20260523120000,VND10STREET,1,$206.30,ADA accessible,Red
+Street Fair,L1,sf2,Vendor 2,https://bookwhen.com/voidtattoofest/e/ev-siydb-20260523120000,VND10STREET,1,$206.30,ADA accessible,Red
+Street Fair,L1,sf3,Vendor 3,https://bookwhen.com/voidtattoofest/e/ev-siqw1-20260523120000,VND10STREET,1,$206.30,ADA accessible,Red
+Street Fair,L1,sf4,Vendor 4,https://bookwhen.com/voidtattoofest/e/ev-s1jvy-20260523120000,VND10STREET,1,$206.30,ADA accessible,Red
+Street Fair,L1,sf5,Vendor 5,https://bookwhen.com/voidtattoofest/e/ev-skv64-20260523120000,VND10STREET,1,$206.30,ADA accessible,Red
+Street Fair,L1,sf6,Vendor 6,https://bookwhen.com/voidtattoofest/e/ev-s0t5a-20260523120000,VND10STREET,1,$206.30,ADA accessible,Red
+Street Fair,L1,sf7,Vendor 7,https://bookwhen.com/voidtattoofest/e/ev-skun4-20260523120000,VND10STREET,1,$206.30,ADA accessible,Red
+Street Fair,L1,sf8,Vendor 8,https://bookwhen.com/voidtattoofest/e/ev-sba8l-20260523120000,VND10STREET,1,$206.30,ADA accessible,Red
+Street Fair,L1,sf9,Vendor 9,https://bookwhen.com/voidtattoofest/e/ev-srq93-20260523120000,VND10STREET,1,$206.30,ADA accessible,Red
+Dream Tent,L1,a,Vendor A,https://bookwhen.com/voidtattoofest/e/ev-se21i-20260522000000,VND10TENT,1,$412.30,ADA accessible under tent,Orange
+Jupiter NEXT,L2,aa,Vendor AA,https://bookwhen.com/voidtattoofest/e/ev-sxxhy-20260522000000,VND10IN,1,$412.30,ADA accessible,Orange
+Dream Tent,L1,b,Vendor B,https://bookwhen.com/voidtattoofest/e/ev-s4fzp-20260522000000,VND10TENT,1,$412.30,ADA accessible under tent,Orange
+Jupiter NEXT,L2,bb,Vendor BB,https://bookwhen.com/voidtattoofest/e/ev-ssnh1-20260522000000,VND10IN,1,$412.30,ADA accessible,Orange
+Dream Tent,L1,c,Vendor C,https://bookwhen.com/voidtattoofest/e/ev-sqrej-20260522000000,VND10TENT,1,$412.30,ADA accessible under tent,Orange
+Jupiter NEXT,L2,cc,Vendor CC,https://bookwhen.com/voidtattoofest/e/ev-sz5h5-20260522000000,VND10IN,1,$412.30,ADA accessible,Orange
+Dream Tent,L1,d,Vendor D,https://bookwhen.com/voidtattoofest/e/ev-sx3im-20260522000000,VND10TENT,1,$412.30,ADA accessible under tent,Orange
+Jupiter NEXT,L2,dd,Vendor DD,https://bookwhen.com/voidtattoofest/e/ev-s97d4-20260522000000,VND10IN,1,$412.30,ADA accessible,Orange
+Dream Tent,L1,e,Vendor E,https://bookwhen.com/voidtattoofest/e/ev-sv81j-20260522000000,VND10TENT,1,$412.30,ADA accessible under tent,Orange
+Jupiter NEXT,L2,ee,Vendor EE,https://bookwhen.com/voidtattoofest/e/ev-ssywk-20260522000000,VND10IN,1,$412.30,ADA accessible,Orange
+Dream Tent,L1,f,Vendor F,https://bookwhen.com/voidtattoofest/e/ev-sg71n-20260522000000,VND10TENT,1,$412.30,ADA accessible under tent,Orange
+Jupiter NEXT,L2,ff,Vendor FF,https://bookwhen.com/voidtattoofest/e/ev-sthmy-20260522000000,VND10IN,1,$412.30,ADA accessible,Orange
+Dream Tent,L1,g,Vendor G,https://bookwhen.com/voidtattoofest/e/ev-s1zh4-20260522000000,VND10TENT,1,$412.30,ADA accessible under tent,Orange
+Jupiter NEXT,L2,gg,Vendor GG,https://bookwhen.com/voidtattoofest/e/ev-sbw97-20260522000000,VND10IN,1,$412.30,ADA accessible,Orange
+Jupiter Original,L1,h1,Vendor H,https://bookwhen.com/voidtattoofest/e/ev-stb9b-20260522000000,VND10OUT,1,,ADA accessible,Orange
+Jupiter Original,L1,h,Vendor H,https://bookwhen.com/voidtattoofest/e/ev-stb9b-20260522000000,VND10OUT,1,$412.30,ADA accessible,Orange
+Jupiter NEXT,L2,hh,Vendor HH,https://bookwhen.com/voidtattoofest/e/ev-s91lq-20260522000000,VND10IN,1,$412.30,ADA accessible,Orange
+Jupiter Original,L1,i1,Vendor I,https://bookwhen.com/voidtattoofest/e/ev-sy0w9-20260522000000,VND10OUT,1,,ADA accessible,Orange
+Jupiter Original,L1,i,Vendor I,https://bookwhen.com/voidtattoofest/e/ev-sy0w9-20260522000000,VND10OUT,1,$412.30,ADA accessible,Orange
+Jupiter NEXT,L2,ii,Vendor II,https://bookwhen.com/voidtattoofest/e/ev-scwfc-20260522000000,VND10IN,1,$412.30,ADA accessible,Orange
+Jupiter Original,L1,j1,Vendor J,https://bookwhen.com/voidtattoofest/e/ev-sr086-20260522000000,VND10OUT,1,,ADA accessible,Orange
+Jupiter Original,L1,j,Vendor J,https://bookwhen.com/voidtattoofest/e/ev-sr086-20260522000000,VND10OUT,1,$412.30,ADA accessible,Orange
+Jupiter Original,L1,k1,Vendor K,https://bookwhen.com/voidtattoofest/e/ev-sktik-20260522000000,VND10OUT,1,,ADA accessible,Orange
+Jupiter Original,L1,k,Vendor K,https://bookwhen.com/voidtattoofest/e/ev-sktik-20260522000000,VND10OUT,1,$412.30,ADA accessible,Orange
+Jupiter Original,L1,l1,Vendor L,https://bookwhen.com/voidtattoofest/e/ev-s236t-20260522000000,VND10OUT,1,,ADA accessible,Orange
+Jupiter Original,L1,l,Vendor L,https://bookwhen.com/voidtattoofest/e/ev-s236t-20260522000000,VND10OUT,1,$412.30,ADA accessible,Orange
+Jupiter Original,L1,m1,Vendor M,https://bookwhen.com/voidtattoofest/e/ev-std51-20260522000000,VND10OUT,1,,ADA accessible,Orange
+Jupiter Original,L1,m,Vendor M,https://bookwhen.com/voidtattoofest/e/ev-std51-20260522000000,VND10OUT,1,$412.30,ADA accessible,Orange
+Jupiter Original,L1,n1,Vendor N,https://bookwhen.com/voidtattoofest/e/ev-sx94r-20260522000000,VND10OUT,1,,ADA accessible,Orange
+Jupiter Original,L1,n,Vendor N,https://bookwhen.com/voidtattoofest/e/ev-sx94r-20260522000000,VND10OUT,1,$412.30,ADA accessible,Orange
