@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <base target="_blank">
   <title>Jupiter Void Map</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -224,7 +225,6 @@
           <div class="legend-swatches">
             <div class="legend-swatch"><span class="legend-chip" style="background:#fbe100"></span>Exits</div>
             <div class="legend-swatch"><span class="legend-chip" style="background:#52419a"></span>Restrooms</div>
-            <div class="legend-swatch"><span class="legend-chip" style="background:#1a563d"></span>Hey Love</div>
             <div class="legend-swatch"><span class="legend-chip" style="background:#c5862b"></span>VOID</div>
           </div>
         </div>
@@ -232,7 +232,7 @@
     </section>
     <section class="results-panel panel" aria-label="Info panel">
       <h2>Notes</h2>
-      <p style="margin:0;color:var(--text-muted)">Select a booth on the map to view details and booking options.</p>
+      <p style="margin:0;color:var(--text-muted)">Click a shape on the map to open its booking page. Or click a row in the Key to see the full list for that group.</p>
     </section>
   </div>
 
@@ -250,6 +250,8 @@
       </tr>
     </table>
   </div>
+
+  <p><a href="https://www.voidtattoofest.com/2026rsvp#boothmap">Jump to top</a></p>
 
   <section class="legend" id="status">
     Loading interactive layer…
@@ -1451,4 +1453,26 @@ groupResolver: ({ booth, csv }) => {
     })();
   </script>
 </body>
+  <script>
+  (function () {
+    function sendHeight() {
+      try {
+        var h = Math.max(
+          document.documentElement.scrollHeight,
+          document.body.scrollHeight
+        );
+        parent.postMessage({ __voidMapHeight: h }, "*");
+      } catch(_) {}
+    }
+
+    // initial + on resize + after load
+    sendHeight();
+    window.addEventListener("load", sendHeight);
+    window.addEventListener("resize", function(){ requestAnimationFrame(sendHeight); });
+
+    // observe dynamic content changes
+    var mo = new MutationObserver(function(){ requestAnimationFrame(sendHeight); });
+    mo.observe(document.documentElement, { childList:true, subtree:true, attributes:true, characterData:true });
+  })();
+  </script>
 </html>
