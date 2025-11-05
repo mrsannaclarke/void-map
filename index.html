@@ -269,12 +269,157 @@
       const MIN_LABEL_FONT_PX = 4;
       const SVG_URL = "jupitermapv1.svg";
       const DATA_URL = "jupitervoid.json";
+      // Public-safe occupants feed (Google Apps Script Web App)
+      const FEED_URL = "https://script.google.com/macros/s/AKfycbyzpcszlKqLhTdV-ffkD86qwPG8kPQpKkdukG7q8-mbXMGF2xO9GpzTRukdKvvDgbDZQQ/exec";
+      // Colors for booked/available overrides (Small Deluxe example)
+      const BOOKED_FILL = "#b9f2b3";     // lighter green when fully booked
+      const AVAILABLE_FILL = "#51b848";  // base available color for SDL
+      // Full (booked) colors by booth_type (match legend)
+      const FULL_FILL_BY_TYPE = {
+        // Artist rooms
+        SDL: '#b9f2b3',   // Small Deluxe — Full
+        MDL: '#eda6e6',   // Medium Deluxe — Full
+        LDL: '#c2abef',   // Large Deluxe — Full
+        XLDL: '#c2abef',  // Extra Large Deluxe (108) — Full (same family as Large)
+        // Arium / Flex (indoor 10x10)
+        STD10IN: '#abc9f4',
+        // Dream Tent artists (10x10)
+        STD10TENT: '#abecef',
+        // Vendors
+        VND10TENT: '#f4bea6',   // Dream Tent Vendors — Full
+        VND10OUT:  '#f4bea6',   // Jupiter Original Vendors (outdoor) — Full
+        VND10IN:   '#f4bea6',   // Jupiter NEXT Vendors (indoor) — Full
+        // Street Fair
+        VND10STREET: '#f25f94'  // Street Fair — Full
+      };
+      // Minimal color helper used by simple hookups (optional)
+      function colorFor(spaceKey, isFull, baseColor, boothType){
+        if (!isFull) return baseColor;
+        if (boothType && FULL_FILL_BY_TYPE[boothType]) return FULL_FILL_BY_TYPE[boothType];
+        return baseColor;
+      }
+      // expose for debugging
+      window._voidColorFor = colorFor;
       const INACTIVE_SHAPES = new Set([
         "ina", "ina1", "ina2"
       ]);
       const ROTATE_LEFT_90 = new Set(['ankeny','burnside']);
       const naturalStringCompare = (a, b) => String(a || '').localeCompare(String(b || ''), undefined, { numeric: true, sensitivity: 'base' });
       const defaultRowComparator = (a, b) => naturalStringCompare(a && a.shortLabel, b && b.shortLabel);
+
+      // ===== MASTER CAPACITY + TICKET LOGIC (editable in one place) =====
+
+      // Base capacities by booth_type
+      const CAPACITY_BY_TYPE = {
+        SDL: 1,      // Small Deluxe (3-digit hotel rooms single slot)
+        MDL: 3,      // Medium Deluxe
+        LDL: 4,      // Large Deluxe
+        XLDL: 8,     // Extra Large Deluxe (108)
+        STD10IN: 2,  // A-series (Arium/Flex) indoor 10x10
+        STD10TENT: 2,// Dream Tent artist booths 10x10
+        VND10TENT: 1,// Dream Tent vendors
+        VND10OUT: 1, // Jupiter Original vendors (outdoor)
+        VND10IN: 1,  // Jupiter NEXT vendors (indoor)
+        VND10STREET: 1 // Street Fair vendors
+      };
+
+      // Per-space overrides or flags
+      const CAPACITY_OVERRIDES = {
+        // Example: '117': 2,
+        // Example: 'a9': 2,
+      };
+      const SPACE_FLAGS = {
+        // Buy-out only test rooms (SSDL behavior) — any booking = full
+        '117': { buyoutOnly: true },
+        '217': { buyoutOnly: true }
+      };
+
+      // Ticket patterns → slot cost (and buyout flag)
+      // NOTE: The site JS only uses this if the feed includes ticket names per booking.
+      const TICKET_SLOTCOST_RULES = [
+        { rx: /buy[-\s]?out.*full\s*booth/i, slots: null, buyout: true },
+        { rx: /\bduo\b/i, slots: 2 },
+        { rx: /\bvendor\s*booth\b/i, slots: 1 },
+        { rx: /\bsingle\b|\bartist\s*slot\b/i, slots: 1 },
+        // 108 special (if ticket names are present in feed)
+        { rx: /\bhalf\s*booth.*\b4\b.*artists?/i, slots: 4 },
+        // Fallback
+        { rx: /.*/, slots: 1 }
+      ];
+
+      function resolveCapacityFor(spaceKey, boothType, csvCapRaw){
+        if (spaceKey && CAPACITY_OVERRIDES[spaceKey] != null) return CAPACITY_OVERRIDES[spaceKey];
+        const csvCap = parseInt(String(csvCapRaw||'').replace(/[^0-9]/g,''),10);
+        if (!Number.isNaN(csvCap) && csvCap > 0) return csvCap;
+        if (boothType && CAPACITY_BY_TYPE[boothType] != null) return CAPACITY_BY_TYPE[boothType];
+        return 1;
+      }
+
+      function slotCostForTicket(ticketName){
+        const name = String(ticketName||'').trim();
+        for (const rule of TICKET_SLOTCOST_RULES){
+          if (rule.rx.test(name)) return { slots: rule.slots ?? 0, buyout: !!rule.buyout };
+        }
+        return { slots: 1, buyout: false };
+      }
+
+      function summarizeFeedBookings(feedSpace){
+        // feedSpace may be of two shapes:
+        // 1) legacy: { name, social, status }
+        // 2) new: { groups:[{name,social,ticket?},...], status?, used_slots?, has_buyout?, capacity? }
+        const result = { used: 0, hasBuyout: false, groups: [] };
+
+        if (!feedSpace) return result;
+
+        if (Array.isArray(feedSpace.groups)){
+          result.groups = feedSpace.groups.slice(0, 12); // sane cap
+          // Prefer server-provided summary if present:
+          if (typeof feedSpace.used_slots === 'number') result.used = feedSpace.used_slots;
+          if (typeof feedSpace.has_buyout === 'boolean') result.hasBuyout = feedSpace.has_buyout;
+
+          if (result.used === 0 || result.hasBuyout === false){
+            // Derive from tickets if available
+            for (const g of result.groups){
+              const { slots, buyout } = slotCostForTicket(g.ticket);
+              result.hasBuyout = result.hasBuyout || buyout;
+              if (!buyout) result.used += (slots || 0);
+            }
+          }
+          return result;
+        }
+
+        // Legacy single occupant
+        if (feedSpace.name || feedSpace.social){
+          result.groups = [{ name: feedSpace.name || '', social: feedSpace.social || '' }];
+          // Assume single slot if legacy without tickets
+          result.used = 1;
+          result.hasBuyout = /buy[-\s]?out/i.test(String(feedSpace.ticket||'')); // rarely present
+        }
+
+        return result;
+      }
+
+      function computeFullStatus(spaceKey, boothType, csvCapRaw, feedSpace){
+        const flags = SPACE_FLAGS[spaceKey] || {};
+        if (flags.buyoutOnly && feedSpace){
+          // Any booking makes it full
+          const s = summarizeFeedBookings(feedSpace);
+          const any = (Array.isArray(s.groups) && s.groups.length > 0) || !!(feedSpace.name || feedSpace.social);
+          return { isFull: !!any, capacity: resolveCapacityFor(spaceKey, boothType, csvCapRaw), usedSlots: s.used, groups: s.groups };
+        }
+
+        const capacity = resolveCapacityFor(spaceKey, boothType, csvCapRaw);
+        const s = summarizeFeedBookings(feedSpace);
+        const serverStatus = String(feedSpace && feedSpace.status || '').toLowerCase();
+
+        let isFull = false;
+        if (serverStatus === 'full'){
+          isFull = true;
+        } else {
+          isFull = s.hasBuyout || (s.used >= capacity);
+        }
+        return { isFull, capacity, usedSlots: s.used, groups: s.groups };
+      }
 
       // ===== Wayfinding label controls (matchers + explicit sizes) =====
       const WAYFINDING_MATCHERS = [
@@ -408,6 +553,94 @@ groupResolver: ({ booth, csv }) => {
         ? window.CSS.escape.bind(window.CSS)
         : (value) => value.replace(/([.*+?^${}()|[\\]\\\\])/g, "\\\\$1");
 
+      // --- Occupants feed helpers ---
+      async function fetchOccupants_() {
+        try {
+          const res = await fetch(FEED_URL + "?v=" + Date.now(), { cache: "no-store" });
+          if (!res.ok) throw new Error("Feed HTTP " + res.status);
+          const data = await res.json();
+          return (data && data.spaces) ? data.spaces : {};
+        } catch (e) {
+          console.warn("Occupants feed error:", e);
+          return {};
+        }
+      }
+      // Minimal wrapper used by the quick-start snippet
+      async function getOccupancy(){
+        return fetchOccupants_();
+      }
+      // expose for quick console checks
+      window.getOccupancy = getOccupancy;
+
+      function normalizeSocialHref_(raw) {
+        const s = String(raw || "").trim();
+        if (!s) return null;
+        if (s.startsWith("@")) return "https://instagram.com/" + s.slice(1);
+        if (/^https?:\/\//i.test(s)) return s;
+        if (/^[a-z0-9.-]+\.[a-z]{2,}$/i.test(s)) return "https://" + s;
+        if (/^instagram\.com\//i.test(s)) return "https://" + s;
+        return null;
+      }
+
+      function disableLinkWrapper_(node) {
+        const link = node && node.closest && node.closest("a");
+        if (!link) return;
+        link.style.pointerEvents = "none";
+        link.style.cursor = "default";
+        link.setAttribute("tabindex", "-1");
+        link.removeAttribute("href");
+        link.removeAttribute("target");
+        link.removeAttribute("rel");
+      }
+
+      async function applyOccupantsToSvg_(svgRoot, mapData) {
+        const spaces = await fetchOccupants_();
+        window.__VOID_OCCUPANTS = spaces;
+
+        Object.entries(spaces).forEach(([key, info]) => {
+          const shape =
+            svgRoot.querySelector("#_" + CSS.escape(key)) ||
+            svgRoot.querySelector("#" + CSS.escape(key)) ||
+            svgRoot.querySelector('[data-name="' + CSS.escape(key) + '"]');
+          if (!shape) return;
+
+          // Look up booth_type from mapData (if available) to choose correct full color
+          let boothType = null;
+          try {
+            const entry = mapData && mapData.shapes && mapData.shapes[String(key)];
+            boothType = entry && entry.csv && String(entry.csv.booth_type || '').trim();
+          } catch (_) {}
+
+          const status = String(info && info.status || '').toLowerCase();
+          const full = status === 'full';
+
+          if (full) {
+            const bookedColor =
+              (boothType && FULL_FILL_BY_TYPE[boothType]) ? FULL_FILL_BY_TYPE[boothType] : BOOKED_FILL;
+            try { shape.style.fill = bookedColor; } catch(_) {}
+            // Disable interaction on fully-booked shapes
+            try {
+              shape.classList.remove('shape-interactive');
+              shape.style.pointerEvents = 'none';
+              shape.removeAttribute('tabindex');
+              shape.removeAttribute('role');
+            } catch (_) {}
+            disableLinkWrapper_(shape);
+          }
+        });
+      }
+      function occupantArrayForSpaceKey(spaceKey){
+        const occMap = (window.__VOID_OCCUPANTS || {});
+        const entry = occMap[spaceKey];
+        if (!entry) return [];
+        const summary = summarizeFeedBookings(entry);
+        return summary.groups || [];
+      }
+
+      function socialHrefOrNull(s){
+        return normalizeSocialHref_(s);
+      }
+
       Promise.all([
         fetch(SVG_URL).then((response) => {
           if (!response.ok) {
@@ -458,6 +691,16 @@ groupResolver: ({ booth, csv }) => {
           matchVisualLabelSize(frontSvg, '131');
           // Custom multi-line labels for specific shapes (runs after auto-labels)
           addCustomOverlayLabels(frontSvg);
+          // Expose mapData globally for later lookups and overlay occupants
+          window.__VOID_MAPDATA = mapData;
+          // Overlay live occupants (colors + click disabling), with type-based full colors
+          applyOccupantsToSvg_(frontSvg, mapData);
+          // Quick-start renderer to mirror the minimal hookup instructions:
+          window.renderLegendAndMap = function(listKey){
+            try{
+              renderResultsForKey(window.__VOID_MAPDATA, String(listKey));
+            }catch(e){ console.warn('renderLegendAndMap error', e); }
+          };
           // status hidden in embed mode
           if (statusEl) statusEl.innerHTML = "";
         })
@@ -1051,21 +1294,75 @@ groupResolver: ({ booth, csv }) => {
             section.appendChild(h3);
             const ul = document.createElement('ul');
             items.forEach(r=>{
+              // --- BEGIN CENTRALIZED LEGEND ROW LOGIC ---
               const li = document.createElement('li');
               const textValue = spec.useShortLabel === true ? r.shortLabel : r.label;
-              if(r.url && r.url !== '-' ){
+
+              // Try to detect a numeric room ID (e.g., "Room 117") or direct number "117"
+              let spaceKey = null;
+              let mId = String(r.shortLabel || r.label || '').match(/\b(\d{3})\b/);
+              if (mId) spaceKey = mId[1];
+
+              // Capacity & occupancy summary
+              const boothType = (r && r.csv && r.csv.booth_type) ? String(r.csv.booth_type).trim() : (r.booth_type || '');
+              const cap = resolveCapacityFor(spaceKey, boothType, r.csv && r.csv.capacity_1_to_4);
+              const groups = spaceKey ? occupantArrayForSpaceKey(spaceKey) : [];
+              const used = groups.length; // front-end fallback; server can override via status in applyOccupantsToSvg_
+              let isFull = false;
+              // If feed has explicit status for this spaceKey, prefer that:
+              const occEntry = (window.__VOID_OCCUPANTS||{})[spaceKey || ''];
+              if (occEntry && typeof occEntry.status === 'string') {
+                isFull = /full/i.test(occEntry.status);
+              } else {
+                // fallback: count groups against capacity
+                isFull = (cap > 0) ? (used >= cap) : false;
+              }
+
+              // Build the row label with occupants (always shown if present)
+              const makeLine = () => {
+                if (!groups.length) {
+                  return textValue + ' ';
+                }
+                const parts = groups.slice(0, Math.max(3, cap || 3)).map(g=>{
+                  const n = (g.name||'').trim();
+                  const s = (g.social||'').trim();
+                  if (!s) return n || '—';
+                  const href = socialHrefOrNull(s);
+                  if (href){
+                    return n ? `${n} <a target="_blank" rel="noopener" href="${href}">${s}</a>` : `<a target="_blank" rel="noopener" href="${href}">${s}</a>`;
+                  }
+                  return n ? `${n} ${s}` : s;
+                });
+                return textValue + ' — ' + parts.join('; ');
+              };
+
+              if (isFull || !r.url || r.url === '-') {
+                const span = document.createElement('span');
+                span.className = 'nolink';
+                span.innerHTML = makeLine() + (isFull ? ' — Fully Booked' : (groups.length ? '' : '<span class="muted">(details coming soon)</span>'));
+                li.appendChild(span);
+              } else {
+                // Not full: keep link, but append occupants after
                 const a = document.createElement('a');
                 a.href = r.url; a.target = '_blank'; a.rel = 'noopener';
                 a.textContent = textValue;
-                li.appendChild(a);
-              } else {
-                const span = document.createElement('span');
-                span.className = 'nolink'; span.textContent = textValue + ' ';
-                const muted = document.createElement('span');
-                muted.className = 'muted'; muted.textContent = '(details coming soon)';
-                span.appendChild(muted); li.appendChild(span);
+
+                const tail = document.createElement('span');
+                // Only show occupants when booked; no placeholder for available linked rows
+                if (groups.length) {
+                  tail.innerHTML = ' — ' + makeLine().replace(/^.*?\s—\s/, '');
+                } else {
+                  tail.textContent = ' ';
+                }
+
+                const wrap = document.createElement('div');
+                wrap.appendChild(a);
+                wrap.appendChild(tail);
+                li.appendChild(wrap);
               }
+
               ul.appendChild(li);
+              // --- END CENTRALIZED LEGEND ROW LOGIC ---
             });
             section.appendChild(ul);
             wrap.appendChild(section);
@@ -1076,21 +1373,75 @@ groupResolver: ({ booth, csv }) => {
           const ul = document.createElement('ul');
           workingRows.sort(rowComparator);
           workingRows.forEach(r=>{
+            // --- BEGIN CENTRALIZED LEGEND ROW LOGIC ---
             const li = document.createElement('li');
             const textValue = spec.useShortLabel === false ? r.label : r.shortLabel;
-            if(r.url && r.url !== '-' ){
+
+            // Try to detect a numeric room ID (e.g., "Room 117") or direct number "117"
+            let spaceKey = null;
+            let mId = String(r.shortLabel || r.label || '').match(/\b(\d{3})\b/);
+            if (mId) spaceKey = mId[1];
+
+            // Capacity & occupancy summary
+            const boothType = (r && r.csv && r.csv.booth_type) ? String(r.csv.booth_type).trim() : (r.booth_type || '');
+            const cap = resolveCapacityFor(spaceKey, boothType, r.csv && r.csv.capacity_1_to_4);
+            const groups = spaceKey ? occupantArrayForSpaceKey(spaceKey) : [];
+            const used = groups.length; // front-end fallback; server can override via status in applyOccupantsToSvg_
+            let isFull = false;
+            // If feed has explicit status for this spaceKey, prefer that:
+            const occEntry = (window.__VOID_OCCUPANTS||{})[spaceKey || ''];
+            if (occEntry && typeof occEntry.status === 'string') {
+              isFull = /full/i.test(occEntry.status);
+            } else {
+              // fallback: count groups against capacity
+              isFull = (cap > 0) ? (used >= cap) : false;
+            }
+
+            // Build the row label with occupants (always shown if present)
+            const makeLine = () => {
+              if (!groups.length) {
+                return textValue + ' ';
+              }
+              const parts = groups.slice(0, Math.max(3, cap || 3)).map(g=>{
+                const n = (g.name||'').trim();
+                const s = (g.social||'').trim();
+                if (!s) return n || '—';
+                const href = socialHrefOrNull(s);
+                if (href){
+                  return n ? `${n} <a target="_blank" rel="noopener" href="${href}">${s}</a>` : `<a target="_blank" rel="noopener" href="${href}">${s}</a>`;
+                }
+                return n ? `${n} ${s}` : s;
+              });
+              return textValue + ' — ' + parts.join('; ');
+            };
+
+            if (isFull || !r.url || r.url === '-') {
+              const span = document.createElement('span');
+              span.className = 'nolink';
+              span.innerHTML = makeLine() + (isFull ? ' — Fully Booked' : (groups.length ? '' : '<span class="muted">(details coming soon)</span>'));
+              li.appendChild(span);
+            } else {
+              // Not full: keep link, but append occupants after
               const a = document.createElement('a');
               a.href = r.url; a.target = '_blank'; a.rel = 'noopener';
               a.textContent = textValue;
-              li.appendChild(a);
-            } else {
-              const span = document.createElement('span');
-              span.className = 'nolink'; span.textContent = textValue + ' ';
-              const muted = document.createElement('span');
-              muted.className = 'muted'; muted.textContent = '(details coming soon)';
-              span.appendChild(muted); li.appendChild(span);
+
+              const tail = document.createElement('span');
+              // Only show occupants when booked; no placeholder for available linked rows
+              if (groups.length) {
+                tail.innerHTML = ' — ' + makeLine().replace(/^.*?\s—\s/, '');
+              } else {
+                tail.textContent = ' ';
+              }
+
+              const wrap = document.createElement('div');
+              wrap.appendChild(a);
+              wrap.appendChild(tail);
+              li.appendChild(wrap);
             }
+
             ul.appendChild(li);
+            // --- END CENTRALIZED LEGEND ROW LOGIC ---
           });
           section.appendChild(ul);
           wrap.appendChild(section);

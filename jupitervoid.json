@@ -1963,7 +1963,6 @@
         "floor_code": "L2",
         "shape name": "237",
         "booth_name": "Room 237",
-        "bookwhen_url": "- Sharky",
         "booth_type": "SDL",
         "capacity_1_to_4": "2",
         "buyout_price": "",
@@ -1983,22 +1982,17 @@
       }
     },
     "238": {
-      "bookwhen_url": "-",
+      "bookwhen_url": "#",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L2",
-        "shape name": "238",
-        "booth_name": "Room 239",
-        "bookwhen_url": "-",
+        "booth_name": "Room 238",
         "booth_type": "SDL",
-        "capacity_1_to_4": "2",
-        "buyout_price": "",
         "ada_note": "Not ADA",
         "Color Code": "sleeping"
       },
       "svg": {
         "id": "_238",
-        "class": "cls-3",
         "tag": "rect",
         "attributes": {
           "x": "108.8",
@@ -2008,8 +2002,32 @@
         }
       }
     },
+    "239": {
+      "bookwhen_url": "#",
+      "csv": {
+        "building_label": "Jupiter Original",
+        "floor_code": "L2",
+        "booth_name": "Room 239",
+        "booth_type": "SDL",
+        "capacity_1_to_4": "2",
+        "buyout_price": "",
+        "ada_note": "Not ADA",
+        "Color Code": "sleeping"
+      },
+      "svg": {
+        "id": "_239",
+        "class": "cls-3",
+        "tag": "rect",
+        "attributes": {
+          "x": "108.8",
+          "y": "239.8",
+          "width": "17.39",
+          "height": "8.9"
+        }
+      }
+    },
     "240": {
-      "bookwhen_url": "-",
+      "bookwhen_url": "",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L2",
@@ -2035,7 +2053,7 @@
       }
     },
     "242": {
-      "bookwhen_url": "-",
+      "bookwhen_url": "",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L2",
@@ -2061,7 +2079,7 @@
       }
     },
     "243": {
-      "bookwhen_url": "-",
+      "bookwhen_url": "",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L2",
@@ -2087,7 +2105,7 @@
       }
     },
     "244": {
-      "bookwhen_url": "-",
+      "bookwhen_url": "",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L2",
@@ -2113,7 +2131,7 @@
       }
     },
     "245": {
-      "bookwhen_url": "-",
+      "bookwhen_url": "",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L2",
@@ -2139,7 +2157,7 @@
       }
     },
     "246": {
-      "bookwhen_url": "-",
+      "bookwhen_url": "",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L2",
@@ -2165,7 +2183,7 @@
       }
     },
     "247": {
-      "bookwhen_url": "-",
+      "bookwhen_url": "",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L2",
@@ -2191,7 +2209,7 @@
       }
     },
     "248": {
-      "bookwhen_url": "-",
+      "bookwhen_url": "",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L2",
@@ -2217,7 +2235,7 @@
       }
     },
     "249": {
-      "bookwhen_url": "-",
+      "bookwhen_url": "",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L2",
@@ -2243,7 +2261,7 @@
       }
     },
     "250": {
-      "bookwhen_url": "-",
+      "bookwhen_url": "",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L2",
@@ -2269,7 +2287,7 @@
       }
     },
     "251": {
-      "bookwhen_url": "-",
+      "bookwhen_url": "",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L2",
