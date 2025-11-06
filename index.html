@@ -25,7 +25,7 @@
     html,body{ min-height:100% }
 
     body{
-      margin:0; padding:36px 18px 54px; gap:28px;
+      margin:0; padding:10px 10px 10px; gap:8px;
       display:flex; flex-direction:column; align-items:center;
       font-family:"Montserrat","Segoe UI",Helvetica,Arial,sans-serif;
       background:linear-gradient(135deg,var(--bg-start),var(--bg-mid) 48%,var(--bg-end));
@@ -36,7 +36,7 @@
     /* Header band */
     header.header-band{
       width:min(100%,var(--maxw)); margin:0 auto; text-align:center;
-      padding:18px 28px 26px; border-radius:26px;
+      padding:10px 10px 10px; border-radius:6px;
       background:linear-gradient(160deg,rgba(27,43,73,.92),rgba(15,26,48,.75));
       border:1px solid var(--panel-border); box-shadow:var(--card-shadow);
       backdrop-filter:blur(14px);
@@ -45,7 +45,7 @@
     header.header-band{ display:none }
     /* Embed mode: hide bottom tip/status */
     #status{ display:none }
-    header.header-band h1{ margin:4px 0 10px; font-size:28px; font-weight:700; letter-spacing:.04em }
+    header.header-band h1{ margin:4px 0 6px; font-size:28px; font-weight:700; letter-spacing:.04em }
     header.header-band p{ margin:0; font-size:15px; color:var(--text-muted) }
 
     /* Row above map: legend + notes */
@@ -53,7 +53,7 @@
       width:min(100%,var(--maxw));
       display:grid;
       grid-template-columns:1fr;
-      gap:26px;
+      gap:8px;
       align-items:start;
       margin:0 auto;
       justify-items:stretch;
@@ -61,8 +61,8 @@
     .map-top > *{ min-width:0 }
 
     .panel{ background:var(--panel-bg); border:1px solid var(--panel-border); border-radius:24px; box-shadow:var(--card-shadow); backdrop-filter:blur(14px) }
-    .legend{ padding:26px 28px }
-    .legend h2,.results-panel h2{ margin:0 0 14px; font-size:20px; font-weight:600; text-transform:uppercase; letter-spacing:.08em; color:var(--accent) }
+    .legend{ padding:10px 10px }
+    .legend h2,.results-panel h2{ margin:0 0 6px; font-size:20px; font-weight:600; text-transform:uppercase; letter-spacing:.08em; color:var(--accent) }
     .legend h2 a.key-jump{ color:var(--accent); text-decoration:none; outline:none }
     .legend h2 a.key-jump:focus{ text-decoration:underline }
     @keyframes notesFlash {
@@ -71,11 +71,11 @@
       100% { box-shadow:var(--card-shadow), inset 0 0 0 0 rgba(63,161,255,0) }
     }
     .results-panel.flash-notes{ animation: notesFlash 900ms ease; }
-    .legend-grid{ display:grid; grid-template-columns:1fr; gap:12px }
+    .legend-grid{ display:grid; grid-template-columns:1fr; gap:6px }
 
     .legend-row{
       display:grid; grid-template-columns:1fr auto; align-items:center; gap:8px;
-      border:1px solid var(--panel-border); border-radius:18px; padding:10px 12px;
+      border:1px solid var(--panel-border); border-radius:10px; padding:6px 10px;
       background:var(--panel-inner); transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease;
       overflow:hidden; cursor:pointer;
     }
@@ -88,8 +88,8 @@
     }
     .legend-swatches::-webkit-scrollbar{ display:none }
     .legend-swatch{ display:flex; align-items:center; gap:8px; font-size:13px; font-weight:500; color:var(--text-primary); padding:6px 10px; border-radius:12px; background:rgba(255,255,255,.06); border:1px solid var(--chip-border); backdrop-filter:blur(10px); flex:0 0 auto }
-    .legend-chip{ width:16px; height:16px; border-radius:5px; border:1px solid rgba(255,255,255,.25) }
-    .results-panel{ padding:24px 26px 26px }
+    .legend-chip{ width:10px; height:10px; border-radius:5px; border:1px solid rgba(255,255,255,.25) }
+    .results-panel{ padding:10px 10px 10px }
 
     /* Results list styles */
     .results-panel .results-list{display:block; margin:6px 0 0; padding:0}
@@ -114,7 +114,7 @@
 
     /* Map table container */
     .map-table-wrap{ width:min(100%,var(--maxw)); border-radius:24px; box-shadow:var(--card-shadow); overflow:hidden; border:1px solid var(--panel-border) }
-    table.map-table{ width:100%; border-collapse:collapse; background:transparent }
+    table.map-table{ width:100%; border-collapse:collapse; border-spacing:0; background:transparent }
     table.map-table td{ padding:0 }
 
     /* Map frame (inside table cell) */
@@ -162,11 +162,11 @@
 
     a{ color:var(--accent); text-decoration:underline } a:hover{ color:var(--accent-strong) }
 
-    @media (max-width:900px){ body{ padding:30px 14px 44px; gap:22px } .legend{ padding:24px } }
+    @media (max-width:900px){ body{ padding:30px 14px 44px; gap:22px } .legend{ padding:20px } }
     @media (max-width:640px){
       header.header-band h1{ font-size:24px }
     }
-    @media (prefers-reduced-motion:reduce){ .legend-row{ transition:none } }
+    @media (prefers-reduced-motion:reduce){    .legend-row{ transition:none } }
   </style>
 </head>
 <body>
