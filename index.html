@@ -52,18 +52,25 @@
     .map-top{
       width:min(100%,var(--maxw));
       display:grid;
-      grid-template-columns:minmax(0,55%) minmax(0,45%);
+      grid-template-columns:1fr;
       gap:26px;
       align-items:start;
       margin:0 auto;
       justify-items:stretch;
     }
     .map-top > *{ min-width:0 }
-    @media (max-width: 960px){ .map-top{ grid-template-columns:1fr } }
 
     .panel{ background:var(--panel-bg); border:1px solid var(--panel-border); border-radius:24px; box-shadow:var(--card-shadow); backdrop-filter:blur(14px) }
     .legend{ padding:26px 28px }
     .legend h2,.results-panel h2{ margin:0 0 14px; font-size:20px; font-weight:600; text-transform:uppercase; letter-spacing:.08em; color:var(--accent) }
+    .legend h2 a.key-jump{ color:var(--accent); text-decoration:none; outline:none }
+    .legend h2 a.key-jump:focus{ text-decoration:underline }
+    @keyframes notesFlash {
+      0% { box-shadow:0 0 0 0 rgba(63,161,255,.0), inset 0 0 0 0 rgba(63,161,255,.0) }
+      30% { box-shadow:0 0 0 4px rgba(63,161,255,.25), inset 0 0 0 2px rgba(63,161,255,.35) }
+      100% { box-shadow:var(--card-shadow), inset 0 0 0 0 rgba(63,161,255,0) }
+    }
+    .results-panel.flash-notes{ animation: notesFlash 900ms ease; }
     .legend-grid{ display:grid; grid-template-columns:1fr; gap:12px }
 
     .legend-row{
@@ -73,7 +80,7 @@
       overflow:hidden; cursor:pointer;
     }
     .legend-row:hover{ transform:translateY(-2px); box-shadow:0 12px 24px rgba(7,13,26,.45); border-color:rgba(124,201,255,.4); background:rgba(22,36,64,.82) }
-    .legend-label{ font-size:15px; font-weight:600; text-align:center; padding:0 }
+    .legend-label{ font-size:15px; font-weight:600; text-align:left; padding:0 }
     /* Keep chips on a single line; allow horizontal scroll on very small screens */
     .legend-swatches{
       display:flex; flex-wrap:nowrap; gap:8px; justify-content:flex-end;
@@ -88,6 +95,7 @@
     .results-panel .results-list{display:block; margin:6px 0 0; padding:0}
     .results-panel .results-group{margin:12px 0 16px}
     .results-panel .results-group h3{margin:0 0 8px; font-size:16px; font-weight:700; letter-spacing:.02em; color:var(--text-primary)}
+.results-panel .results-group h3{ color: var(--accent-strong); }
     .results-panel .results-group ul{list-style:none; margin:0; padding:0; display:grid; grid-template-columns:1fr; gap:8px}
     .results-panel .results-group li{margin:0; padding:0}
     .results-panel .results-group a,
@@ -230,7 +238,7 @@
         </div>
       </div>
     </section>
-    <section class="results-panel panel" aria-label="Info panel">
+    <section class="results-panel panel" id="notes" aria-label="Info panel">
       <h2>Notes</h2>
       <p style="margin:0;color:var(--text-muted)">Click a shape on the map to open its booking page. Or click a row in the Key to see the full list for that group.</p>
     </section>
@@ -595,6 +603,22 @@ groupResolver: ({ booth, csv }) => {
         link.removeAttribute("rel");
       }
 
+      // Publication control (optional lists in jupitervoid.json)
+      // If mapData.published (array) exists -> only those keys are treated as published.
+      // Else if mapData.unpublished (array) exists -> all except those are published.
+      // Else (no lists) -> everything is published.
+      function isPublishedKey_(mapData, key){
+        try{
+          const k = String(key || '').trim();
+          if (!k) return false;
+          const pub = mapData && Array.isArray(mapData.published) ? new Set(mapData.published.map(String)) : null;
+          const unpub = mapData && Array.isArray(mapData.unpublished) ? new Set(mapData.unpublished.map(String)) : null;
+          if (pub) return pub.has(k);
+          if (unpub) return !unpub.has(k);
+          return true;
+        }catch(_){ return true; }
+      }
+
       async function applyOccupantsToSvg_(svgRoot, mapData) {
         const spaces = await fetchOccupants_();
         window.__VOID_OCCUPANTS = spaces;
@@ -616,7 +640,7 @@ groupResolver: ({ booth, csv }) => {
           const status = String(info && info.status || '').toLowerCase();
           const full = status === 'full';
 
-          if (full) {
+          if (full && isPublishedKey_(mapData, key)) {
             const bookedColor =
               (boothType && FULL_FILL_BY_TYPE[boothType]) ? FULL_FILL_BY_TYPE[boothType] : BOOKED_FILL;
             try { shape.style.fill = bookedColor; } catch(_) {}
@@ -1018,15 +1042,46 @@ groupResolver: ({ booth, csv }) => {
             console.warn("SVG element not found for shape:", shapeName, "resolved id:", elementId, "canonical:", canonicalName);
             continue;
           }
-          decorateShape(target, canonicalName, payload);
+          decorateShape(target, canonicalName, payload, data);
         }
-        ["239","224","223","222","213","212","210","203","202"].forEach((id) => {
-          if (INACTIVE_SHAPES.has(id)) return;
-          const node = findShapeNode(svgElement, id);
-          if (node && !node.classList.contains("no-interaction")) {
-            appendLabel(node, normalizeLabel(id), id);
+        // Ensure numeric room labels are drawn, regardless of published status.
+        // (1) Label any rooms present in the JSON `shapes` map.
+        // (2) Fallback: label any 3-digit numeric SVG ids that lack a label (e.g., _222).
+        const jsonShapeKeys = new Set(
+          Object.keys((data && data.shapes) ? data.shapes : {}).map(k => String(k).replace(/^_+/, ''))
+        );
+
+        // (1) Label JSON-declared shapes (no publish gate — labels always)
+        jsonShapeKeys.forEach((canonicalId) => {
+          if (INACTIVE_SHAPES.has(canonicalId)) return;
+          const node = findShapeNode(svgElement, canonicalId);
+          if (node && !node.classList.contains('no-interaction')) {
+            appendLabel(node, normalizeLabel(canonicalId), canonicalId);
           }
         });
+
+        // (2) Fallback: scan SVG for any 3‑digit numeric ids not already labeled
+        (function ensureNumericSvgLabels(){
+          const svg = svgElement.ownerSVGElement || svgElement;
+          const labelLayer = svg.querySelector('#label-layer');
+          const hasLabelFor = (key) => labelLayer && !!labelLayer.querySelector(`text[data-shape-key="${CSS.escape(key)}"]`);
+
+          const candidates = Array.from(svg.querySelectorAll('[id], [data-name]'));
+          candidates.forEach(el => {
+            const rawId = (el.getAttribute('id') || el.getAttribute('data-name') || '').trim();
+            if (!rawId) return;
+            const m = rawId.match(/^_?(\d{3})$/);
+            if (!m) return;
+
+            const roomKey = m[1];
+            if (INACTIVE_SHAPES.has(roomKey)) return;
+            if (jsonShapeKeys.has(roomKey)) return;            // already labeled above
+            if (el.classList.contains('no-interaction')) return;
+            if (hasLabelFor(roomKey)) return;
+
+            appendLabel(el, roomKey, roomKey);
+          });
+        })();
         const sfNodes = svgElement.querySelectorAll('[id^="sf"], [id^="SF"], [id^="_sf"], [id^="_SF"], [data-name^="sf"], [data-name^="SF"], [id^="s"], [id^="_s"], [data-name^="s"]');
         sfNodes.forEach((node) => {
           if (node.getAttribute('data-no-label') === 'true') return;
@@ -1050,7 +1105,7 @@ groupResolver: ({ booth, csv }) => {
         });
       }
 
-      function decorateShape(node, label, payload) {
+      function decorateShape(node, label, payload, mapData) {
         node.setAttribute("data-shape", label);
         const boothName = payload.csv && payload.csv.booth_name ? payload.csv.booth_name : `Shape ${label}`;
         node.setAttribute("aria-label", `${boothName} (${label})`);
@@ -1079,16 +1134,34 @@ groupResolver: ({ booth, csv }) => {
         const displayLabel = normalizeLabel(baseLabel);
         appendLabel(node, displayLabel, label);
         const url = (payload && payload.bookwhen_url ? String(payload.bookwhen_url).trim() : "");
-        if (url) {
-          node.classList.add("shape-interactive");
-          node.setAttribute("tabindex", "0");
-          node.setAttribute("role", "link");
-          wireLink(node, url);
-          wireHighlight(node);
-        } else {
+        const published = isPublishedKey_(mapData || window.__VOID_MAPDATA || {}, label);
+
+        if (!published) {
           node.classList.remove("shape-interactive");
           node.removeAttribute("tabindex");
           node.removeAttribute("role");
+          node.style.pointerEvents = 'none';
+          node.style.cursor = 'default';
+          node.setAttribute('data-unpublished', 'true');
+          if (!keepOriginal) {
+            try { node.style.fill = '#999999'; } catch (_) {}
+          }
+          disableLinkWrapper_(node);
+        } else {
+          node.removeAttribute('data-unpublished');
+          node.style.removeProperty('pointer-events');
+          node.style.removeProperty('cursor');
+          if (url) {
+            node.classList.add("shape-interactive");
+            node.setAttribute("tabindex", "0");
+            node.setAttribute("role", "link");
+            wireLink(node, url);
+            wireHighlight(node);
+          } else {
+            node.classList.remove("shape-interactive");
+            node.removeAttribute("tabindex");
+            node.removeAttribute("role");
+          }
         }
       }
 
@@ -1172,6 +1245,18 @@ groupResolver: ({ booth, csv }) => {
           if(!row) return;
           const key = row.getAttribute('data-list-key');
           renderResultsForKey(mapData, key);
+          try { const notes = document.getElementById('notes'); if (notes) { notes.scrollIntoView({ behavior: 'smooth', block: 'start' }); } } catch(_) {}
+          try {
+            const notes = document.getElementById('notes');
+            if (notes){
+              notes.setAttribute('tabindex','-1');
+              notes.focus({ preventScroll:true });
+              notes.classList.remove('flash-notes');
+              // force reflow to allow re-adding the class
+              void notes.offsetWidth;
+              notes.classList.add('flash-notes');
+            }
+          } catch(_) {}
         });
         grid.addEventListener('keydown', (e)=>{
           if(!(e.key==='Enter' || e.key===' ')) return;
@@ -1180,10 +1265,52 @@ groupResolver: ({ booth, csv }) => {
           e.preventDefault();
           const key = row.getAttribute('data-list-key');
           renderResultsForKey(mapData, key);
+          try { const notes = document.getElementById('notes'); if (notes) { notes.scrollIntoView({ behavior: 'smooth', block: 'start' }); } } catch(_) {}
+          try {
+            const notes = document.getElementById('notes');
+            if (notes){
+              notes.setAttribute('tabindex','-1');
+              notes.focus({ preventScroll:true });
+              notes.classList.remove('flash-notes');
+              // force reflow to allow re-adding the class
+              void notes.offsetWidth;
+              notes.classList.add('flash-notes');
+            }
+          } catch(_) {}
         });
         document.querySelectorAll('.legend .legend-row[data-list-key]').forEach(row=>{
           row.setAttribute('tabindex','0'); row.setAttribute('role','button'); row.setAttribute('aria-pressed','false');
         });
+        // Key heading "jump" control
+        (function wireKeyJump(){
+          const jump = document.querySelector('.legend h2 a.key-jump');
+          if (!jump) return;
+          jump.addEventListener('click', function(ev){
+            //ev.preventDefault();
+            try{
+              const notes = document.getElementById('notes');
+              if (notes) { notes.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+              if (notes){
+                notes.setAttribute('tabindex','-1');
+                notes.focus({ preventScroll:true });
+                notes.classList.remove('flash-notes'); void notes.offsetWidth; notes.classList.add('flash-notes');
+              }
+            }catch(_){}
+          });
+          jump.addEventListener('keydown', function(ev){
+            if(ev.key!=='Enter' && ev.key!==' ') return;
+            ev.preventDefault();
+            try{
+              const notes = document.getElementById('notes');
+              if (notes) { notes.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+              if (notes){
+                notes.setAttribute('tabindex','-1');
+                notes.focus({ preventScroll:true });
+                notes.classList.remove('flash-notes'); void notes.offsetWidth; notes.classList.add('flash-notes');
+              }
+            }catch(_){}
+          });
+        })();
       }
 
       function renderResultsForKey(mapData, key){
@@ -1216,6 +1343,7 @@ groupResolver: ({ booth, csv }) => {
         for(const [id,payload] of Object.entries(shapes)){
           const csv = payload && payload.csv ? payload.csv : null;
           if(!csv) continue;
+          if (!isPublishedKey_(mapData, id)) continue;
           const type = String(csv.booth_type || '').trim();
           if(!wantTypes.has(type)) continue;
           const building = String(csv.building_label || '').trim();

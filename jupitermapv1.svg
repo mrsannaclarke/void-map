@@ -57,7 +57,7 @@
       }
 
       .st12 {
-        fill: #e51858;
+        fill: #af003f
       }
     </style>
   </defs>
@@ -143,9 +143,9 @@
     <rect id="s10" class="st12" x="152.5" y="422.5" width="11.1" height="11.1"/>
     <rect id="s11" class="st12" x="166.1" y="422.5" width="11.1" height="11.1"/>
     <rect id="_9thst" class="st5" x="39.3" y="400.8" width="130" height="11.4"/>
-    <rect id="command" class="st5" x="161.1" y="110" width="17.1" height="14.6"/>
-    <rect id="thinktank" class="st5" x="161.1" y="85.7" width="17.1" height="13.7"/>
-    <rect id="dreambox" class="st5" x="161.1" y="74.7" width="17.1" height="11"/>
+    <rect id="command" class="st5" x="161.1" y="99.86" width="17.1" height="24.74"/>
+    <rect id="thinktank" class="st5" x="161.17" y="74.8" width="17.1" height="13.7"/>
+    <rect id="dreambox" class="st5" x="158.32" y="35.21" width="20.27" height="35.07"/>
     <rect id="bunker" class="st5" x="141.9" y="510.8" width="27.7" height="41.4"/>
     <rect id="stage" class="st5" x="133.4" y="51.6" width="24.5" height="16"/>
     <rect id="sb" class="st5" x="74" y="607.3" width="16.6" height="15.9"/>
