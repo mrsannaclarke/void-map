@@ -177,7 +177,7 @@
 
   <div class="map-top">
     <section class="legend panel" aria-label="Booth legend">
-      <h2>Key</h2>
+      <h2>Key <a class="key-jump" href="#notes">Jump to notes</a></h2>
       <div class="legend-grid">
         <div class="legend-row" data-list-key="streetfair" tabindex="0" role="button" aria-pressed="false">
           <div class="legend-label">Vendor - Street Fair<br>Saturday Only</div>
@@ -259,7 +259,6 @@
     </table>
   </div>
 
-  <p><a href="https://www.voidtattoofest.com/2026rsvp#boothmap">Jump to top</a></p>
 
   <section class="legend" id="status">
     Loading interactive layer…
@@ -583,12 +582,37 @@ groupResolver: ({ booth, csv }) => {
       window.getOccupancy = getOccupancy;
 
       function normalizeSocialHref_(raw) {
-        const s = String(raw || "").trim();
+        const s = String(raw || '').trim();
         if (!s) return null;
-        if (s.startsWith("@")) return "https://instagram.com/" + s.slice(1);
+
+        // If value begins with '@' and contains a dot, treat it as a website (user provided @www.example.com)
+        if (s.startsWith('@') && s.indexOf('.') !== -1) {
+          const candidate = s.replace(/^@+/, '');
+          return /^https?:\/\//i.test(candidate) ? candidate : ('https://' + candidate);
+        }
+
+        // If value begins with '@' and no dot, treat as an Instagram handle
+        if (s.startsWith('@')) {
+          const handle = s.replace(/^@+/, '');
+          return 'https://instagram.com/' + handle;
+        }
+
+        // If it already looks like a full URL
         if (/^https?:\/\//i.test(s)) return s;
-        if (/^[a-z0-9.-]+\.[a-z]{2,}$/i.test(s)) return "https://" + s;
-        if (/^instagram\.com\//i.test(s)) return "https://" + s;
+
+        // If it looks like a bare domain (example.com or www.example.com)
+        if (/^[a-z0-9.-]+\.[a-z]{2,}([\/?#].*)?$/i.test(s)) {
+          const domain = s.replace(/^https?:\/\//i, '').replace(/^www\./i, '');
+          return 'https://' + domain;
+        }
+
+        // If string contains an @handle somewhere, prefer that as an Instagram link
+        const m = s.match(/@([a-z0-9._]{2,})/i);
+        if (m) return 'https://instagram.com/' + m[1];
+
+        // If it contains instagram.com somewhere, ensure it has a protocol
+        if (/instagram\.com/i.test(s)) return (/^https?:\/\//i.test(s) ? s : 'https://' + s);
+
         return null;
       }
 
@@ -1437,18 +1461,167 @@ groupResolver: ({ booth, csv }) => {
               const boothType = (r && r.csv && r.csv.booth_type) ? String(r.csv.booth_type).trim() : (r.booth_type || '');
               const cap = resolveCapacityFor(spaceKey, boothType, r.csv && r.csv.capacity_1_to_4);
               const groups = spaceKey ? occupantArrayForSpaceKey(spaceKey) : [];
-              const used = groups.length; // front-end fallback; server can override via status in applyOccupantsToSvg_
-              let isFull = false;
+
               // If feed has explicit status for this spaceKey, prefer that:
               const occEntry = (window.__VOID_OCCUPANTS||{})[spaceKey || ''];
+              let isFull = false;
               if (occEntry && typeof occEntry.status === 'string') {
                 isFull = /full/i.test(occEntry.status);
               } else {
-                // fallback: count groups against capacity
+                const used = groups.length;
                 isFull = (cap > 0) ? (used >= cap) : false;
               }
 
-              // Build the row label with occupants (always shown if present)
+              // If the space is fully booked and we have occupant info, show a single tidy line
+              if (isFull && groups && groups.length) {
+                const primary = groups[0] || {};
+                const name = (primary.name || '').trim();
+                const rawSocial = (primary.social || '').trim();
+                const href = normalizeSocialHref_(rawSocial) || (rawSocial && rawSocial.indexOf('.') !== -1 ? (rawSocial.indexOf('http') === 0 ? rawSocial : ('https://' + rawSocial)) : null);
+
+                // Make the LI itself the styled block so it matches non-booked items visually
+                li.className = 'nolink';
+
+                // Room label text (no hyphen, no "Fully Booked" suffix)
+                const labelText = document.createElement('span');
+                labelText.textContent = textValue + ' ';
+                li.appendChild(labelText);
+
+                // Link the name when possible (name is preferred link text)
+                if (href && name) {
+                  const a = document.createElement('a');
+                  a.href = href; a.target = '_blank'; a.rel = 'noopener';
+                  a.textContent = name;
+                  li.appendChild(a);
+                } else if (name) {
+                  const txt = document.createElement('span'); txt.textContent = name; li.appendChild(txt);
+                } else if (href) {
+                  const a = document.createElement('a');
+                  a.href = href; a.target = '_blank'; a.rel = 'noopener';
+                  if (/instagram\.com/i.test(href)) {
+                    a.textContent = rawSocial.replace(/^@/, '') || href.replace(/^https?:\/\//,'').replace(/^www\./,'');
+                  } else {
+                    try { a.textContent = (new URL(href)).host.replace(/^www\./,''); } catch(e){ a.textContent = rawSocial || href; }
+                  }
+                  li.appendChild(a);
+                }
+
+              } else {
+                // fallback to original behavior when not fully booked or no occupant info
+                const makeLine = () => {
+                  if (!groups.length) {
+                    return textValue + ' ';
+                  }
+                  const parts = groups.slice(0, Math.max(3, cap || 3)).map(g=>{
+                    const n = (g.name||'').trim();
+                    const s = (g.social||'').trim();
+                    if (!s) return n || '—';
+                    const href = socialHrefOrNull(s);
+                    if (href){
+                      return n ? `${n} <a target="_blank" rel="noopener" href="${href}">${s}</a>` : `<a target="_blank" rel="noopener" href="${href}">${s}</a>`;
+                    }
+                    return n ? `${n} ${s}` : s;
+                  });
+                  return textValue + ' — ' + parts.join('; ');
+                };
+
+                if (isFull || !r.url || r.url === '-') {
+                  const span = document.createElement('span');
+                  span.className = 'nolink';
+                  span.innerHTML = makeLine() + (isFull ? '' : (groups.length ? '' : '<span class="muted">(details coming soon)</span>'));
+                  li.appendChild(span);
+                } else {
+                  // Not full: keep link, but append occupants after
+                  const a = document.createElement('a');
+                  a.href = r.url; a.target = '_blank'; a.rel = 'noopener';
+                  a.textContent = textValue;
+
+                  const tail = document.createElement('span');
+                  if (groups.length) {
+                    tail.innerHTML = ' — ' + makeLine().replace(/^.*?\s—\s/, '');
+                  } else {
+                    tail.textContent = ' ';
+                  }
+
+                  const wrap = document.createElement('div');
+                  wrap.appendChild(a);
+                  wrap.appendChild(tail);
+                  li.appendChild(wrap);
+                }
+              }
+
+              ul.appendChild(li);
+              // --- END CENTRALIZED LEGEND ROW LOGIC ---
+            });
+            section.appendChild(ul);
+            wrap.appendChild(section);
+          });
+        } else {
+          const section = document.createElement('section');
+          section.className = 'results-group';
+          const ul = document.createElement('ul');
+          workingRows.sort(rowComparator);
+          workingRows.forEach(r=>{
+            // --- BEGIN CENTRALIZED LEGEND ROW LOGIC ---
+            const li = document.createElement('li');
+            const textValue = spec.useShortLabel === true ? r.shortLabel : r.label;
+
+            // Try to detect a numeric room ID (e.g., "Room 117") or direct number "117"
+            let spaceKey = null;
+            let mId = String(r.shortLabel || r.label || '').match(/\b(\d{3})\b/);
+            if (mId) spaceKey = mId[1];
+
+            // Capacity & occupancy summary
+            const boothType = (r && r.csv && r.csv.booth_type) ? String(r.csv.booth_type).trim() : (r.booth_type || '');
+            const cap = resolveCapacityFor(spaceKey, boothType, r.csv && r.csv.capacity_1_to_4);
+            const groups = spaceKey ? occupantArrayForSpaceKey(spaceKey) : [];
+
+            // If feed has explicit status for this spaceKey, prefer that:
+            const occEntry = (window.__VOID_OCCUPANTS||{})[spaceKey || ''];
+            let isFull = false;
+            if (occEntry && typeof occEntry.status === 'string') {
+              isFull = /full/i.test(occEntry.status);
+            } else {
+              const used = groups.length;
+              isFull = (cap > 0) ? (used >= cap) : false;
+            }
+
+            // If the space is fully booked and we have occupant info, show a single tidy line
+            if (isFull && groups && groups.length) {
+              const primary = groups[0] || {};
+              const name = (primary.name || '').trim();
+              const rawSocial = (primary.social || '').trim();
+              const href = normalizeSocialHref_(rawSocial) || (rawSocial && rawSocial.indexOf('.') !== -1 ? (rawSocial.indexOf('http') === 0 ? rawSocial : ('https://' + rawSocial)) : null);
+
+              // Make the LI itself the styled block so it matches non-booked items visually
+              li.className = 'nolink';
+
+              // Room label text (no hyphen, no "Fully Booked" suffix)
+              const labelText = document.createElement('span');
+              labelText.textContent = textValue + ' ';
+              li.appendChild(labelText);
+
+              // Link the name when possible (name is preferred link text)
+              if (href && name) {
+                const a = document.createElement('a');
+                a.href = href; a.target = '_blank'; a.rel = 'noopener';
+                a.textContent = name;
+                li.appendChild(a);
+              } else if (name) {
+                const txt = document.createElement('span'); txt.textContent = name; li.appendChild(txt);
+              } else if (href) {
+                const a = document.createElement('a');
+                a.href = href; a.target = '_blank'; a.rel = 'noopener';
+                if (/instagram\.com/i.test(href)) {
+                  a.textContent = rawSocial.replace(/^@/, '') || href.replace(/^https?:\/\//,'').replace(/^www\./,'');
+                } else {
+                  try { a.textContent = (new URL(href)).host.replace(/^www\./,''); } catch(e){ a.textContent = rawSocial || href; }
+                }
+                li.appendChild(a);
+              }
+
+            } else {
+              // fallback to original behavior when not fully booked or no occupant info
               const makeLine = () => {
                 if (!groups.length) {
                   return textValue + ' ';
@@ -1469,7 +1642,7 @@ groupResolver: ({ booth, csv }) => {
               if (isFull || !r.url || r.url === '-') {
                 const span = document.createElement('span');
                 span.className = 'nolink';
-                span.innerHTML = makeLine() + (isFull ? ' — Fully Booked' : (groups.length ? '' : '<span class="muted">(details coming soon)</span>'));
+                span.innerHTML = makeLine() + (isFull ? '' : (groups.length ? '' : '<span class="muted">(details coming soon)</span>'));
                 li.appendChild(span);
               } else {
                 // Not full: keep link, but append occupants after
@@ -1478,7 +1651,6 @@ groupResolver: ({ booth, csv }) => {
                 a.textContent = textValue;
 
                 const tail = document.createElement('span');
-                // Only show occupants when booked; no placeholder for available linked rows
                 if (groups.length) {
                   tail.innerHTML = ' — ' + makeLine().replace(/^.*?\s—\s/, '');
                 } else {
@@ -1490,84 +1662,6 @@ groupResolver: ({ booth, csv }) => {
                 wrap.appendChild(tail);
                 li.appendChild(wrap);
               }
-
-              ul.appendChild(li);
-              // --- END CENTRALIZED LEGEND ROW LOGIC ---
-            });
-            section.appendChild(ul);
-            wrap.appendChild(section);
-          });
-        } else {
-          const section = document.createElement('section');
-          section.className = 'results-group';
-          const ul = document.createElement('ul');
-          workingRows.sort(rowComparator);
-          workingRows.forEach(r=>{
-            // --- BEGIN CENTRALIZED LEGEND ROW LOGIC ---
-            const li = document.createElement('li');
-            const textValue = spec.useShortLabel === false ? r.label : r.shortLabel;
-
-            // Try to detect a numeric room ID (e.g., "Room 117") or direct number "117"
-            let spaceKey = null;
-            let mId = String(r.shortLabel || r.label || '').match(/\b(\d{3})\b/);
-            if (mId) spaceKey = mId[1];
-
-            // Capacity & occupancy summary
-            const boothType = (r && r.csv && r.csv.booth_type) ? String(r.csv.booth_type).trim() : (r.booth_type || '');
-            const cap = resolveCapacityFor(spaceKey, boothType, r.csv && r.csv.capacity_1_to_4);
-            const groups = spaceKey ? occupantArrayForSpaceKey(spaceKey) : [];
-            const used = groups.length; // front-end fallback; server can override via status in applyOccupantsToSvg_
-            let isFull = false;
-            // If feed has explicit status for this spaceKey, prefer that:
-            const occEntry = (window.__VOID_OCCUPANTS||{})[spaceKey || ''];
-            if (occEntry && typeof occEntry.status === 'string') {
-              isFull = /full/i.test(occEntry.status);
-            } else {
-              // fallback: count groups against capacity
-              isFull = (cap > 0) ? (used >= cap) : false;
-            }
-
-            // Build the row label with occupants (always shown if present)
-            const makeLine = () => {
-              if (!groups.length) {
-                return textValue + ' ';
-              }
-              const parts = groups.slice(0, Math.max(3, cap || 3)).map(g=>{
-                const n = (g.name||'').trim();
-                const s = (g.social||'').trim();
-                if (!s) return n || '—';
-                const href = socialHrefOrNull(s);
-                if (href){
-                  return n ? `${n} <a target="_blank" rel="noopener" href="${href}">${s}</a>` : `<a target="_blank" rel="noopener" href="${href}">${s}</a>`;
-                }
-                return n ? `${n} ${s}` : s;
-              });
-              return textValue + ' — ' + parts.join('; ');
-            };
-
-            if (isFull || !r.url || r.url === '-') {
-              const span = document.createElement('span');
-              span.className = 'nolink';
-              span.innerHTML = makeLine() + (isFull ? ' — Fully Booked' : (groups.length ? '' : '<span class="muted">(details coming soon)</span>'));
-              li.appendChild(span);
-            } else {
-              // Not full: keep link, but append occupants after
-              const a = document.createElement('a');
-              a.href = r.url; a.target = '_blank'; a.rel = 'noopener';
-              a.textContent = textValue;
-
-              const tail = document.createElement('span');
-              // Only show occupants when booked; no placeholder for available linked rows
-              if (groups.length) {
-                tail.innerHTML = ' — ' + makeLine().replace(/^.*?\s—\s/, '');
-              } else {
-                tail.textContent = ' ';
-              }
-
-              const wrap = document.createElement('div');
-              wrap.appendChild(a);
-              wrap.appendChild(tail);
-              li.appendChild(wrap);
             }
 
             ul.appendChild(li);

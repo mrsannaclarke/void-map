@@ -70,13 +70,41 @@
     <rect id="e6" class="st14" x="102.8" y="516.8" width="13.5" height="12"/>
     <rect id="e7" class="st14" x="125" y="485.3" width="26.3" height="8.6"/>
     <rect id="e8" class="st14" x="141.9" y="493.7" width="9.4" height="17.1"/>
-    <rect id="e9" class="st14" x="173.6" y="141.2" width="10.6" height="13.4"/>
+    <rect id="e9" class="st14" x="173.6" y="142" width="10.6" height="13.4"/>
     <rect id="e10" class="st14" x="30.5" y="168.5" width="7.1" height="6.5"/>
     <rect id="e11" class="st14" x="60.5" y="30.4" width="9.7" height="10.4"/>
   </g>
   <g id="Layer_2">
     <rect id="rr1" class="st7" x="133.4" y="35.6" width="9.1" height="12.8"/>
     <rect id="rr2" class="st7" x="25" y="466.1" width="39.3" height="37.3"/>
+     <rect id="_117" class="st3" x="31" y="116.5" width="13.9" height="8.4"/>
+    <rect id="_115" class="st3" x="31.4" y="133.9" width="13.9" height="8.4"/>
+    <rect id="_113" class="st3" x="31" y="151.4" width="13.9" height="8.4"/>
+    <rect id="_107" class="st3" x="54.6" y="175.2" width="9" height="16.5"/>
+    <rect id="_105" class="st3" x="72.4" y="175.2" width="8.8" height="16.7"/>
+    <rect id="_103" class="st3" x="90.3" y="175.2" width="8.1" height="16.7"/>
+    <rect id="ina" class="st4" x="98.3" y="175.2" width="8.6" height="16.7"/>
+    <rect id="_131" class="st3" x="114" y="113.9" width="12.6" height="12.6"/>
+    <rect id="_133" class="st3" x="109.5" y="97.7" width="17.1" height="7.8"/>
+    <rect id="_135" class="st3" x="109.5" y="80" width="17" height="8.2"/>
+    <rect id="_137" class="st3" x="109.7" y="62.3" width="17" height="8.7"/>
+    <rect id="_139" class="st3" x="109.5" y="44.9" width="17" height="8.7"/>
+    <rect id="_213" class="st3" x="29.9" y="346.1" width="17" height="8.7"/>
+    <rect id="_215" class="st3" x="29.9" y="329" width="17" height="8.7"/>
+    <rect id="_217" class="st3" x="30" y="311.5" width="14.7" height="8.7"/>
+    <rect id="_218" class="st3" x="30" y="302.8" width="14.7" height="8.7"/>
+    <rect id="_118" class="st6" x="31" y="107.9" width="13.9" height="8.4"/>
+    <rect id="_231" class="st3" x="113.3" y="308.9" width="12.8" height="12.9"/>
+    <rect id="_233" class="st3" x="108.8" y="291.4" width="17.4" height="8.9"/>
+    <rect id="_235" class="st3" x="108.8" y="274.7" width="17.4" height="8.9"/>
+    <rect id="_237" class="st3" x="108.8" y="257" width="17.4" height="8.9"/>
+    <rect id="_253" class="st3" x="161.1" y="309.4" width="16.7" height="8.8"/>
+    <rect id="_251" class="st3" x="161.1" y="292.1" width="16.7" height="8.8"/>
+    <rect id="_249" class="st3" x="161.1" y="274.5" width="16.7" height="8.8"/>
+    <rect id="_247" class="st3" x="161.1" y="256.9" width="16.7" height="8.8"/>
+    <rect id="_207" class="st3" x="54.1" y="370.3" width="8.7" height="16.8"/>
+    <rect id="_205" class="st3" x="71.7" y="370.3" width="9.2" height="16.8"/>
+    <rect id="_203" class="st3" x="89.3" y="370.3" width="8.8" height="16.8"/>
     <rect id="_124" class="st6" x="31" y="35.8" width="13.9" height="8.2"/>
     <rect id="_123" class="st6" x="31" y="52" width="13.9" height="7.9"/>
     <rect id="_122" class="st6" x="31" y="60.4" width="13.9" height="8.6"/>
@@ -149,34 +177,6 @@
     <rect id="bunker" class="st5" x="141.9" y="510.8" width="27.7" height="41.4"/>
     <rect id="stage" class="st5" x="133.4" y="51.6" width="24.5" height="16"/>
     <rect id="sb" class="st5" x="74" y="607.3" width="16.6" height="15.9"/>
-    <rect id="_117" class="st3" x="31" y="116.5" width="13.9" height="8.4"/>
-    <rect id="_115" class="st3" x="31.4" y="133.9" width="13.9" height="8.4"/>
-    <rect id="_113" class="st3" x="31" y="151.4" width="13.9" height="8.4"/>
-    <rect id="_107" class="st3" x="54.6" y="175.2" width="9" height="16.5"/>
-    <rect id="_105" class="st3" x="72.4" y="175.2" width="8.8" height="16.7"/>
-    <rect id="_103" class="st3" x="90.3" y="175.2" width="8.1" height="16.7"/>
-    <rect id="ina" class="st4" x="98.3" y="175.2" width="8.6" height="16.7"/>
-    <rect id="_131" class="st3" x="114" y="113.9" width="12.6" height="12.6"/>
-    <rect id="_133" class="st3" x="109.5" y="97.7" width="17.1" height="7.8"/>
-    <rect id="_135" class="st3" x="109.5" y="80" width="17" height="8.2"/>
-    <rect id="_137" class="st3" x="109.7" y="62.3" width="17" height="8.7"/>
-    <rect id="_139" class="st3" x="109.5" y="44.9" width="17" height="8.7"/>
-    <rect id="_213" class="st3" x="29.9" y="346.1" width="17" height="8.7"/>
-    <rect id="_215" class="st3" x="29.9" y="329" width="17" height="8.7"/>
-    <rect id="_217" class="st3" x="30" y="311.5" width="14.7" height="8.7"/>
-    <rect id="_218" class="st3" x="30" y="302.8" width="14.7" height="8.7"/>
-    <rect id="_118" class="st3" x="31" y="107.9" width="13.9" height="8.4"/>
-    <rect id="_231" class="st3" x="113.3" y="308.9" width="12.8" height="12.9"/>
-    <rect id="_233" class="st3" x="108.8" y="291.4" width="17.4" height="8.9"/>
-    <rect id="_235" class="st3" x="108.8" y="274.7" width="17.4" height="8.9"/>
-    <rect id="_237" class="st3" x="108.8" y="257" width="17.4" height="8.9"/>
-    <rect id="_253" class="st3" x="161.1" y="309.4" width="16.7" height="8.8"/>
-    <rect id="_251" class="st3" x="161.1" y="292.1" width="16.7" height="8.8"/>
-    <rect id="_249" class="st3" x="161.1" y="274.5" width="16.7" height="8.8"/>
-    <rect id="_247" class="st3" x="161.1" y="256.9" width="16.7" height="8.8"/>
-    <rect id="_207" class="st3" x="54.1" y="370.3" width="8.7" height="16.8"/>
-    <rect id="_205" class="st3" x="71.7" y="370.3" width="9.2" height="16.8"/>
-    <rect id="_203" class="st3" x="89.3" y="370.3" width="8.8" height="16.8"/>
     <rect id="h" class="st11" x="138.4" y="324.3" width="7.8" height="9"/>
     <rect id="i" class="st11" x="103.4" y="329.1" width="10.8" height="7.6"/>
     <rect id="j" class="st11" x="86.2" y="329.1" width="10.8" height="7.6"/>
@@ -230,8 +230,8 @@
     <rect id="gg" class="st11" x="82.3" y="499.2" width="12.9" height="13.5"/>
     <rect id="hh" class="st11" x="96.3" y="499.2" width="12.9" height="13.5"/>
     <rect id="ii" class="st11" x="110.4" y="499.2" width="12.9" height="13.5"/>
-    <rect id="ankeny" class="st0" x=".7" y="396.5" width="23.6" height="58.8"/>
-    <rect id="burnside" class="st0" x="183.1" y="396.5" width="23.6" height="58.8"/>
+    <rect id="ankeny" class="st0" x="-8" y="396.5" width="60" height="65"/>
+    <rect id="burnside" class="st0" x="156" y="396.5" width="60" height="65"/>
   </g>
   <g id="Layer_4">
     <rect id="arium" class="st0" x="86.4" y="588.8" width="50" height="14.5"/>
