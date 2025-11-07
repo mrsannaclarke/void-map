@@ -109,6 +109,14 @@
       color:var(--text-primary);
       font-weight:600; font-size:14px;
     }
+
+    /* Normalize booked row title to match list item size */
+    .results-panel .results-group .result-title{
+      font-size:14px;
+      font-weight:600;
+      margin:0 0 4px;
+      line-height:1.2;
+    }
     .results-panel .results-group a:hover{background:rgba(255,255,255,.1); border-color:rgba(124,201,255,.45)}
     .results-panel .muted{color:var(--text-muted); font-weight:500}
 
@@ -456,6 +464,7 @@
       const svgFallback = document.getElementById("svg-fallback");
       const statusEl = document.getElementById("status");
       const notesPanel = document.querySelector('.results-panel');
+      window.__LAST_LIST_KEY = null; // remember last legend key rendered
       const LEGEND_FILTERS = {
         streetfair: {
           title: 'Street Fair — Saturday Only',
@@ -501,7 +510,7 @@ groupResolver: ({ shortLabel, booth, csv }) => {
         },
         small_deluxe: {
           title: 'Small Deluxe — Artist Booth',
-          boothTypes: ['SDL'],
+          boothTypes: ['SDL','SSDL'],
           groupBy: null,
 groupResolver: ({ booth, csv }) => {
   const src = String(booth || (csv && csv.booth_name) || '').trim();
@@ -616,6 +625,33 @@ groupResolver: ({ booth, csv }) => {
         return null;
       }
 
+      // Helper: derive a primary occupant link from either social or name
+      function derivePrimaryOccupantLink_(spaceKey){
+        const occMap = (window.__VOID_OCCUPANTS || {});
+        const occ = occMap[spaceKey] || {};
+        const primary = (Array.isArray(occ.groups) && occ.groups.length) ? occ.groups[0] : null;
+
+        const name = String((primary && primary.name) || occ.name || '').trim();
+        let rawSocial = String((primary && primary.social) || occ.social || '').trim();
+
+        // Normalize to href first
+        let href = normalizeSocialHref_(rawSocial);
+
+        // If no href yet, scan the combined text for a domain or @handle
+        if (!href){
+          const scan = (rawSocial + ' ' + name).trim();
+          let m = scan.match(/([a-z0-9.-]+\.[a-z]{2,})(?:\/\S*)?/i);
+          if (m) {
+            href = normalizeSocialHref_(m[1]);
+          } else {
+            m = scan.match(/@([a-z0-9._]{2,})/i);
+            if (m) href = normalizeSocialHref_('@' + m[1]);
+          }
+        }
+
+        return { name, href };
+      }
+
       function disableLinkWrapper_(node) {
         const link = node && node.closest && node.closest("a");
         if (!link) return;
@@ -679,6 +715,20 @@ groupResolver: ({ booth, csv }) => {
           }
         });
       }
+      // Helper: refresh occupants/colors and re-render currently selected list
+      async function refreshOccupantsAndRerender(){
+        try{
+          const svg = window.__VOID_SVG;
+          const mapData = window.__VOID_MAPDATA;
+          if (!svg || !mapData) return;
+          await applyOccupantsToSvg_(svg, mapData);
+          const key = window.__LAST_LIST_KEY;
+          if (key){ try { renderResultsForKey(mapData, key); } catch(_){} }
+        }catch(e){ console.warn('refreshOccupantsAndRerender error', e); }
+      }
+      // Expose manual hook
+      window.refreshNotes = refreshOccupantsAndRerender;
+
       function occupantArrayForSpaceKey(spaceKey){
         const occMap = (window.__VOID_OCCUPANTS || {});
         const entry = occMap[spaceKey];
@@ -718,8 +768,10 @@ groupResolver: ({ booth, csv }) => {
           frontSvg.id = "map-svg";
           backSvg.id = "map-svg-back";
 
-          svgHostBack.appendChild(backSvg);
-          svgHost.appendChild(frontSvg);
+        svgHostBack.appendChild(backSvg);
+        svgHost.appendChild(frontSvg);
+        // Expose front SVG for later refresh calls
+        window.__VOID_SVG = frontSvg;
 
           // Ensure a top-most label layer inside the front SVG
           let labelLayer = frontSvg.querySelector('#label-layer');
@@ -741,16 +793,34 @@ groupResolver: ({ booth, csv }) => {
           matchVisualLabelSize(frontSvg, '131');
           // Custom multi-line labels for specific shapes (runs after auto-labels)
           addCustomOverlayLabels(frontSvg);
-          // Expose mapData globally for later lookups and overlay occupants
-          window.__VOID_MAPDATA = mapData;
-          // Overlay live occupants (colors + click disabling), with type-based full colors
-          applyOccupantsToSvg_(frontSvg, mapData);
-          // Quick-start renderer to mirror the minimal hookup instructions:
-          window.renderLegendAndMap = function(listKey){
-            try{
-              renderResultsForKey(window.__VOID_MAPDATA, String(listKey));
-            }catch(e){ console.warn('renderLegendAndMap error', e); }
-          };
+          // Overlay live occupants (colors + click disabling), with type-based full colors.
+          // Wait for occupants to finish loading before exposing helpers so the Notes
+          // list renders with fresh data immediately.
+          const occReady = applyOccupantsToSvg_(frontSvg, mapData);
+          window.__OCC_PROM = occReady;
+          occReady.then(() => {
+            // Expose mapData globally for later lookups
+            window.__VOID_MAPDATA = mapData;
+            // Quick-start renderer to mirror the minimal hookup instructions:
+            window.renderLegendAndMap = function(listKey){
+              try{
+                renderResultsForKey(window.__VOID_MAPDATA, String(listKey));
+              }catch(e){ console.warn('renderLegendAndMap error', e); }
+            };
+            // Light auto-refresh so newly posted bookings reformat automatically
+            if (!window.__VOID_AUTOREFRESH){
+              window.__VOID_AUTOREFRESH = setInterval(refreshOccupantsAndRerender, 60000); // 1×/min
+            }
+          }).catch((e) => {
+            console.warn('applyOccupantsToSvg_ error', e);
+            // Still expose mapData so the UI remains usable
+            window.__VOID_MAPDATA = mapData;
+            window.renderLegendAndMap = function(listKey){
+              try{
+                renderResultsForKey(window.__VOID_MAPDATA, String(listKey));
+              }catch(err){ console.warn('renderLegendAndMap error', err); }
+            };
+          });
           // status hidden in embed mode
           if (statusEl) statusEl.innerHTML = "";
         })
@@ -1338,6 +1408,19 @@ groupResolver: ({ booth, csv }) => {
       }
 
       function renderResultsForKey(mapData, key){
+        // Render now; if occupants are still loading, schedule a one-time re-render
+        (function maybeRerenderWhenOccupantsArrive(){
+          if (window.__VOID_OCCUPANTS) return;
+          const p = window.__OCC_PROM;
+          if (p && typeof p.then === 'function') {
+            p.then(() => {
+              if (window.__LAST_LIST_KEY === key) {
+                try { renderResultsForKey(mapData, key); } catch(_) {}
+              }
+            });
+          }
+        })();
+        window.__LAST_LIST_KEY = key;
         const spec = LEGEND_FILTERS[key];
         if(!spec || !notesPanel) return;
         const { container, count } = buildListFromData(mapData, spec);
@@ -1368,6 +1451,17 @@ groupResolver: ({ booth, csv }) => {
           const csv = payload && payload.csv ? payload.csv : null;
           if(!csv) continue;
           if (!isPublishedKey_(mapData, id)) continue;
+          // Respect per-shape hide flag for legend/nav rendering
+          const hideInNav =
+            (payload && (
+              payload.hide_in_nav === true ||
+              String(payload.hide_in_nav).toLowerCase() === 'true'
+            )) ||
+            (csv && (
+              csv.hide_in_nav === true ||
+              String(csv.hide_in_nav).toLowerCase() === 'true'
+            ));
+          if (hideInNav) continue;
           const type = String(csv.booth_type || '').trim();
           if(!wantTypes.has(type)) continue;
           const building = String(csv.building_label || '').trim();
@@ -1389,7 +1483,10 @@ groupResolver: ({ booth, csv }) => {
             label,
             shortLabel: booth,
             building,
-            url
+            url,
+            csv,
+            payload,
+            booth_type: type
           };
           if(transformRow) transformRow(row, context);
           rows.push(row);
@@ -1459,7 +1556,7 @@ groupResolver: ({ booth, csv }) => {
 
               // Capacity & occupancy summary
               const boothType = (r && r.csv && r.csv.booth_type) ? String(r.csv.booth_type).trim() : (r.booth_type || '');
-              const cap = resolveCapacityFor(spaceKey, boothType, r.csv && r.csv.capacity_1_to_4);
+              const cap = resolveCapacityFor(spaceKey, boothType, (r.csv && r.csv.capacity_1_to_4));
               const groups = spaceKey ? occupantArrayForSpaceKey(spaceKey) : [];
 
               // If feed has explicit status for this spaceKey, prefer that:
@@ -1474,38 +1571,38 @@ groupResolver: ({ booth, csv }) => {
 
               // If the space is fully booked and we have occupant info, show a single tidy line
               if (isFull && groups && groups.length) {
-                const primary = groups[0] || {};
-                const name = (primary.name || '').trim();
-                const rawSocial = (primary.social || '').trim();
-                const href = normalizeSocialHref_(rawSocial) || (rawSocial && rawSocial.indexOf('.') !== -1 ? (rawSocial.indexOf('http') === 0 ? rawSocial : ('https://' + rawSocial)) : null);
+                // Use centralized derivation so every booked room auto-links
+                const { name, href } = derivePrimaryOccupantLink_(spaceKey);
 
-                // Make the LI itself the styled block so it matches non-booked items visually
-                li.className = 'nolink';
+                // Title line: e.g., "Room 140"
+                const title = document.createElement('div');
+                title.className = 'result-title';
+                title.textContent = textValue;
+                li.appendChild(title);
 
-                // Room label text (no hyphen, no "Fully Booked" suffix)
-                const labelText = document.createElement('span');
-                labelText.textContent = textValue + ' ';
-                li.appendChild(labelText);
+                // Pill line below the title
+                const pill = document.createElement('div');
+                pill.className = 'nolink';
 
-                // Link the name when possible (name is preferred link text)
                 if (href && name) {
                   const a = document.createElement('a');
                   a.href = href; a.target = '_blank'; a.rel = 'noopener';
                   a.textContent = name;
-                  li.appendChild(a);
+                  pill.appendChild(a);
                 } else if (name) {
-                  const txt = document.createElement('span'); txt.textContent = name; li.appendChild(txt);
+                  const span = document.createElement('span');
+                  span.textContent = name;
+                  pill.appendChild(span);
                 } else if (href) {
                   const a = document.createElement('a');
                   a.href = href; a.target = '_blank'; a.rel = 'noopener';
-                  if (/instagram\.com/i.test(href)) {
-                    a.textContent = rawSocial.replace(/^@/, '') || href.replace(/^https?:\/\//,'').replace(/^www\./,'');
-                  } else {
-                    try { a.textContent = (new URL(href)).host.replace(/^www\./,''); } catch(e){ a.textContent = rawSocial || href; }
-                  }
-                  li.appendChild(a);
+                  a.textContent = /instagram\.com/i.test(href)
+                    ? (function(u){ const m=u.match(/instagram\.com\/([^\/?#]+)/i); return m? m[1] : href; })(href)
+                    : (function(u){ try { return (new URL(u)).host.replace(/^www\./,''); } catch(_) { return href; } })(href);
+                  pill.appendChild(a);
                 }
 
+                li.appendChild(pill);
               } else {
                 // fallback to original behavior when not fully booked or no occupant info
                 const makeLine = () => {
@@ -1573,7 +1670,7 @@ groupResolver: ({ booth, csv }) => {
 
             // Capacity & occupancy summary
             const boothType = (r && r.csv && r.csv.booth_type) ? String(r.csv.booth_type).trim() : (r.booth_type || '');
-            const cap = resolveCapacityFor(spaceKey, boothType, r.csv && r.csv.capacity_1_to_4);
+            const cap = resolveCapacityFor(spaceKey, boothType, (r.csv && r.csv.capacity_1_to_4));
             const groups = spaceKey ? occupantArrayForSpaceKey(spaceKey) : [];
 
             // If feed has explicit status for this spaceKey, prefer that:
@@ -1588,38 +1685,38 @@ groupResolver: ({ booth, csv }) => {
 
             // If the space is fully booked and we have occupant info, show a single tidy line
             if (isFull && groups && groups.length) {
-              const primary = groups[0] || {};
-              const name = (primary.name || '').trim();
-              const rawSocial = (primary.social || '').trim();
-              const href = normalizeSocialHref_(rawSocial) || (rawSocial && rawSocial.indexOf('.') !== -1 ? (rawSocial.indexOf('http') === 0 ? rawSocial : ('https://' + rawSocial)) : null);
+              // Use centralized derivation so every booked room auto-links
+              const { name, href } = derivePrimaryOccupantLink_(spaceKey);
 
-              // Make the LI itself the styled block so it matches non-booked items visually
-              li.className = 'nolink';
+              // Title line: e.g., "Room 140"
+              const title = document.createElement('div');
+              title.className = 'result-title';
+              title.textContent = textValue;
+              li.appendChild(title);
 
-              // Room label text (no hyphen, no "Fully Booked" suffix)
-              const labelText = document.createElement('span');
-              labelText.textContent = textValue + ' ';
-              li.appendChild(labelText);
+              // Pill line below the title
+              const pill = document.createElement('div');
+              pill.className = 'nolink';
 
-              // Link the name when possible (name is preferred link text)
               if (href && name) {
                 const a = document.createElement('a');
                 a.href = href; a.target = '_blank'; a.rel = 'noopener';
                 a.textContent = name;
-                li.appendChild(a);
+                pill.appendChild(a);
               } else if (name) {
-                const txt = document.createElement('span'); txt.textContent = name; li.appendChild(txt);
+                const span = document.createElement('span');
+                span.textContent = name;
+                pill.appendChild(span);
               } else if (href) {
                 const a = document.createElement('a');
                 a.href = href; a.target = '_blank'; a.rel = 'noopener';
-                if (/instagram\.com/i.test(href)) {
-                  a.textContent = rawSocial.replace(/^@/, '') || href.replace(/^https?:\/\//,'').replace(/^www\./,'');
-                } else {
-                  try { a.textContent = (new URL(href)).host.replace(/^www\./,''); } catch(e){ a.textContent = rawSocial || href; }
-                }
-                li.appendChild(a);
+                a.textContent = /instagram\.com/i.test(href)
+                  ? (function(u){ const m=u.match(/instagram\.com\/([^\/?#]+)/i); return m? m[1] : href; })(href)
+                  : (function(u){ try { return (new URL(u)).host.replace(/^www\./,''); } catch(_) { return href; } })(href);
+                pill.appendChild(a);
               }
 
+              li.appendChild(pill);
             } else {
               // fallback to original behavior when not fully booked or no occupant info
               const makeLine = () => {

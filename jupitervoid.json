@@ -3220,6 +3220,7 @@
     },
     "m1": {
       "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-std51-20260522000000",
+      "hide_in_nav": true,
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L1",
@@ -3240,6 +3241,7 @@
     },
     "m": {
       "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-std51-20260522000000",
+      "hide_in_nav": true,
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L1",
@@ -3259,6 +3261,7 @@
       }
     },
     "n1": {
+      "hide_in_nav": true,
       "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-sx94r-20260522000000",
       "csv": {
         "building_label": "Jupiter Original",
@@ -3280,6 +3283,7 @@
     },
     "n": {
       "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-sx94r-20260522000000",
+      "hide_in_nav": true,
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L1",
