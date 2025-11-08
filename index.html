@@ -88,7 +88,7 @@
     }
     .legend-swatches::-webkit-scrollbar{ display:none }
     .legend-swatch{ display:flex; align-items:center; gap:8px; font-size:13px; font-weight:500; color:var(--text-primary); padding:6px 10px; border-radius:12px; background:rgba(255,255,255,.06); border:1px solid var(--chip-border); backdrop-filter:blur(10px); flex:0 0 auto }
-    .legend-chip{ width:10px; height:10px; border-radius:5px; border:1px solid rgba(255,255,255,.25) }
+    .legend-chip{ width:12px; height:12px; border-radius:4px; border:1px solid rgba(255,255,255,.25) }
     .results-panel{ padding:10px 10px 10px }
 
     /* Results list styles */
@@ -239,9 +239,9 @@
         <div class="legend-row wayfinding" tabindex="0" role="button" aria-pressed="false">
           <div class="legend-label">Wayfinding</div>
           <div class="legend-swatches">
+            <div class="legend-swatch"><span class="legend-chip" style="background:#c5862b"></span>VOID</div>
             <div class="legend-swatch"><span class="legend-chip" style="background:#fbe100"></span>Exits</div>
             <div class="legend-swatch"><span class="legend-chip" style="background:#52419a"></span>Restrooms</div>
-            <div class="legend-swatch"><span class="legend-chip" style="background:#c5862b"></span>VOID</div>
           </div>
         </div>
       </div>
@@ -328,15 +328,15 @@
 
       // Base capacities by booth_type
       const CAPACITY_BY_TYPE = {
-        SDL: 1,      // Small Deluxe (3-digit hotel rooms single slot)
-        MDL: 3,      // Medium Deluxe
-        LDL: 4,      // Large Deluxe
-        XLDL: 8,     // Extra Large Deluxe (108)
-        STD10IN: 2,  // A-series (Arium/Flex) indoor 10x10
-        STD10TENT: 2,// Dream Tent artist booths 10x10
-        VND10TENT: 1,// Dream Tent vendors
-        VND10OUT: 1, // Jupiter Original vendors (outdoor)
-        VND10IN: 1,  // Jupiter NEXT vendors (indoor)
+        SDL: 1,        // Small Deluxe (3-digit hotel rooms single slot)
+        MDL: 3,        // Medium Deluxe
+        LDL: 4,        // Large Deluxe
+        XLDL: 8,       // Extra Large Deluxe (108)
+        STD10IN: 2,    // A-series (Arium/Flex) indoor 10x10
+        STD10TENT: 2,  // Dream Tent artist booths 10x10
+        VND10TENT: 1,  // Dream Tent vendors
+        VND10OUT: 1,   // Jupiter Original vendors (outdoor)
+        VND10IN: 1,    // Jupiter NEXT vendors (indoor)
         VND10STREET: 1 // Street Fair vendors
       };
 

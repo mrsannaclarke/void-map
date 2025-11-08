@@ -204,7 +204,7 @@
     <rect id="_4" class="st8" x="148.4" y="97.8" width="8.5" height="7.8"/>
     <rect id="_5" class="st8" x="148.4" y="106.8" width="8.5" height="7.8"/>
     <rect id="_6" class="st8" x="148.4" y="115.8" width="8.5" height="7.8"/>
-    <rect id="ina1" class="st13" x="70.7" y="35.8" width="38.9" height="78"/>
+    <rect id="ina1" class="st13" x="70.7" y="36" width="38.1" height="77"/>
     <rect id="ina2" class="st4" x="72.3" y="232.5" width="34.2" height="73.6"/>
     <polygon id="sgphlb" class="st1" points="25.1 527.2 25.1 623.2 73 623.2 73 552.6 79.2 552.6 79.2 516.6 64.9 516.6 65 527.5 25.1 527.2"/>
     <rect id="hlblable" class="st2" x="26.2" y="527.8" width="45.7" height="94.5"/>
