@@ -1,0 +1,1982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <base target="_blank">
+  <title>Jupiter Void Map</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --maxw: 1100px;
+      --bg-start:#0c1333; --bg-mid:rgb(19, 42, 84); --bg-end:#2d0f54;
+      --panel-bg: rgba(11,19,38,.72);
+      --panel-inner: rgba(17,28,52,.65);
+      --panel-border: rgba(255, 255, 255, 0.167);
+      --chip-border: rgba(255,255,255,.16);
+      --card-shadow: 0 24px 48px rgba(6,10,25,.55);
+      --text-primary:#f4f6ff; --text-muted: rgba(244,246,255,.7);
+      --accent:#7cc9ff; --accent-strong:#a2d5fa;
+      --sleep-available-start:#288699;
+      --sleep-available-end:#ffffff;
+      --sleep-full:#ffffff;
+    }
+
+    *,*::before,*::after{ box-sizing:border-box }
+    html,body{ min-height:100% }
+
+    body{
+      margin:0; padding:10px 10px 10px; gap:8px;
+      display:flex; flex-direction:column; align-items:center;
+      font-family:"Montserrat","Segoe UI",Helvetica,Arial,sans-serif;
+      background:linear-gradient(135deg,var(--bg-start),var(--bg-mid) 48%,var(--bg-end));
+      color:var(--text-primary);
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    }
+
+    /* Header band */
+    header.header-band{
+      width:min(100%,var(--maxw)); margin:0 auto; text-align:center;
+      padding:10px 10px 10px; border-radius:6px;
+      background:linear-gradient(160deg,rgba(27,43,73,.92),rgba(15,26,48,.75));
+      border:1px solid var(--panel-border); box-shadow:var(--card-shadow);
+      backdrop-filter:blur(14px);
+    }
+    /* Embed mode: hide page title band */
+    header.header-band{ display:none }
+    /* Embed mode: hide bottom tip/status */
+    #status{ display:none }
+    header.header-band h1{ margin:4px 0 6px; font-size:28px; font-weight:700; letter-spacing:.04em }
+    header.header-band p{ margin:0; font-size:15px; color:var(--text-muted) }
+
+    /* Row above map: legend + notes */
+    .map-top{
+      width:min(100%,var(--maxw));
+      display:grid;
+      grid-template-columns:1fr;
+      gap:8px;
+      align-items:start;
+      margin:0 auto;
+      justify-items:stretch;
+    }
+    .map-top > *{ min-width:0 }
+
+    .panel{ background:var(--panel-bg); border:1px solid var(--panel-border); border-radius:24px; box-shadow:var(--card-shadow); backdrop-filter:blur(14px) }
+    .legend{ padding:10px 10px }
+    .legend h2,.results-panel h2{ margin:0 0 6px; font-size:20px; font-weight:600; text-transform:uppercase; letter-spacing:.08em; color:var(--accent) }
+    .legend h2 a.key-jump{ color:var(--accent); text-decoration:none; outline:none }
+    .legend h2 a.key-jump:focus{ text-decoration:underline }
+    @keyframes notesFlash {
+      0% { box-shadow:0 0 0 0 rgba(63,161,255,.0), inset 0 0 0 0 rgba(63,161,255,.0) }
+      30% { box-shadow:0 0 0 4px rgba(63,161,255,.25), inset 0 0 0 2px rgba(63,161,255,.35) }
+      100% { box-shadow:var(--card-shadow), inset 0 0 0 0 rgba(63,161,255,0) }
+    }
+    .results-panel.flash-notes{ animation: notesFlash 900ms ease; }
+    .legend-grid{ display:grid; grid-template-columns:1fr; gap:6px }
+
+    .legend-row{
+      display:grid; grid-template-columns:1fr auto; align-items:center; gap:8px;
+      border:1px solid var(--panel-border); border-radius:10px; padding:6px 10px;
+      background:var(--panel-inner); transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease;
+      overflow:hidden; cursor:pointer;
+    }
+    .legend-row:hover{ transform:translateY(-2px); box-shadow:0 12px 24px rgba(7,13,26,.45); border-color:rgba(124,201,255,.4); background:rgba(64, 122, 238, 0.263) }
+    /* Sleep gradient chips (45deg) */
+    .legend-chip.sleep-available {
+      background: linear-gradient(
+        45deg,
+        var(--sleep-available-start),
+        var(--sleep-available-end)
+      );
+    }
+    .legend-chip.sleep-full {
+      background: var(--sleep-full);
+    }
+
+    /* Hide 'Wayfinding' label and center chips */
+    .legend-row.wayfinding .legend-label { display:none; }
+    .legend-row.wayfinding .legend-swatches { justify-content:center; }
+    .legend-label{ font-size:15px; font-weight:600; text-align:left; padding:0 }
+    /* Keep chips on a single line; allow horizontal scroll on very small screens */
+    .legend-swatches{
+      display:flex; flex-wrap:nowrap; gap:8px; justify-content:flex-end;
+      white-space:nowrap; overflow-x:auto; -ms-overflow-style:none; scrollbar-width:none;
+    }
+    .legend-swatches::-webkit-scrollbar{ display:none }
+    .legend-swatch{ display:flex; align-items:center; gap:8px; font-size:13px; font-weight:500; color:var(--text-primary); padding:6px 10px; border-radius:12px; background:rgba(255,255,255,.06); border:1px solid var(--chip-border); backdrop-filter:blur(10px); flex:0 0 auto }
+    .legend-chip{ width:22px; height:12px; border-radius:4px; border:1px solid rgba(255,255,255,.25) }
+    .results-panel{ padding:10px 10px 10px }
+
+    /* Results list styles */
+    .results-panel .results-list{display:block; margin:6px 0 0; padding:0}
+    .results-panel .results-group{margin:12px 0 16px}
+    .results-panel .results-group h3{margin:0 0 8px; font-size:16px; font-weight:700; letter-spacing:.02em; color:var(--text-primary)}
+    .results-panel .results-group h3{ color: var(--accent-strong); }
+    .results-panel .results-group ul{list-style:none; margin:0; padding:0; display:grid; grid-template-columns:1fr; gap:8px}
+    .results-panel .results-group li{margin:0; padding:0}
+    .results-panel .results-group a,
+    .results-panel .results-group .nolink{
+      display:block; width:100%;
+      padding:10px 12px;
+      border-radius:12px;
+      background:rgba(255,255,255,.06);
+      border:1px solid var(--chip-border);
+      text-decoration:none;
+      color:var(--text-primary);
+      font-weight:600; font-size:14px;
+    }
+
+    /* Normalize booked row title to match list item size */
+    .results-panel .results-group .result-title{
+      font-size:14px;
+      font-weight:600;
+      margin:0 0 4px;
+      line-height:1.2;
+    }
+    .results-panel .results-group a:hover{background:rgba(255,255,255,.1); border-color:rgba(124,201,255,.45)}
+    .results-panel .muted{color:var(--text-muted); font-weight:500}
+
+    /* Map table container */
+    .map-table-wrap{ width:min(100%,var(--maxw)); border-radius:24px; box-shadow:var(--card-shadow); overflow:hidden; border:1px solid var(--panel-border) }
+    table.map-table{ width:100%; border-collapse:collapse; border-spacing:0; background:transparent }
+    table.map-table td{ padding:0 }
+
+    /* Map frame (inside table cell) */
+    .map-frame{ position:relative; width:100%; margin:0; padding:0; background:transparent }
+    .svg-layer{ position:absolute; inset:0; width:100%; height:100%; pointer-events:none }
+    #map-base{ position:relative; z-index:0; display:block; width:100%; height:auto; filter:drop-shadow(0 8px 18px rgba(0,0,0,.35)) invert(1) contrast(.95) brightness(1.05) }
+    #svg-root{ pointer-events:none }
+    #svg-root svg{ width:100%; height:100%; pointer-events:auto }
+    #svg-root-back svg{ width:100%; height:100%; pointer-events:none }
+    #svg-fallback{ position:absolute; inset:0; width:100%; height:100%; z-index:0; pointer-events:none }
+
+    /* ===== Label typography (shared) ===== */
+    .shape-label,
+    .label-text{
+      fill:#ffffff;
+      stroke:#000000;
+      stroke-width:1px;
+      paint-order: stroke fill;
+      font-family:"Montserrat","Arial",sans-serif;
+      font-weight:800;
+      letter-spacing:.02em;
+      pointer-events:none;
+      text-shadow:
+        0 1px 0 rgba(0,0,0,.25),
+        0 -1px 0 rgba(0,0,0,.25),
+        1px 0 0 rgba(0,0,0,.25),
+        -1px 0 0 rgba(0,0,0,.25);
+    }
+    /* ===== Interaction & hover ===== */
+    .shape-interactive{ cursor:pointer; transition:filter 180ms ease, opacity 180ms ease }
+    /* Lighten on hover/focus instead of lowering opacity */
+    .shape-interactive.shape-hover{ opacity:1; filter:brightness(1.25) saturate(1.05) }
+    .shape-interactive:focus,
+    .shape-interactive:active,
+    .shape-interactive:focus-visible{
+      outline:none;
+      box-shadow:none;
+      filter:none;
+    }
+    *{ -webkit-tap-highlight-color: transparent; }
+    .shape-interactive:focus-visible{ outline:2px solid #ffd95e; outline-offset:2px }
+
+    /* Status/notes */
+    #status{ width:min(100%,var(--maxw)); margin:0 auto; padding:18px 24px; font-size:14px; color:var(--text-muted); background:var(--panel-bg); border:1px solid var(--panel-border); border-radius:22px; box-shadow:var(--card-shadow); backdrop-filter:blur(14px) }
+
+    a{ color:var(--accent); text-decoration:underline } a:hover{ color:var(--accent-strong) }
+
+    @media (max-width:900px){ body{ padding:30px 14px 44px; gap:22px } .legend{ padding:20px } }
+    @media (max-width:640px){
+      header.header-band h1{ font-size:24px }
+    }
+    @media (prefers-reduced-motion:reduce){    .legend-row{ transition:none } }
+  </style>
+</head>
+<body>
+
+  <div class="map-top">
+    <section class="legend panel" aria-label="Booth legend">
+      <h2>Navigation Key<a class="key-jump" href="#notes"> </a></h2>
+      <div class="legend-grid">
+        <div class="legend-row" data-list-key="streetfair" tabindex="0" role="button" aria-pressed="false">
+          <div class="legend-label">Street Fair Vendor Booths<br>Saturday Only</div>
+          <div class="legend-swatches">
+            <div class="legend-swatch"><span class="legend-chip" style="background:#af003f"></span>Available</div>
+            <div class="legend-swatch"><span class="legend-chip" style="background:#f25f94"></span>Full</div>
+          </div>
+        </div>
+        <div class="legend-row" data-list-key="vendor" tabindex="0" role="button" aria-pressed="false">
+          <div class="legend-label">Vendor Booths</div>
+          <div class="legend-swatches">
+            <div class="legend-swatch"><span class="legend-chip" style="background:#e05600"></span>Available</div>
+            <div class="legend-swatch"><span class="legend-chip" style="background:#ff9959"></span>Full</div>
+          </div>
+        </div>
+        <div class="legend-row" data-list-key="ariumflex" tabindex="0" role="button" aria-pressed="false">
+          <div class="legend-label">Arium / Flex Lounge<br>Artist Booths 10x10</div>
+          <div class="legend-swatches">
+            <div class="legend-swatch"><span class="legend-chip" style="background:#3d7ef2"></span>Available</div>
+            <div class="legend-swatch"><span class="legend-chip" style="background:#78b0ff"></span>Full</div>
+          </div>
+        </div>
+        <div class="legend-row" data-list-key="dreamtent_artist" tabindex="0" role="button" aria-pressed="false">
+          <div class="legend-label">Dream Tent<br>Artist Booths 10x10</div>
+          <div class="legend-swatches">
+            <div class="legend-swatch"><span class="legend-chip" style="background:#00e5ff"></span>Available</div>
+            <div class="legend-swatch"><span class="legend-chip" style="background:#8ff0f5"></span>Full</div>
+          </div>
+        </div>
+        <div class="legend-row" data-list-key="small_deluxe" tabindex="0" role="button" aria-pressed="false">
+          <div class="legend-label">Small Deluxe<br>Artist Booths</div>
+          <div class="legend-swatches">
+            <div class="legend-swatch"><span class="legend-chip" style="background:#51b848"></span>Available</div>
+            <div class="legend-swatch"><span class="legend-chip" style="background:#b9f2b3"></span>Full</div>
+          </div>
+        </div>
+        <div class="legend-row" data-list-key="medium_deluxe" tabindex="0" role="button" aria-pressed="false">
+          <div class="legend-label">Medium Deluxe<br>Artist Booths</div>
+          <div class="legend-swatches">
+            <div class="legend-swatch"><span class="legend-chip" style="background:#dd3ac6"></span>Available</div>
+            <div class="legend-swatch"><span class="legend-chip" style="background:#f599ec"></span>Full</div>
+          </div>
+        </div>
+        <div class="legend-row" data-list-key="large_deluxe" tabindex="0" role="button" aria-pressed="false">
+          <div class="legend-label">Large Deluxe<br>Artist Booths</div>
+          <div class="legend-swatches">
+            <div class="legend-swatch"><span class="legend-chip" style="background:#8551c8"></span>Available</div>
+            <div class="legend-swatch"><span class="legend-chip" style="background:#a27cef"></span>Full</div>
+          </div>
+        </div>
+        <!-- Sleep Rooms legend row -->
+        <div class="legend-row" data-list-key="sleep" tabindex="0" role="button" aria-pressed="false">
+          <div class="legend-label">Overnight Hotel Rooms</div>
+          <div class="legend-swatches">
+            <div class="legend-swatch">
+              <span class="legend-chip sleep-available"></span>Available
+            </div>
+            <div class="legend-swatch">
+              <span class="legend-chip sleep-full"></span>Full
+            </div>
+          </div>
+        </div>
+        <div class="legend-row wayfinding" tabindex="0" role="button" aria-pressed="false">
+          <div class="legend-label">Wayfinding</div>
+          <div class="legend-swatches">
+            <div class="legend-swatch"><span class="legend-chip" style="background:#c5862b"></span>Void Activations</div>
+            <div class="legend-swatch"><span class="legend-chip" style="background:#3108eb"></span>Restrooms</div>
+            <div class="legend-swatch"><span class="legend-chip" style="background:#fbe100"></span>Exits</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="results-panel panel" id="notes" aria-label="Info panel">
+      <h2>Notes</h2>
+      <p style="margin:0;color:var(--text-muted)">Click a shape on the map to open its booking page. Or click a row in the Key to see the full list for that group.</p>
+      <br>
+      <h2>Bundle perk</h2>
+      <p style="margin:0;color:var(--text-muted)">Use code <strong style="color:#a2d5fa">ALLWORKANDSOMEPLAY</strong> at checkout to get <strong>$100</strong> off when you bundle an <strong>Artist or Vendor Booth</strong> with an <strong>Overnight Hotel Room</strong> in one order. <br>One use per booking. Limited redemptions.</p>
+    </section>
+  </div>
+
+  <div class="map-table-wrap">
+    <table class="map-table" role="presentation">
+      <tr>
+        <td>
+          <div class="map-frame">
+            <div id="svg-root-back" class="svg-layer"></div>
+            <img src="jupiter.png" alt="Jupiter Void floor map" id="map-base">
+            <object id="svg-fallback" class="svg-layer" type="image/svg+xml" data="jupitermapv1.svg" aria-label="Map SVG fallback"></object>
+            <div id="svg-root" class="svg-layer"></div>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+
+  <section class="legend" id="status">
+    Loading interactive layer…
+  </section>
+
+  <script>
+    (function () {
+      const SVG_NS = "http://www.w3.org/2000/svg";
+      // Shapes that should always keep their original SVG fill
+      const PRESERVE_COLOR = new Set([
+        "_9thst","arium","bunker","command","dreambox","dreamtentroof",
+        "e1","e2","e3","e4","e5","e6","e7","e8","e9","e10","e11","sb","stage","thinktank"
+      ]);
+      // ===== Sizing knobs =====
+      // Label sizing caps
+      const MAX_LABEL_FONT_PX = 5;
+      const MIN_LABEL_FONT_PX = 4;
+      const SVG_URL = "jupitermapv1.svg";
+      const DATA_URL = "jupitervoid.json";
+      // Public-safe occupants feed (Google Apps Script Web App)
+      const FEED_URL = "https://script.google.com/macros/s/AKfycbyzpcszlKqLhTdV-ffkD86qwPG8kPQpKkdukG7q8-mbXMGF2xO9GpzTRukdKvvDgbDZQQ/exec";
+      // Colors for booked/available overrides (Small Deluxe example)
+      const BOOKED_FILL = "#b9f2b3";     // lighter green when fully booked
+      const AVAILABLE_FILL = "#51b848";  // base available color for SDL
+      // Full (booked) colors by booth_type (match legend)
+      const FULL_FILL_BY_TYPE = {
+        // Artist rooms
+        SDL: '#b9f2b3',   // Small Deluxe — Full
+        MDL: '#f599ec',   // Medium Deluxe — Full
+        LDL: '#a27cef',   // Large Deluxe — Full
+        XLDL: '#a27cef',  // Extra Large Deluxe (108) — Full (same family as Large)
+        SLEEP: '#ffffff', // Sleep Rooms — Occupied
+        // Arium / Flex (indoor 10x10)
+        STD10IN: '#78b0ff',
+        // Dream Tent artists (10x10)
+        STD10TENT: '#8ff0f5',
+        // Vendors
+        VND10TENT: '#ff9959',   // Dream Tent Vendors — Full
+        VND10OUT:  '#ff9959',   // Jupiter Original Vendors (outdoor) — Full
+        VND10IN:   '#ff9959',   // Jupiter NEXT Vendors (indoor) — Full
+        // Street Fair
+        VND10STREET: '#f25f94'  // Street Fair — Full
+      };
+      function ensureSleepGradient_(svgRoot) {
+        if (!svgRoot) return;
+        const svg = svgRoot.ownerSVGElement || svgRoot;
+        if (!svg) return;
+
+        let defs = svg.querySelector('defs');
+        if (!defs) {
+          defs = document.createElementNS(SVG_NS, 'defs');
+          svg.insertBefore(defs, svg.firstChild);
+        }
+
+        let grad = defs.querySelector('#sleepRoomGradient');
+        if (grad) return;
+
+        grad = document.createElementNS(SVG_NS, 'linearGradient');
+        grad.setAttribute('id', 'sleepRoomGradient');
+        grad.setAttribute('gradientUnits', 'objectBoundingBox');
+        grad.setAttribute('x1', '0');
+        grad.setAttribute('y1', '0');
+        grad.setAttribute('x2', '1');
+        grad.setAttribute('y2', '1');
+
+        const stop1 = document.createElementNS(SVG_NS, 'stop');
+        stop1.setAttribute('offset', '25%');
+        stop1.setAttribute('stop-color', '#288699'); // sleep available
+
+        const stop2 = document.createElementNS(SVG_NS, 'stop');
+        stop2.setAttribute('offset', '100%');
+        stop2.setAttribute('stop-color', '#ffffff'); // sleep secondary
+
+        grad.appendChild(stop1);
+        grad.appendChild(stop2);
+        defs.appendChild(grad);
+      }
+
+      // Minimal color helper used by simple hookups (optional)
+      function colorFor(spaceKey, isFull, baseColor, boothType){
+        if (!isFull) return baseColor;
+        if (boothType && FULL_FILL_BY_TYPE[boothType]) return FULL_FILL_BY_TYPE[boothType];
+        return baseColor;
+      }
+      // expose for debugging
+      window._voidColorFor = colorFor;
+      const INACTIVE_SHAPES = new Set([
+        "ina", "ina1", "ina2"
+      ]);
+      const ROTATE_LEFT_90 = new Set(['ankeny','burnside']);
+      const naturalStringCompare = (a, b) => String(a || '').localeCompare(String(b || ''), undefined, { numeric: true, sensitivity: 'base' });
+      const defaultRowComparator = (a, b) => naturalStringCompare(a && a.shortLabel, b && b.shortLabel);
+
+      // ===== MASTER CAPACITY + TICKET LOGIC (editable in one place) =====
+
+      // Base capacities by booth_type
+      const CAPACITY_BY_TYPE = {
+        SDL: 2,        // Small Deluxe (3-digit hotel rooms single slot)
+        MDL: 3,        // Medium Deluxe
+        LDL: 4,        // Large Deluxe
+        XLDL: 8,       // Extra Large Deluxe (108)
+        STD10IN: 2,    // A-series (Arium/Flex) indoor 10x10
+        STD10TENT: 2,  // Dream Tent artist booths 10x10
+        VND10TENT: 1,  // Dream Tent vendors
+        VND10OUT: 1,   // Jupiter Original vendors (outdoor)
+        VND10IN: 1,    // Jupiter NEXT vendors (indoor)
+        VND10STREET: 1 // Street Fair vendors
+      };
+
+      // Per-space overrides or flags
+      const CAPACITY_OVERRIDES = {
+        // Example: '117': 2,
+        // Example: 'a9': 2,
+      };
+      const SPACE_FLAGS = {
+        // Buy-out only test rooms (SSDL behavior) — any booking = full
+        '117': { buyoutOnly: true },
+        '217': { buyoutOnly: true }
+      };
+
+      // Ticket patterns → slot cost (and buyout flag)
+      // NOTE: The site JS only uses this if the feed includes ticket names per booking.
+      const TICKET_SLOTCOST_RULES = [
+        { rx: /buy[-\s]?out.*full\s*booth/i, slots: null, buyout: true },
+        { rx: /\bduo\b/i, slots: 2 },
+        { rx: /\bvendor\s*booth\b/i, slots: 1 },
+        { rx: /\bsingle\b|\bartist\s*slot\b/i, slots: 1 },
+        // 108 special (if ticket names are present in feed)
+        { rx: /\bhalf\s*booth.*\b4\b.*artists?/i, slots: 4 },
+        // Fallback
+        { rx: /.*/, slots: 1 }
+      ];
+
+      function resolveCapacityFor(spaceKey, boothType, csvCapRaw){
+        if (spaceKey && CAPACITY_OVERRIDES[spaceKey] != null) return CAPACITY_OVERRIDES[spaceKey];
+        const csvCap = parseInt(String(csvCapRaw||'').replace(/[^0-9]/g,''),10);
+        if (!Number.isNaN(csvCap) && csvCap > 0) return csvCap;
+        if (boothType && CAPACITY_BY_TYPE[boothType] != null) return CAPACITY_BY_TYPE[boothType];
+        return 1;
+      }
+
+      function slotCostForTicket(ticketName){
+        const name = String(ticketName||'').trim();
+        for (const rule of TICKET_SLOTCOST_RULES){
+          if (rule.rx.test(name)) return { slots: rule.slots ?? 0, buyout: !!rule.buyout };
+        }
+        return { slots: 1, buyout: false };
+      }
+
+      function summarizeFeedBookings(feedSpace){
+        // feedSpace may be of two shapes:
+        // 1) legacy: { name, social, status }
+        // 2) new: { groups:[{name,social,ticket?},...], status?, used_slots?, has_buyout?, capacity? }
+        const result = { used: 0, hasBuyout: false, groups: [] };
+
+        if (!feedSpace) return result;
+
+        if (Array.isArray(feedSpace.groups)){
+          result.groups = feedSpace.groups.slice(0, 12); // sane cap
+          // Prefer server-provided summary if present:
+          if (typeof feedSpace.used_slots === 'number') result.used = feedSpace.used_slots;
+          if (typeof feedSpace.has_buyout === 'boolean') result.hasBuyout = feedSpace.has_buyout;
+
+          if (result.used === 0 || result.hasBuyout === false){
+            // Derive from tickets if available
+            for (const g of result.groups){
+              const { slots, buyout } = slotCostForTicket(g.ticket);
+              result.hasBuyout = result.hasBuyout || buyout;
+              if (!buyout) result.used += (slots || 0);
+            }
+          }
+          return result;
+        }
+
+        // Legacy single occupant
+        if (feedSpace.name || feedSpace.social){
+          result.groups = [{ name: feedSpace.name || '', social: feedSpace.social || '' }];
+          // Assume single slot if legacy without tickets
+          result.used = 1;
+          result.hasBuyout = /buy[-\s]?out/i.test(String(feedSpace.ticket||'')); // rarely present
+        }
+
+        return result;
+      }
+
+      function computeFullStatus(spaceKey, boothType, csvCapRaw, feedSpace){
+        const flags = SPACE_FLAGS[spaceKey] || {};
+        if (flags.buyoutOnly && feedSpace){
+          // Any booking makes it full
+          const s = summarizeFeedBookings(feedSpace);
+          const any = (Array.isArray(s.groups) && s.groups.length > 0) || !!(feedSpace.name || feedSpace.social);
+          return { isFull: !!any, capacity: resolveCapacityFor(spaceKey, boothType, csvCapRaw), usedSlots: s.used, groups: s.groups };
+        }
+
+        const capacity = resolveCapacityFor(spaceKey, boothType, csvCapRaw);
+        const s = summarizeFeedBookings(feedSpace);
+        const serverStatus = String(feedSpace && feedSpace.status || '').toLowerCase();
+
+        let isFull = false;
+        if (serverStatus === 'full'){
+          isFull = true;
+        } else {
+          isFull = s.hasBuyout || (s.used >= capacity);
+        }
+        return { isFull, capacity, usedSlots: s.used, groups: s.groups };
+      }
+
+      // ===== Wayfinding label controls (matchers + explicit sizes) =====
+      const WAYFINDING_MATCHERS = [
+        /^(?:Bunker)$/i,
+        /^9th\\s+Street\\b.*Street\\s+Fair$/i,
+        /^Dream\\s*Tent\\s*Roof$/i,
+        /^(?:Stage)$/i,
+        /^Dream\\s*Box$/i,
+        /^Think\\s*Tank$/i,
+        /^Command\\s*Center$/i
+      ];
+
+      const WAYFINDING_SHRINK_SPEC = [
+        { rx:/^(?:Stage)$/i, fs:4.2 },
+        { rx:/^Dream\\s*Box$/i, fs:2 },
+        { rx:/^Think\\s*Tank$/i, fs:2 },
+        { rx:/^Command\\s*Center$/i, fs:2 },
+        { rx:/^Dream\\s*Tent\\s*Roof$/i, fs:4.2 },
+        { rx:/^9th\\s+Street\\b.*Street\\s+Fair$/i, fs:4.0 },
+        { rx:/^(?:Bunker)$/i, fs:4.2 }
+      ];
+
+      const svgHostBack = document.getElementById("svg-root-back");
+      const svgHost = document.getElementById("svg-root");
+      const svgFallback = document.getElementById("svg-fallback");
+      const statusEl = document.getElementById("status");
+      const notesPanel = document.querySelector('.results-panel');
+      window.__LAST_LIST_KEY = null; // remember last legend key rendered
+      const LEGEND_FILTERS = {
+        streetfair: {
+          title: 'Street Fair — Saturday Only',
+          boothTypes: ['VND10STREET'],
+          groupBy: null,
+          rowComparator: defaultRowComparator
+        },
+        vendor: {
+          title: 'Vendors',
+          boothTypes: ['VND10TENT','VND10OUT','VND10IN'],
+          groupBy: 'building_label',
+          headings: {
+            'Dream Tent': 'Jupiter Original - Dream Tent - (Tented / Outdoor)',
+            'Jupiter Original': 'Jupiter Original — Outdoor',
+            'Jupiter NEXT': 'Jupiter NEXT — Flex Lounge (Indoor)'
+          },
+          groupOrder: ['Dream Tent','Jupiter Original','Jupiter NEXT'],
+          useShortLabel: true,
+          dedupeKey: (row) => `${row.group || ''}::${row.shortLabel.toLowerCase()}`
+        },
+        ariumflex: {
+          title: 'Arium / Flex Lounge — Artist Booth 10×10',
+          boothTypes: ['STD10IN'],
+          groupBy: null,
+          restrictBuildings: ['Jupiter NEXT'],
+groupResolver: ({ shortLabel, booth, csv }) => {
+  const src = String(shortLabel || booth || (csv && csv.booth_name) || '').trim();
+  // Pull the A## booth number
+  const m = src.match(/\bA(\d{1,2})\b/i);
+  const n = m ? parseInt(m[1], 10) : NaN;
+  if (!isNaN(n) && n <= 2) return 'Arium';   // A1–A2
+  return 'Flex Lounge';                       // A3–A13
+},
+          rowComparator: defaultRowComparator
+        },
+        dreamtent_artist: {
+          title: 'Dream Tent — Artist Booth 10×10',
+          boothTypes: ['STD10TENT'],
+          groupBy: null,
+          restrictBuildings: ['Dream Tent'],
+          rowComparator: defaultRowComparator,
+          useShortLabel: true
+        },
+        small_deluxe: {
+          title: 'Small Deluxe — Artist Booth',
+          boothTypes: ['SDL','SSDL'],
+          groupBy: null,
+groupResolver: ({ booth, csv }) => {
+  const src = String(booth || (csv && csv.booth_name) || '').trim();
+  const m = src.match(/\b(\d{3})\b/);
+  const num = m ? parseInt(m[1], 10) : NaN;
+  if (!isNaN(num) && num >= 200) return 'Level 2 (Stair-Access Only)';
+  return 'Level 1 (Accessible)';
+},
+          headings: {
+            'Level 1 (Accessible)': 'Level 1 (Accessible)',
+            'Level 2 (Stair-Access Only)': 'Level 2 (Stair-Access Only)'
+          },
+          groupOrder: ['Level 1 (Accessible)','Level 2 (Stair-Access Only)'],
+          useShortLabel: true,
+          rowComparator: defaultRowComparator
+        },
+        medium_deluxe: {
+          title: 'Medium Deluxe — Artist Booth',
+          boothTypes: ['MDL'],
+          groupBy: null,
+          groupResolver: ({ booth, csv }) => {
+  const src = String(booth || (csv && csv.booth_name) || '').trim();
+  const m = src.match(/\b(\d{3})\b/);
+  const num = m ? parseInt(m[1], 10) : NaN;
+  if (!isNaN(num) && num >= 200) return 'Level 2 (Stair-Access Only)';
+  return 'Level 1 (Accessible)';
+},
+          headings: {
+            'Level 1 (Accessible)': 'Level 1 (Accessible)',
+            'Level 2 (Stair-Access Only)': 'Level 2 (Stair-Access Only)'
+          },
+          groupOrder: ['Level 1 (Accessible)','Level 2 (Stair-Access Only)'],
+          useShortLabel: true,
+          rowComparator: defaultRowComparator
+        },
+        large_deluxe: {
+          title: 'Large Deluxe — Artist Booth',
+          boothTypes: ['LDL','XLDL'],
+          groupBy: null,
+          groupResolver: ({ booth, csv }) => {
+  const src = String(booth || (csv && csv.booth_name) || '').trim();
+  const m = src.match(/\b(\d{3})\b/);
+  const num = m ? parseInt(m[1], 10) : NaN;
+  if (!isNaN(num) && num >= 200) return 'Level 2 (Stair-Access Only)';
+  return 'Level 1 (Accessible)';
+},
+          headings: {
+            'Level 1 (Accessible)': 'Level 1 (Accessible)',
+            'Level 2 (Stair-Access Only)': 'Level 2 (Stair-Access Only)'
+          },
+          groupOrder: ['Level 1 (Accessible)','Level 2 (Stair-Access Only)'],
+          useShortLabel: true,
+          rowComparator: defaultRowComparator
+        },
+        sleep: {
+          title: 'Sleep Rooms',
+          boothTypes: ['SLEEP'],
+          groupBy: null,
+          groupResolver: ({ booth, csv }) => {
+            const src = String(booth || (csv && csv.booth_name) || '').trim();
+            const m = src.match(/\b(\d{3})\b/);
+            if (!m) return null;
+            const room = m[1];
+
+            // Opener Queen
+            if (['203','205','207','213','215','217','218','231','233','235','239','247','249','251','253','117'].includes(room)) {
+              return 'opener';
+            }
+            // Entourage Double
+            if (['202','204','206','208','212','214','216'].includes(room)) {
+              return 'entourage';
+            }
+            // Headliner King
+            if (['219','221','224'].includes(room)) {
+              return 'headliner';
+            }
+            // Encore King
+            if (['210','220','222','223','244'].includes(room)) {
+              return 'encore';
+            }
+            return null;
+          },
+          headings: {
+            opener: 'Opener Queen [1 - 2]',
+            entourage: 'Entourage Double [2 - 4]',
+            headliner: 'Headliner King [1 - 2]',
+            encore: 'Encore King [1 - 2]'
+          },
+          groupOrder: ['opener','entourage','headliner','encore'],
+          useShortLabel: true,
+          rowComparator: defaultRowComparator
+        }
+      };
+
+      const cssEscape = window.CSS && window.CSS.escape
+        ? window.CSS.escape.bind(window.CSS)
+        : (value) => value.replace(/([.*+?^${}()|[\\]\\\\])/g, "\\\\$1");
+
+      // --- Occupants feed helpers ---
+      async function fetchOccupants_() {
+        try {
+          const res = await fetch(FEED_URL + "?v=" + Date.now(), { cache: "no-store" });
+          if (!res.ok) throw new Error("Feed HTTP " + res.status);
+          const data = await res.json();
+          return (data && data.spaces) ? data.spaces : {};
+        } catch (e) {
+          console.warn("Occupants feed error:", e);
+          return {};
+        }
+      }
+      // Minimal wrapper used by the quick-start snippet
+      async function getOccupancy(){
+        return fetchOccupants_();
+      }
+      // expose for quick console checks
+      window.getOccupancy = getOccupancy;
+
+      function normalizeSocialHref_(raw) {
+        const s = String(raw || '').trim();
+        if (!s) return null;
+
+        // If value begins with '@' and contains a dot, treat it as a website (user provided @www.example.com)
+        if (s.startsWith('@') && s.indexOf('.') !== -1) {
+          const candidate = s.replace(/^@+/, '');
+          return /^https?:\/\//i.test(candidate) ? candidate : ('https://' + candidate);
+        }
+
+        // If value begins with '@' and no dot, treat as an Instagram handle
+        if (s.startsWith('@')) {
+          const handle = s.replace(/^@+/, '');
+          return 'https://instagram.com/' + handle;
+        }
+
+        // If it already looks like a full URL
+        if (/^https?:\/\//i.test(s)) return s;
+
+        // If it looks like a bare domain (example.com or www.example.com)
+        if (/^[a-z0-9.-]+\.[a-z]{2,}([\/?#].*)?$/i.test(s)) {
+          const domain = s.replace(/^https?:\/\//i, '').replace(/^www\./i, '');
+          return 'https://' + domain;
+        }
+
+        // If string contains an @handle somewhere, prefer that as an Instagram link
+        const m = s.match(/@([a-z0-9._]{2,})/i);
+        if (m) return 'https://instagram.com/' + m[1];
+
+        // If it contains instagram.com somewhere, ensure it has a protocol
+        if (/instagram\.com/i.test(s)) return (/^https?:\/\//i.test(s) ? s : 'https://' + s);
+
+        return null;
+      }
+
+      // Helper: derive a primary occupant link from either social or name
+      function derivePrimaryOccupantLink_(spaceKey){
+        const occMap = (window.__VOID_OCCUPANTS || {});
+        const occ = occMap[spaceKey] || {};
+        const primary = (Array.isArray(occ.groups) && occ.groups.length) ? occ.groups[0] : null;
+
+        const name = String((primary && primary.name) || occ.name || '').trim();
+        let rawSocial = String((primary && primary.social) || occ.social || '').trim();
+
+        // Normalize to href first
+        let href = normalizeSocialHref_(rawSocial);
+
+        // If no href yet, scan the combined text for a domain or @handle
+        if (!href){
+          const scan = (rawSocial + ' ' + name).trim();
+          let m = scan.match(/([a-z0-9.-]+\.[a-z]{2,})(?:\/\S*)?/i);
+          if (m) {
+            href = normalizeSocialHref_(m[1]);
+          } else {
+            m = scan.match(/@([a-z0-9._]{2,})/i);
+            if (m) href = normalizeSocialHref_('@' + m[1]);
+          }
+        }
+
+        return { name, href };
+      }
+
+      function disableLinkWrapper_(node) {
+        const link = node && node.closest && node.closest("a");
+        if (!link) return;
+        link.style.pointerEvents = "none";
+        link.style.cursor = "default";
+        link.setAttribute("tabindex", "-1");
+        link.removeAttribute("href");
+        link.removeAttribute("target");
+        link.removeAttribute("rel");
+      }
+
+      // Publication control (optional lists in jupitervoid.json)
+      // If mapData.published (array) exists -> only those keys are treated as published.
+      // Else if mapData.unpublished (array) exists -> all except those are published.
+      // Else (no lists) -> everything is published.
+      function isPublishedKey_(mapData, key){
+        try{
+          const k = String(key || '').trim();
+          if (!k) return false;
+          const pub = mapData && Array.isArray(mapData.published) ? new Set(mapData.published.map(String)) : null;
+          const unpub = mapData && Array.isArray(mapData.unpublished) ? new Set(mapData.unpublished.map(String)) : null;
+          if (pub) return pub.has(k);
+          if (unpub) return !unpub.has(k);
+          return true;
+        }catch(_){ return true; }
+      }
+
+      async function applyOccupantsToSvg_(svgRoot, mapData) {
+        const spaces = await fetchOccupants_();
+        window.__VOID_OCCUPANTS = spaces;
+
+        const shapes = (mapData && mapData.shapes) ? mapData.shapes : {};
+        for (const [rawKey, payload] of Object.entries(shapes)) {
+          const canonicalKey = String(rawKey).replace(/^_+/, '');
+          const node =
+            svgRoot.querySelector("#_" + cssEscape(canonicalKey)) ||
+            svgRoot.querySelector("#" + cssEscape(canonicalKey)) ||
+            svgRoot.querySelector('[data-name="' + cssEscape(canonicalKey) + '"]');
+          if (!node) continue;
+
+          const csv = (payload && payload.csv) ? payload.csv : {};
+          const boothType = String(csv.booth_type || '').trim();
+          const feedSpace = spaces[canonicalKey];
+          const statusSummary = computeFullStatus(canonicalKey, boothType, csv.capacity_1_to_4, feedSpace);
+          const isFull = !!(statusSummary && statusSummary.isFull);
+          const published = isPublishedKey_(mapData, canonicalKey);
+
+          // Sleep rooms: use gradient when available; solid color when occupied.
+          if (boothType === 'SLEEP') {
+            if (!published) {
+              // Unpublished sleep rooms already get greyed/disabled in decorateShape
+              continue;
+            }
+
+            if (isFull) {
+              // Occupied: solid "full" color + disable interaction
+              const bookedColor =
+                (FULL_FILL_BY_TYPE.SLEEP) ? FULL_FILL_BY_TYPE.SLEEP : '#9fdbe6';
+              try { node.style.fill = bookedColor; } catch (_) {}
+              try {
+                node.classList.remove('shape-interactive');
+                node.style.pointerEvents = 'none';
+                node.removeAttribute('tabindex');
+                node.removeAttribute('role');
+              } catch (_) {}
+              disableLinkWrapper_(node);
+            } else {
+              // Available: apply 45° gradient fill via inline style so it overrides SVG class fills
+              ensureSleepGradient_(svgRoot);
+              try {
+                node.removeAttribute('fill');
+                node.style.fill = 'url(#sleepRoomGradient)';
+              } catch (_) {}
+            }
+            continue;
+          }
+
+          // Non-sleep booths: preserve existing behavior (only touch FULL ones)
+          if (isFull && published) {
+            const bookedColor =
+              (boothType && FULL_FILL_BY_TYPE[boothType]) ? FULL_FILL_BY_TYPE[boothType] : BOOKED_FILL;
+            try { node.style.fill = bookedColor; } catch (_) {}
+            try {
+              node.classList.remove('shape-interactive');
+              node.style.pointerEvents = 'none';
+              node.removeAttribute('tabindex');
+              node.removeAttribute('role');
+            } catch (_) {}
+            disableLinkWrapper_(node);
+          }
+        }
+      }
+      // Helper: refresh occupants/colors and re-render currently selected list
+      async function refreshOccupantsAndRerender(){
+        try{
+          const svg = window.__VOID_SVG;
+          const mapData = window.__VOID_MAPDATA;
+          if (!svg || !mapData) return;
+          await applyOccupantsToSvg_(svg, mapData);
+          const key = window.__LAST_LIST_KEY;
+          if (key){ try { renderResultsForKey(mapData, key); } catch(_){} }
+        }catch(e){ console.warn('refreshOccupantsAndRerender error', e); }
+      }
+      // Expose manual hook
+      window.refreshNotes = refreshOccupantsAndRerender;
+
+      function occupantArrayForSpaceKey(spaceKey){
+        const occMap = (window.__VOID_OCCUPANTS || {});
+        const entry = occMap[spaceKey];
+        if (!entry) return [];
+        const summary = summarizeFeedBookings(entry);
+        return summary.groups || [];
+      }
+
+      function socialHrefOrNull(s){
+        return normalizeSocialHref_(s);
+      }
+
+      Promise.all([
+        fetch(SVG_URL).then((response) => {
+          if (!response.ok) {
+            throw new Error("Unable to load SVG overlay");
+          }
+          return response.text();
+        }),
+        fetch(DATA_URL).then((response) => {
+          if (!response.ok) {
+            throw new Error("Unable to load booth data");
+          }
+          return response.json();
+        })
+      ])
+        .then(([svgMarkup, mapData]) => {
+          const parser = new DOMParser();
+          const svgDocument = parser.parseFromString(svgMarkup, "image/svg+xml");
+          const baseSvg = svgDocument.documentElement;
+
+          const frontSvg = baseSvg.cloneNode(true);
+          const backSvg = baseSvg.cloneNode(true);
+
+          splitSvgLayers(frontSvg, backSvg);
+
+          frontSvg.id = "map-svg";
+          backSvg.id = "map-svg-back";
+
+        svgHostBack.appendChild(backSvg);
+        svgHost.appendChild(frontSvg);
+        // Expose front SVG for later refresh calls
+        window.__VOID_SVG = frontSvg;
+
+          // Ensure a top-most label layer inside the front SVG
+          let labelLayer = frontSvg.querySelector('#label-layer');
+          if (!labelLayer) {
+            labelLayer = document.createElementNS(SVG_NS, 'g');
+            labelLayer.setAttribute('id', 'label-layer');
+            frontSvg.appendChild(labelLayer); // append last so it paints above
+          }
+
+          if (svgFallback) {
+            svgFallback.style.display = "none";
+          }
+          // Tweak native labels before we add overlays
+          tweakNativeLabels(frontSvg);
+
+          applyInteractivity(frontSvg, mapData);
+          wireLegendClicks(mapData);
+          // Ensure wayfinding labels visually match room 131 label height with padding
+          matchVisualLabelSize(frontSvg, '131');
+          // Custom multi-line labels for specific shapes (runs after auto-labels)
+          addCustomOverlayLabels(frontSvg);
+          // Overlay live occupants (colors + click disabling), with type-based full colors.
+          // Wait for occupants to finish loading before exposing helpers so the Notes
+          // list renders with fresh data immediately.
+          const occReady = applyOccupantsToSvg_(frontSvg, mapData);
+          window.__OCC_PROM = occReady;
+          occReady.then(() => {
+            // Expose mapData globally for later lookups
+            window.__VOID_MAPDATA = mapData;
+            // Quick-start renderer to mirror the minimal hookup instructions:
+            window.renderLegendAndMap = function(listKey){
+              try{
+                renderResultsForKey(window.__VOID_MAPDATA, String(listKey));
+              }catch(e){ console.warn('renderLegendAndMap error', e); }
+            };
+            // Light auto-refresh so newly posted bookings reformat automatically
+            if (!window.__VOID_AUTOREFRESH){
+              window.__VOID_AUTOREFRESH = setInterval(refreshOccupantsAndRerender, 60000); // 1×/min
+            }
+          }).catch((e) => {
+            console.warn('applyOccupantsToSvg_ error', e);
+            // Still expose mapData so the UI remains usable
+            window.__VOID_MAPDATA = mapData;
+            window.renderLegendAndMap = function(listKey){
+              try{
+                renderResultsForKey(window.__VOID_MAPDATA, String(listKey));
+              }catch(err){ console.warn('renderLegendAndMap error', err); }
+            };
+          });
+          // status hidden in embed mode
+          if (statusEl) statusEl.innerHTML = "";
+        })
+        .catch((error) => {
+          console.error(error);
+          // status hidden in embed mode
+          if (statusEl) statusEl.innerHTML = "";
+        });
+
+
+      function constrainTextMatches(svg, regexps){
+        const texts = svg.querySelectorAll('text');
+        texts.forEach(t=>{
+          const full = (t.textContent || '').replace(/\\s+/g,' ').trim();
+          if (!full || !regexps.some(rx=>rx.test(full))) return;
+          const g = t.closest('g');
+          let box = null;
+          try {
+            const shapes = g ? g.querySelectorAll('rect, path, polygon, polyline, circle, ellipse') : [];
+            shapes.forEach(s=>{
+              const b = s.getBBox();
+              if (!box) box = {x:b.x,y:b.y,width:b.width,height:b.height};
+              else {
+                const x1 = Math.min(box.x, b.x), y1 = Math.min(box.y,b.y);
+                const x2 = Math.max(box.x+box.width, b.x+b.width);
+                const y2 = Math.max(box.y+box.height, b.y+b.height);
+                box = {x:x1,y:y1,width:x2-x1,height:y2-y1};
+              }
+            });
+            if (!box) box = t.getBBox();
+          } catch(_) { return; }
+          if (!box) return;
+          const maxW = box.width * 0.92;
+          const maxH = box.height * 0.85;
+          const lines = t.querySelectorAll('tspan').length || 1;
+          const fsCap = Math.max(3, (maxH / lines));
+          let currFs = parseFloat(t.getAttribute('font-size') || window.getComputedStyle(t).fontSize) || fsCap;
+          let newFs = Math.min(currFs, fsCap); // never upsize
+          t.setAttribute('font-size', newFs.toFixed(2));
+          t.removeAttribute('textLength');
+          t.removeAttribute('lengthAdjust');
+          let b1; try { b1 = t.getBBox(); } catch(_) { return; }
+          if (b1.width > maxW) {
+            t.setAttribute('lengthAdjust','spacingAndGlyphs');
+            t.setAttribute('textLength', maxW.toFixed(2));
+          }
+          if (b1.height > maxH) {
+            const scale = maxH / b1.height;
+            newFs = Math.max(3, newFs * scale);
+            t.setAttribute('font-size', newFs.toFixed(2));
+          }
+        });
+      }
+
+      // ===== Native SVG label tweaks & normalizations =====
+      function tweakNativeLabels(svg){
+        // 1) Ensure the ARIUM box is transparent in the overlay too (belt-and-suspenders)
+        const arium = svg.querySelector('#arium');
+        if (arium){
+          arium.querySelectorAll('rect, path, polygon, polyline, circle, ellipse').forEach(n=>{
+            n.style.fill = 'transparent';
+            n.style.stroke = 'transparent';
+            n.removeAttribute('fill');
+            n.removeAttribute('stroke');
+          });
+        }
+
+        // 2) Hide strokes for ankeny and burnside
+        ['ankeny','burnside'].forEach(id => {
+          const n = svg.querySelector('#' + cssEscape(id));
+          if (!n) return;
+          n.querySelectorAll('rect, path, polygon, polyline, circle, ellipse').forEach(el => {
+            el.style.stroke = 'transparent';
+            el.removeAttribute('stroke');
+          });
+        });
+
+        // 3) Shrink some large wayfinding labels (reduce ~20%) by matching text content (centralized)
+        svg.querySelectorAll('text').forEach(t=>{
+          const txt = (t.textContent || '').trim();
+          if (!txt) return;
+          if (WAYFINDING_MATCHERS.some(rx => rx.test(txt))){
+            const fs = parseFloat(t.getAttribute('font-size') || window.getComputedStyle(t).fontSize);
+            if (!isNaN(fs) && fs>0){ t.setAttribute('font-size', (fs*0.8).toFixed(2)); }
+          }
+        });
+
+        // 3) Add hyphen to "Jupiter Original Level N" while preserving caps
+        svg.querySelectorAll('text').forEach(t=>{
+          const txt = (t.textContent || '').trim();
+          let m = txt.match(/^Jupiter Original\\s+Level\\s+(1|2)$/);
+          if (m){ t.textContent = `Jupiter Original - Level ${m[1]}`; }
+        });
+
+        // 3b) Explicit font-size for big wayfinding phrases (centralized values)
+        const shrinkSpec = WAYFINDING_SHRINK_SPEC;
+        svg.querySelectorAll('text').forEach(t=>{
+          const txt = (t.textContent || '').replace(/\\s+/g,' ').trim();
+          if (!txt) return;
+          const spec = shrinkSpec.find(s => s.rx.test(txt));
+          if (!spec) return;
+          t.removeAttribute('textLength');
+          t.removeAttribute('lengthAdjust');
+          t.setAttribute('font-size', String(spec.fs));
+        });
+
+        // Final safeguard
+        constrainTextMatches(svg, [
+          /^(?:Bunker)$/i,
+          /^9th\\s+Street\\b.*Street\\s+Fair$/i,
+          /^Dream\\s*Tent\\s*Roof$/i,
+          /^(?:Stage)$/i,
+          /^Dream\\s*Box$/i,
+          /^Think\\s*Tank$/i,
+          /^Command\\s*Center$/i
+        ]);
+      }
+
+      // ===== Post-pass equalization (visual) for select wayfinding labels =====
+      function matchVisualLabelSize(svg, refKey){
+        const attempt = () => {
+          const layer = svg.querySelector('#label-layer');
+          if (!layer) return false;
+          const ref = layer.querySelector(`text[data-shape-key="${CSS.escape(refKey)}"]`) ||
+                      layer.querySelector(`text[data-shape-label="${CSS.escape(refKey)}"]`);
+          if (!ref) return false;
+          let refH; try { refH = ref.getBBox().height; } catch(_) { return false; }
+          if (!refH) return false;
+
+          const targets = [/^Stage$/i, /^Dream\\s*Box$/i, /^Think\\s*Tank$/i, /^Command\\s*Center$/i];
+          svg.querySelectorAll('text').forEach(t => {
+            const txt = (t.textContent || '').trim();
+            if (!targets.some(rx => rx.test(txt))) return;
+            try {
+              const g = t.closest('g');
+              const box = g && g.getBBox ? g.getBBox() : null;
+              const tbox = t.getBBox();
+              const scale = refH / tbox.height;
+              const fsNow = parseFloat(t.getAttribute('font-size') || window.getComputedStyle(t).fontSize) || 6;
+              const newFs = Math.max(2, Math.min(fsNow * scale, 7));
+              t.setAttribute('font-size', newFs.toFixed(2));
+              if (box) {
+                const maxW = box.width * 0.90;
+                const b = t.getBBox();
+                if (b.width > maxW) {
+                  t.setAttribute('lengthAdjust','spacingAndGlyphs');
+                  t.setAttribute('textLength', maxW.toFixed(2));
+                }
+              }
+            } catch(_){}
+          });
+          return true;
+        };
+        if (!attempt()) setTimeout(attempt, 250);
+      }
+
+      // Map of SVG element ids -> desired display labels (\\n forces multi-line)
+      const CUSTOM_LABEL_MAP = new Map([
+        ['arium', 'Arium'],
+        ['heylovebar', 'Hey Love Bar\\n&\\nSecret Garden\\nPatio'],
+        ['elevators', 'Elevators'],
+        ['restrooms', 'Restrooms'],
+        ['dreamtentroof', 'Dream Tent\\nRoof'],
+        ['jupiteroglv1', 'Jupiter Original - Level 1'],
+        ['jupiteroglv2', 'Jupiter Original - Level 2'],
+        ['jnextlv2', 'Jupiter Next - Level 2'],
+        ['flexlounge', 'Flex Lounge'],
+        ['sb', 'SB'],
+        ['stage', 'Stage'],
+        ['bunker', 'Bunker'],
+        ['dreambox', 'Dream\\nBox'],
+        ['thinktank', 'Think\\nTank'],
+        ['command', 'Command\\nCenter'],
+        ['_9thst', '9th Street - Street Fair - Saturday Only'],
+        ['rr1', 'R'],
+        ['ankeny', 'Ankeny'],
+        ['burnside', 'Burnside'],
+      ]);
+
+      function addCustomOverlayLabels(svg){
+        const layer = svg.querySelector('#label-layer');
+        if (!layer) return;
+        CUSTOM_LABEL_MAP.forEach((display, id) => {
+          const node = svg.querySelector(`#${cssEscape(id)}`) || svg.querySelector(`[data-name="${cssEscape(id)}"]`);
+          if (!node) return;
+          appendLabel(node, display.replace(/\\s+/g,' ').trim(), id);
+          if (display.indexOf('\\n') !== -1) {
+            const textEl = layer.querySelector(`text[data-shape-key="${cssEscape(id)}"]`);
+            if (!textEl) return;
+            const fs = parseFloat(textEl.getAttribute('font-size') || '0') || 6;
+            const bbox = node.getBBox();
+            const lines = display.split('\\n').map(s=>s.trim());
+            while (textEl.firstChild) textEl.removeChild(textEl.firstChild);
+            const totalHeight = fs * lines.length * 1.15;
+            const startY = bbox.y + bbox.height/2 - totalHeight/2 + fs*0.9;
+            textEl.setAttribute('y', startY.toFixed(2));
+            textEl.setAttribute('dominant-baseline', 'alphabetic');
+            lines.forEach((ln, i)=>{
+              const tspan = document.createElementNS(SVG_NS, 'tspan');
+              if (i>0) tspan.setAttribute('x', textEl.getAttribute('x'));
+              if (i>0) tspan.setAttribute('dy', (fs*1.15).toFixed(2));
+              tspan.textContent = ln;
+              textEl.appendChild(tspan);
+            });
+          }
+        });
+      }
+
+      function splitSvgLayers(frontSvg, backSvg) {
+        const idsToBack = ["e1", "e2", "e3", "e4", "e5", "e6", "e7", "e8", "e9", "e10", "e11"];
+        idsToBack.forEach((id) => {
+          const node = frontSvg.querySelector(`#${cssEscape(id)}`);
+          if (node && node.parentNode) {
+            node.parentNode.removeChild(node);
+          }
+        });
+        const nodesToMove = idsToBack
+          .map((id) => backSvg.querySelector(`#${cssEscape(id)}`))
+          .filter(Boolean);
+        let backLayer = backSvg.querySelector('#back-layer');
+        if (!backLayer) {
+          backLayer = document.createElementNS(SVG_NS, 'g');
+          backLayer.setAttribute('id', 'back-layer');
+          backSvg.appendChild(backLayer);
+        }
+        nodesToMove.forEach((node) => {
+          if (node.parentNode) node.parentNode.removeChild(node);
+          backLayer.appendChild(node);
+        });
+        Array.from(backSvg.children).forEach((child) => {
+          if (child === backLayer) return;
+          const tag = (child.tagName || '').toLowerCase();
+          if (tag === 'defs' || tag.endsWith(':defs')) return;
+          if (tag === 'style' || tag.endsWith(':style')) return;
+          if (child.parentNode === backSvg) backSvg.removeChild(child);
+        });
+      }
+
+      function findShapeNode(svgElement, canonicalName){
+        let node = svgElement.querySelector(`#${cssEscape(canonicalName)}`);
+        if (node) return node;
+        node = svgElement.querySelector(`#_${cssEscape(canonicalName)}`);
+        if (node) return node;
+        node = svgElement.querySelector(`[data-name="${cssEscape(canonicalName)}"]`);
+        if (node) return node;
+        node = svgElement.querySelector(`[id$="-${cssEscape(canonicalName)}"]`);
+        if (node) return node;
+        if (/^\\d+$/.test(canonicalName)) {
+          const n = canonicalName;
+          const pref = [
+            (p) => `#${p}${n}`,
+            (p) => `#_${p}${n}`,
+            (p) => `[data-name="${p}${n}"]`,
+            (p) => `[id$="-${p}${n}"]`
+          ];
+          const prefixes = ["sf", "dt", "booth", "b", "a"];
+          for (const p of prefixes) {
+            for (const mk of pref) {
+              node = svgElement.querySelector(mk(p));
+              if (node) return node;
+            }
+          }
+        }
+        return null;
+      }
+
+      function normalizeLabel(raw){
+  const s = String(raw || '').trim();
+
+  // Already just letters (e.g., "H", "NN") → keep as letters (uppercased)
+  if (/^([a-z])\1?$/i.test(s)) return s.toUpperCase();
+
+  // sf1, s-1, sf_11 → just the number (drop the "sf"/"s" prefix)
+  let m = s.match(/^_?(?:sf|s)[-_]?(\d+)$/i);
+  if (m) return String(parseInt(m[1], 10));
+
+  // h1 or n1 (with optional dash/underscore) → just the letter (no trailing 1)
+  if (/^[hn][-_]?1$/i.test(s)) return s.charAt(0).toUpperCase();
+
+  // Generic letter+digits (e.g., a1, a13, b2, h7, n9)
+  m = s.match(/^([a-z]+)(\d+)$/i);
+  if (m) {
+    const letters = m[1].toLowerCase();
+    const digits  = m[2];
+
+    // A-series booths should always show only the number: a1→"1", a13→"13"
+    if (letters === 'a') return String(parseInt(digits, 10));
+
+    // For other series: "...1" shows the letter only; otherwise show the digits
+    if (digits === '1') return m[1].toUpperCase();
+    return String(parseInt(digits, 10));
+  }
+
+  // Fallback: return as-is
+  return s;
+}
+
+      function applyInteractivity(svgElement, data) {
+        const shapes = data.shapes || {};
+        for (const [shapeName, payload] of Object.entries(shapes)) {
+          const canonicalName = shapeName.replace(/^_+/, "");
+          if (INACTIVE_SHAPES.has(canonicalName)) continue;
+          const elementId =
+            (payload.svg && payload.svg.id) ||
+            (payload.svg && payload.svg.resolved_from) ||
+            shapeName;
+          let target = findShapeNode(svgElement, canonicalName);
+          if (!target && elementId) {
+            const eid = String(elementId).replace(/^_+/, "");
+            target = findShapeNode(svgElement, eid);
+          }
+          if (!target) {
+            console.warn("SVG element not found for shape:", shapeName, "resolved id:", elementId, "canonical:", canonicalName);
+            continue;
+          }
+          decorateShape(target, canonicalName, payload, data);
+        }
+        // Ensure numeric room labels are drawn, regardless of published status.
+        // (1) Label any rooms present in the JSON `shapes` map.
+        // (2) Fallback: label any 3-digit numeric SVG ids that lack a label (e.g., _222).
+        const jsonShapeKeys = new Set(
+          Object.keys((data && data.shapes) ? data.shapes : {}).map(k => String(k).replace(/^_+/, ''))
+        );
+
+        // (1) Label JSON-declared shapes (no publish gate — labels always)
+        jsonShapeKeys.forEach((canonicalId) => {
+          if (INACTIVE_SHAPES.has(canonicalId)) return;
+          const node = findShapeNode(svgElement, canonicalId);
+          if (node && !node.classList.contains('no-interaction')) {
+            appendLabel(node, normalizeLabel(canonicalId), canonicalId);
+          }
+        });
+
+        // (2) Fallback: scan SVG for any 3‑digit numeric ids not already labeled
+        (function ensureNumericSvgLabels(){
+          const svg = svgElement.ownerSVGElement || svgElement;
+          const labelLayer = svg.querySelector('#label-layer');
+          const hasLabelFor = (key) => labelLayer && !!labelLayer.querySelector(`text[data-shape-key="${CSS.escape(key)}"]`);
+
+          const candidates = Array.from(svg.querySelectorAll('[id], [data-name]'));
+          candidates.forEach(el => {
+            const rawId = (el.getAttribute('id') || el.getAttribute('data-name') || '').trim();
+            if (!rawId) return;
+            const m = rawId.match(/^_?(\d{3})$/);
+            if (!m) return;
+
+            const roomKey = m[1];
+            if (INACTIVE_SHAPES.has(roomKey)) return;
+            if (jsonShapeKeys.has(roomKey)) return;            // already labeled above
+            if (el.classList.contains('no-interaction')) return;
+            if (hasLabelFor(roomKey)) return;
+
+            appendLabel(el, roomKey, roomKey);
+          });
+        })();
+        const sfNodes = svgElement.querySelectorAll('[id^="sf"], [id^="SF"], [id^="_sf"], [id^="_SF"], [data-name^="sf"], [data-name^="SF"], [id^="s"], [id^="_s"], [data-name^="s"]');
+        sfNodes.forEach((node) => {
+          if (node.getAttribute('data-no-label') === 'true') return;
+          const idLike = node.getAttribute('id') || node.getAttribute('data-name') || '';
+          const m = idLike.match(/_?(?:sf|s)[-_]?(\\d+)/i);
+          if (!m) return;
+          const num = m[1];
+          const existingKey = node.getAttribute('data-shape') || `sf${num}`;
+          const svgRoot = node.ownerSVGElement || node.closest('svg');
+          const labelLayer = svgRoot && svgRoot.querySelector('#label-layer');
+          const hasExisting = labelLayer && labelLayer.querySelector(`text[data-shape-key="${CSS.escape(existingKey)}"]`);
+          if (hasExisting) return;
+          appendLabel(node, num, `sf${num}`);
+          if (labelLayer) {
+            const t = labelLayer.querySelector(`text[data-shape-key="sf${num}"]`);
+            if (t) {
+              const fsNow = parseFloat(t.getAttribute('font-size') || '0');
+              if (fsNow < 7) t.setAttribute('font-size', '7');
+            }
+          }
+        });
+      }
+
+      function decorateShape(node, label, payload, mapData) {
+        const boothType = payload && payload.csv ? String(payload.csv.booth_type || '').trim() : '';
+        node.setAttribute("data-shape", label);
+        const boothName = payload.csv && payload.csv.booth_name ? payload.csv.booth_name : `Shape ${label}`;
+        node.setAttribute("aria-label", `${boothName} (${label})`);
+        if (!node.querySelector("title")) {
+          const title = document.createElementNS(SVG_NS, "title");
+          title.textContent = `${boothName} (${label})`; node.appendChild(title);
+        }
+        const keepOriginal =
+          node.classList.contains("label-box") ||
+          node.classList.contains("no-interaction") ||
+          PRESERVE_COLOR.has(node.id || "") ||
+          PRESERVE_COLOR.has(label);
+        if (keepOriginal) {
+          node.style.removeProperty('fill');
+        } else {
+          let assigned = false;
+          if (payload.color) {
+            try { node.style.fill = payload.color; assigned = true; } catch (_) {}
+          } else if (payload.status) {
+            const byStatus = {
+              available: "#00e5ff",
+              partial: "#ff9959",
+              full: "#f25f94"
+            };
+            const statusKey = String(payload.status).toLowerCase();
+            if (byStatus[statusKey]) { node.style.fill = byStatus[statusKey]; assigned = true; }
+          }
+          if (!assigned) node.style.removeProperty('fill');
+        }
+        const baseLabel = (payload && payload.label) ? String(payload.label) : String(label);
+        const displayLabel = normalizeLabel(baseLabel);
+        appendLabel(node, displayLabel, label);
+        let url = (payload && payload.bookwhen_url ? String(payload.bookwhen_url).trim() : "");
+        const published = isPublishedKey_(mapData || window.__VOID_MAPDATA || {}, label);
+
+        if (!published) {
+          node.classList.remove("shape-interactive");
+          node.removeAttribute("tabindex");
+          node.removeAttribute("role");
+          node.style.pointerEvents = 'none';
+          node.style.cursor = 'default';
+          node.setAttribute('data-unpublished', 'true');
+          if (!keepOriginal) {
+            try { node.style.fill = '#999999'; } catch (_) {}
+          }
+          disableLinkWrapper_(node);
+        } else {
+          node.removeAttribute('data-unpublished');
+          node.style.removeProperty('pointer-events');
+          node.style.removeProperty('cursor');
+          if (url) {
+            node.classList.add("shape-interactive");
+            node.setAttribute("tabindex", "0");
+            node.setAttribute("role", "link");
+            wireLink(node, url);
+            wireHighlight(node);
+          } else {
+            node.classList.remove("shape-interactive");
+            node.removeAttribute("tabindex");
+            node.removeAttribute("role");
+          }
+        }
+      }
+
+      function appendLabel(node, label, shapeKey){
+        label = String(label).replace(/^_+/, '');
+        const key = shapeKey || node.getAttribute('data-shape') || label;
+        const noLabel = node.getAttribute('data-no-label') === 'true';
+        if (noLabel) return;
+        const hasNative = !!node.querySelector('text, tspan');
+        if (hasNative) return;
+        const bbox = node.getBBox();
+        const cx = bbox.x + bbox.width / 2;
+        const cy = bbox.y + bbox.height / 2;
+        const byHeight = bbox.height * 0.55;
+        const byWidthPerChar = (bbox.width / Math.max(1, label.length)) * 0.9;
+        const fsCandidate = Math.min(byHeight, byWidthPerChar);
+        let boost = 1;
+        if (/^[a-z]{1,2}$/.test(label)) { boost = Math.max(boost, 1.20); }
+        if (/^\\d+$/.test(label)) {
+          const n = parseInt(label, 10);
+          if (!isNaN(n) && n <= 13) { boost = Math.max(boost, 1.15); }
+        }
+        let localMax = MAX_LABEL_FONT_PX;
+        if (/^[a-z]{1,2}$/.test(label)) localMax = Math.max(localMax, 6.5);
+        if (/^\\d+$/.test(label) && parseInt(label,10) <= 13) localMax = Math.max(localMax, 6.0);
+        const boosted = fsCandidate * boost;
+        const fs = Math.max(MIN_LABEL_FONT_PX, Math.min(localMax, boosted));
+        const text = document.createElementNS(SVG_NS, "text");
+        text.classList.add("shape-label");
+        text.setAttribute("x", (bbox.x + bbox.width / 2).toFixed(2));
+        text.setAttribute("y", (bbox.y + bbox.height / 2).toFixed(2));
+        text.setAttribute("text-anchor", "middle");
+        text.setAttribute("dominant-baseline", "middle");
+        text.setAttribute("data-shape-label", label);
+        text.setAttribute("data-shape-key", key);
+        text.setAttribute("font-size", fs.toFixed(2));
+        text.textContent = label;
+        if (ROTATE_LEFT_90.has((shapeKey || '').replace(/^_+/, ''))) {
+          text.setAttribute('transform', `rotate(-90 ${cx.toFixed(2)} ${cy.toFixed(2)})`);
+        }
+        const svgRoot = node.ownerSVGElement || node.closest('svg');
+        let layer = svgRoot.querySelector('#label-layer');
+        if (!layer) {
+          layer = document.createElementNS(SVG_NS, 'g');
+          layer.setAttribute('id', 'label-layer');
+          svgRoot.appendChild(layer);
+        }
+        const prev = layer.querySelector(`text[data-shape-key="${CSS.escape(key)}"]`);
+        if (prev) prev.remove();
+        layer.appendChild(text);
+      }
+
+      function wireLink(node, url){
+        const trimmed = (url || "").trim();
+        const openLink = (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          window.open(trimmed, "_blank", "noopener");
+          try{ node.blur(); }catch(_){}
+          return false;
+        };
+        node.addEventListener("click", openLink);
+        node.addEventListener("auxclick", (event) => { if (event.button === 1) openLink(event); });
+        node.addEventListener("keydown", (event) => { if (event.key === "Enter" || event.key === " ") openLink(event); });
+      }
+
+      function wireHighlight(node) {
+        const toggle = (isActive) => { node.classList.toggle("shape-hover", isActive); };
+        node.addEventListener("mouseenter", () => toggle(true));
+        node.addEventListener("mouseleave", () => toggle(false));
+        node.addEventListener("focus", () => toggle(true));
+        node.addEventListener("blur", () => toggle(false));
+      }
+
+      // Make legend rows clickable (and robust to clicks on inner elements)
+      function wireLegendClicks(mapData){
+        const grid = document.querySelector('.legend .legend-grid');
+        if(!grid) return;
+        grid.addEventListener('click', (e)=>{
+          const row = e.target.closest('.legend-row[data-list-key]');
+          if(!row) return;
+          const key = row.getAttribute('data-list-key');
+          renderResultsForKey(mapData, key);
+          try { const notes = document.getElementById('notes'); if (notes) { notes.scrollIntoView({ behavior: 'smooth', block: 'start' }); } } catch(_) {}
+          try {
+            const notes = document.getElementById('notes');
+            if (notes){
+              notes.setAttribute('tabindex','-1');
+              notes.focus({ preventScroll:true });
+              notes.classList.remove('flash-notes');
+              // force reflow to allow re-adding the class
+              void notes.offsetWidth;
+              notes.classList.add('flash-notes');
+            }
+          } catch(_) {}
+        });
+        grid.addEventListener('keydown', (e)=>{
+          if(!(e.key==='Enter' || e.key===' ')) return;
+          const row = e.target.closest('.legend-row[data-list-key]');
+          if(!row) return;
+          e.preventDefault();
+          const key = row.getAttribute('data-list-key');
+          renderResultsForKey(mapData, key);
+          try { const notes = document.getElementById('notes'); if (notes) { notes.scrollIntoView({ behavior: 'smooth', block: 'start' }); } } catch(_) {}
+          try {
+            const notes = document.getElementById('notes');
+            if (notes){
+              notes.setAttribute('tabindex','-1');
+              notes.focus({ preventScroll:true });
+              notes.classList.remove('flash-notes');
+              // force reflow to allow re-adding the class
+              void notes.offsetWidth;
+              notes.classList.add('flash-notes');
+            }
+          } catch(_) {}
+        });
+        document.querySelectorAll('.legend .legend-row[data-list-key]').forEach(row=>{
+          row.setAttribute('tabindex','0'); row.setAttribute('role','button'); row.setAttribute('aria-pressed','false');
+        });
+        // Key heading "jump" control
+        (function wireKeyJump(){
+          const jump = document.querySelector('.legend h2 a.key-jump');
+          if (!jump) return;
+          jump.addEventListener('click', function(ev){
+            //ev.preventDefault();
+            try{
+              const notes = document.getElementById('notes');
+              if (notes) { notes.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+              if (notes){
+                notes.setAttribute('tabindex','-1');
+                notes.focus({ preventScroll:true });
+                notes.classList.remove('flash-notes'); void notes.offsetWidth; notes.classList.add('flash-notes');
+              }
+            }catch(_){}
+          });
+          jump.addEventListener('keydown', function(ev){
+            if(ev.key!=='Enter' && ev.key!==' ') return;
+            ev.preventDefault();
+            try{
+              const notes = document.getElementById('notes');
+              if (notes) { notes.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+              if (notes){
+                notes.setAttribute('tabindex','-1');
+                notes.focus({ preventScroll:true });
+                notes.classList.remove('flash-notes'); void notes.offsetWidth; notes.classList.add('flash-notes');
+              }
+            }catch(_){}
+          });
+        })();
+      }
+
+      function renderResultsForKey(mapData, key){
+        // Render now; if occupants are still loading, schedule a one-time re-render
+        (function maybeRerenderWhenOccupantsArrive(){
+          if (window.__VOID_OCCUPANTS) return;
+          const p = window.__OCC_PROM;
+          if (p && typeof p.then === 'function') {
+            p.then(() => {
+              if (window.__LAST_LIST_KEY === key) {
+                try { renderResultsForKey(mapData, key); } catch(_) {}
+              }
+            });
+          }
+        })();
+        window.__LAST_LIST_KEY = key;
+        const spec = LEGEND_FILTERS[key];
+        if(!spec || !notesPanel) return;
+        const { container, count } = buildListFromData(mapData, spec);
+        notesPanel.innerHTML = '';
+        const h2 = document.createElement('h2');
+        h2.textContent = spec.title || 'Results';
+        notesPanel.appendChild(h2);
+        if(count===0){
+          const p = document.createElement('p');
+          p.className = 'muted';
+          p.textContent = 'No items to display.';
+          notesPanel.appendChild(p);
+          return;
+        }
+        notesPanel.appendChild(container);
+      }
+
+      function buildListFromData(mapData, spec){
+        const shapes = mapData && mapData.shapes ? mapData.shapes : {};
+        const wantTypes = new Set((spec.boothTypes || []).map(String));
+        const restrict = spec.restrictBuildings ? new Set(spec.restrictBuildings) : null;
+        const groupResolver = typeof spec.groupResolver === 'function' ? spec.groupResolver : null;
+        const composeLabel = typeof spec.composeLabel === 'function' ? spec.composeLabel : null;
+        const transformRow = typeof spec.transformRow === 'function' ? spec.transformRow : null;
+        const rowComparator = spec.rowComparator || defaultRowComparator;
+        const rows = [];
+        for(const [id,payload] of Object.entries(shapes)){
+          const csv = payload && payload.csv ? payload.csv : null;
+          if(!csv) continue;
+          if (!isPublishedKey_(mapData, id)) continue;
+          // Respect per-shape hide flag for legend/nav rendering
+          const hideInNav =
+            (payload && (
+              payload.hide_in_nav === true ||
+              String(payload.hide_in_nav).toLowerCase() === 'true'
+            )) ||
+            (csv && (
+              csv.hide_in_nav === true ||
+              String(csv.hide_in_nav).toLowerCase() === 'true'
+            ));
+          if (hideInNav) continue;
+          const type = String(csv.booth_type || '').trim();
+          if(!wantTypes.has(type)) continue;
+          const building = String(csv.building_label || '').trim();
+          if(restrict && !restrict.has(building)) continue;
+          const booth = String(csv.booth_name || id).trim();
+          const url = String(payload.bookwhen_url || csv.bookwhen_url || '').trim();
+          const context = { id, payload, csv, booth, building };
+          let group = null;
+          if(groupResolver){
+            group = groupResolver(Object.assign({}, context, { shortLabel: booth })) || null;
+          } else if(spec.groupBy){
+            group = String(csv[spec.groupBy] || '').trim() || null;
+          }
+          const label = composeLabel
+            ? composeLabel(Object.assign({}, context, { group }))
+            : (building ? `${building} - ${booth}` : booth);
+          const row = {
+            group,
+            label,
+            shortLabel: booth,
+            building,
+            url,
+            csv,
+            payload,
+            booth_type: type
+          };
+          if(transformRow) transformRow(row, context);
+          rows.push(row);
+        }
+        let workingRows = rows;
+        if(typeof spec.dedupeKey === 'function'){
+          const seen = new Set();
+          workingRows = rows.filter(row=>{
+            const key = spec.dedupeKey(row);
+            if(!key) return true;
+            if(seen.has(key)) return false;
+            seen.add(key);
+            return true;
+          });
+        }
+        const wrap = document.createElement('div');
+        wrap.className = 'results-list';
+        const rowCount = workingRows.length;
+        if(rowCount === 0){
+          return { container: wrap, count: 0 };
+        }
+        const useGroups = !!(spec.groupBy || groupResolver);
+        if(useGroups){
+          const groups = new Map();
+          workingRows.forEach(r=>{
+            const gKey = r.group || 'Other';
+            if(!groups.has(gKey)) groups.set(gKey, []);
+            groups.get(gKey).push(r);
+          });
+          let order = Array.from(groups.keys());
+          if(spec.groupOrder && spec.groupOrder.length){
+            const orderIndex = new Map(spec.groupOrder.map((name, idx) => [name, idx]));
+            order.sort((a,b)=>{
+              const ia = orderIndex.has(a) ? orderIndex.get(a) : Number.MAX_SAFE_INTEGER;
+              const ib = orderIndex.has(b) ? orderIndex.get(b) : Number.MAX_SAFE_INTEGER;
+              if(ia !== ib) return ia - ib;
+              const ha = spec.headings && spec.headings[a] ? spec.headings[a] : a;
+              const hb = spec.headings && spec.headings[b] ? spec.headings[b] : b;
+              return naturalStringCompare(ha, hb);
+            });
+          } else {
+            order.sort((a,b)=>{
+              const ha = spec.headings && spec.headings[a] ? spec.headings[a] : a;
+              const hb = spec.headings && spec.headings[b] ? spec.headings[b] : b;
+              return naturalStringCompare(ha, hb);
+            });
+          }
+          order.forEach(gKey=>{
+            const items = groups.get(gKey);
+            if(!items || !items.length) return;
+            items.sort(rowComparator);
+            const section = document.createElement('section');
+            section.className = 'results-group';
+            const h3 = document.createElement('h3');
+            h3.textContent = (spec.headings && spec.headings[gKey]) ? spec.headings[gKey] : gKey;
+            section.appendChild(h3);
+            const ul = document.createElement('ul');
+            items.forEach(r=>{
+              // --- BEGIN CENTRALIZED LEGEND ROW LOGIC ---
+              const li = document.createElement('li');
+              const textValue = spec.useShortLabel === true ? r.shortLabel : r.label;
+
+              // Try to detect a numeric room ID (e.g., "Room 117") or direct number "117"
+              let spaceKey = null;
+              let mId = String(r.shortLabel || r.label || '').match(/\b(\d{3})\b/);
+              if (mId) spaceKey = mId[1];
+
+              // Capacity & occupancy summary
+              const boothType = (r && r.csv && r.csv.booth_type) ? String(r.csv.booth_type).trim() : (r.booth_type || '');
+              const isSleep = (boothType === 'SLEEP');
+              const cap = resolveCapacityFor(spaceKey, boothType, (r.csv && r.csv.capacity_1_to_4));
+              const groups = spaceKey ? occupantArrayForSpaceKey(spaceKey) : [];
+
+              // If feed has explicit status for this spaceKey, prefer that:
+              const occEntry = (window.__VOID_OCCUPANTS||{})[spaceKey || ''];
+              let isFull = false;
+              if (occEntry && typeof occEntry.status === 'string') {
+                isFull = /full/i.test(occEntry.status);
+              } else {
+                const used = groups.length;
+                isFull = (cap > 0) ? (used >= cap) : false;
+              }
+
+              // Sleep Rooms: privacy — no occupant names/socials.
+              // Only show "### - Occupied" when feed/app marks the room as full.
+              // If there is no URL and the room is not full, hide it from the nav.
+              if (isSleep) {
+                if (isFull) {
+                  // Occupied: no link; label "### - Occupied" using the room number.
+                  const span = document.createElement('span');
+                  span.className = 'nolink';
+                  const labelRoom = spaceKey || textValue;
+                  span.textContent = labelRoom + ' - Occupied';
+                  li.appendChild(span);
+                  ul.appendChild(li);
+                } else if (r.url && r.url !== '-') {
+                  // Available + has URL → show as link
+                  const a = document.createElement('a');
+                  a.href = r.url;
+                  a.target = '_blank';
+                  a.rel = 'noopener';
+                  a.textContent = textValue;
+                  li.appendChild(a);
+                  ul.appendChild(li);
+                }
+                // If not full and no URL, do not append li at all (hidden from nav)
+                return;
+              }
+
+              // Non-sleep logic: existing behavior
+              if (isFull && groups && groups.length) {
+                // Use centralized derivation so every booked room auto-links
+                const { name, href } = derivePrimaryOccupantLink_(spaceKey);
+
+                // Title line: e.g., "Room 140"
+                const title = document.createElement('div');
+                title.className = 'result-title';
+                title.textContent = textValue;
+                li.appendChild(title);
+
+                // Pill line below the title
+                const pill = document.createElement('div');
+                pill.className = 'nolink';
+
+                if (href && name) {
+                  const a = document.createElement('a');
+                  a.href = href; a.target = '_blank'; a.rel = 'noopener';
+                  a.textContent = name;
+                  pill.appendChild(a);
+                } else if (name) {
+                  const span = document.createElement('span');
+                  span.textContent = name;
+                  pill.appendChild(span);
+                } else if (href) {
+                  const a = document.createElement('a');
+                  a.href = href; a.target = '_blank'; a.rel = 'noopener';
+                  a.textContent = /instagram\.com/i.test(href)
+                    ? (function(u){ const m=u.match(/instagram\.com\/([^\/?#]+)/i); return m? m[1] : href; })(href)
+                    : (function(u){ try { return (new URL(u)).host.replace(/^www\./,''); } catch(_) { return href; } })(href);
+                  pill.appendChild(a);
+                }
+
+                li.appendChild(pill);
+              } else {
+                // fallback to original behavior when not fully booked or no occupant info
+                const makeLine = () => {
+                  if (!groups.length) {
+                    return textValue + ' ';
+                  }
+                  const parts = groups.slice(0, Math.max(3, cap || 3)).map(g=>{
+                    const n = (g.name||'').trim();
+                    const s = (g.social||'').trim();
+                    if (!s) return n || '—';
+                    const href = socialHrefOrNull(s);
+                    if (href){
+                      return n ? `${n} <a target="_blank" rel="noopener" href="${href}">${s}</a>` : `<a target="_blank" rel="noopener" href="${href}">${s}</a>`;
+                    }
+                    return n ? `${n} ${s}` : s;
+                  });
+                  return textValue + ' — ' + parts.join('; ');
+                };
+
+                if (isFull || !r.url || r.url === '-') {
+                  const span = document.createElement('span');
+                  span.className = 'nolink';
+                  span.innerHTML = makeLine() + (isFull ? '' : (groups.length ? '' : '<span class="muted">(details coming soon)</span>'));
+                  li.appendChild(span);
+                } else {
+                  // Not full: keep link, but append occupants after
+                  const a = document.createElement('a');
+                  a.href = r.url; a.target = '_blank'; a.rel = 'noopener';
+                  a.textContent = textValue;
+
+                  const tail = document.createElement('span');
+                  if (groups.length) {
+                    tail.innerHTML = ' — ' + makeLine().replace(/^.*?\s—\s/, '');
+                  } else {
+                    tail.textContent = ' ';
+                  }
+
+                  const wrapRow = document.createElement('div');
+                  wrapRow.appendChild(a);
+                  wrapRow.appendChild(tail);
+                  li.appendChild(wrapRow);
+                }
+              }
+
+              ul.appendChild(li);
+              // --- END CENTRALIZED LEGEND ROW LOGIC ---
+            });
+            section.appendChild(ul);
+            wrap.appendChild(section);
+          });
+        } else {
+          const section = document.createElement('section');
+          section.className = 'results-group';
+          const ul = document.createElement('ul');
+          workingRows.sort(rowComparator);
+          workingRows.forEach(r=>{
+            // --- BEGIN CENTRALIZED LEGEND ROW LOGIC ---
+            const li = document.createElement('li');
+            const textValue = spec.useShortLabel === true ? r.shortLabel : r.label;
+
+            // Try to detect a numeric room ID (e.g., "Room 117") or direct number "117"
+            let spaceKey = null;
+            let mId = String(r.shortLabel || r.label || '').match(/\b(\d{3})\b/);
+            if (mId) spaceKey = mId[1];
+
+            // Capacity & occupancy summary
+            const boothType = (r && r.csv && r.csv.booth_type) ? String(r.csv.booth_type).trim() : (r.booth_type || '');
+            const isSleep = (boothType === 'SLEEP');
+            const cap = resolveCapacityFor(spaceKey, boothType, (r.csv && r.csv.capacity_1_to_4));
+            const groups = spaceKey ? occupantArrayForSpaceKey(spaceKey) : [];
+
+            // If feed has explicit status for this spaceKey, prefer that:
+            const occEntry = (window.__VOID_OCCUPANTS||{})[spaceKey || ''];
+            let isFull = false;
+            if (occEntry && typeof occEntry.status === 'string') {
+              isFull = /full/i.test(occEntry.status);
+            } else {
+              const used = groups.length;
+              isFull = (cap > 0) ? (used >= cap) : false;
+            }
+
+            // Sleep Rooms: privacy — no occupant names/socials. Clickable ONLY when not full.
+            if (isSleep) {
+              if (isFull || !r.url || r.url === '-') {
+                const span = document.createElement('span');
+                span.className = 'nolink';
+                span.textContent = isFull ? (textValue + ' — occupied') : textValue;
+                li.appendChild(span);
+              } else {
+                const a = document.createElement('a');
+                a.href = r.url;
+                a.target = '_blank';
+                a.rel = 'noopener';
+                a.textContent = textValue;
+                li.appendChild(a);
+              }
+              ul.appendChild(li);
+              return;
+            }
+
+            // Non-sleep logic: existing behavior
+            if (isFull && groups && groups.length) {
+              // Use centralized derivation so every booked room auto-links
+              const { name, href } = derivePrimaryOccupantLink_(spaceKey);
+
+              // Title line: e.g., "Room 140"
+              const title = document.createElement('div');
+              title.className = 'result-title';
+              title.textContent = textValue;
+              li.appendChild(title);
+
+              // Pill line below the title
+              const pill = document.createElement('div');
+              pill.className = 'nolink';
+
+              if (href && name) {
+                const a = document.createElement('a');
+                a.href = href; a.target = '_blank'; a.rel = 'noopener';
+                a.textContent = name;
+                pill.appendChild(a);
+              } else if (name) {
+                const span = document.createElement('span');
+                span.textContent = name;
+                pill.appendChild(span);
+              } else if (href) {
+                const a = document.createElement('a');
+                a.href = href; a.target = '_blank'; a.rel = 'noopener';
+                a.textContent = /instagram\.com/i.test(href)
+                  ? (function(u){ const m=u.match(/instagram\.com\/([^\/?#]+)/i); return m? m[1] : href; })(href)
+                  : (function(u){ try { return (new URL(u)).host.replace(/^www\./,''); } catch(_) { return href; } })(href);
+                pill.appendChild(a);
+              }
+
+              li.appendChild(pill);
+            } else {
+              // fallback to original behavior when not fully booked or no occupant info
+              const makeLine = () => {
+                if (!groups.length) {
+                  return textValue + ' ';
+                }
+                const parts = groups.slice(0, Math.max(3, cap || 3)).map(g=>{
+                  const n = (g.name||'').trim();
+                  const s = (g.social||'').trim();
+                  if (!s) return n || '—';
+                  const href = socialHrefOrNull(s);
+                  if (href){
+                    return n ? `${n} <a target="_blank" rel="noopener" href="${href}">${s}</a>` : `<a target="_blank" rel="noopener" href="${href}">${s}</a>`;
+                  }
+                  return n ? `${n} ${s}` : s;
+                });
+                return textValue + ' — ' + parts.join('; ');
+              };
+
+              if (isFull || !r.url || r.url === '-') {
+                const span = document.createElement('span');
+                span.className = 'nolink';
+                span.innerHTML = makeLine() + (isFull ? '' : (groups.length ? '' : '<span class="muted">(details coming soon)</span>'));
+                li.appendChild(span);
+              } else {
+                // Not full: keep link, but append occupants after
+                const a = document.createElement('a');
+                a.href = r.url; a.target = '_blank'; a.rel = 'noopener';
+                a.textContent = textValue;
+
+                const tail = document.createElement('span');
+                if (groups.length) {
+                  tail.innerHTML = ' — ' + makeLine().replace(/^.*?\s—\s/, '');
+                } else {
+                  tail.textContent = ' ';
+                }
+
+                const wrapRow = document.createElement('div');
+                wrapRow.appendChild(a);
+                wrapRow.appendChild(tail);
+                li.appendChild(wrapRow);
+              }
+            }
+
+            ul.appendChild(li);
+            // --- END CENTRALIZED LEGEND ROW LOGIC ---
+          });
+          section.appendChild(ul);
+          wrap.appendChild(section);
+        }
+        return { container: wrap, count: rowCount };
+      }
+    })();
+  </script>
+</body>
+  <script>
+  (function () {
+    function sendHeight() {
+      try {
+        var h = Math.max(
+          document.documentElement.scrollHeight,
+          document.body.scrollHeight
+        );
+        parent.postMessage({ __voidMapHeight: h }, "*");
+      } catch(_) {}
+    }
+
+    // initial + on resize + after load
+    sendHeight();
+    window.addEventListener("load", sendHeight);
+    window.addEventListener("resize", function(){ requestAnimationFrame(sendHeight); });
+
+    // observe dynamic content changes
+    var mo = new MutationObserver(function(){ requestAnimationFrame(sendHeight); });
+    mo.observe(document.documentElement, { childList:true, subtree:true, attributes:true, characterData:true });
+  })();
+  </script>
+</html>
