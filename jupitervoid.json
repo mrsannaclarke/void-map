@@ -1,14 +1,4 @@
 {
-  "sleeping": [
-    "231",
-    "233",
-    "235",
-    "239",
-    "247",
-    "249",
-    "251",
-    "253"
-  ],
   "color_map": {
     "Red": [
       "#af003f",
@@ -16,27 +6,31 @@
     ],
     "Dark Blue": [
       "#3d7ef2",
-      "#abc9f4"
+      "#78b0ff"
     ],
     "Green": [
       "#51b848",
       "#b9f2b3"
     ],
     "Lavender": [
-      "#967cb9",
-      "#c2abef"
+      "#8551c8",
+      "#a27cef"
     ],
     "Light Blue": [
-      "#2adff2",
-      "#abecef"
+      "#00e5ff",
+      "#8ff0f5"
     ],
     "Orange": [
-      "#f36b28",
-      "#f4bea6"
+      "#e05600",
+      "#ff9959"
     ],
     "Pink": [
       "#dd3ac6",
-      "#eda6e6"
+      "#f599ec"
+    ],  
+    "sleeproom": [
+      "#288699",
+      "#ffffff"
     ]
   },
   "shapes": {
@@ -483,8 +477,31 @@
         }
       }
     },
+    "102": {
+      "bookwhen_url": "",
+      "hide_in_nav": true,
+      "csv": {
+        "building_label": "Jupiter Original",
+        "floor_code": "L1",
+        "shape name": "102",
+        "booth_name": "Room 102",
+        "booth_type": "LDL",
+        "ada_note": "accessible"
+      },
+      "svg": {
+        "id": "_102",
+        "tag": "rect",
+        "attributes": {
+          "x": "98.3",
+          "y": "175.2",
+          "width": "8.6",
+          "height": "16.7"
+        }
+      }
+    },
     "103": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-st3td-20260522000000",
+      "bookwhen_url": "",
+      "hide_in_nav": true,
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L1",
@@ -493,8 +510,7 @@
         "Notes": "not visible",
         "booth_type": "SDL",
         "capacity_1_to_4": "2",
-        "ada_note": "accessible",
-        "Color Code": "Green"
+        "ada_note": "accessible"
       },
       "svg": {
         "id": "_103",
@@ -508,7 +524,8 @@
       }
     },
     "104": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-s8upn-20260522000000",
+      "bookwhen_url": "",
+      "hide_in_nav": true,
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L1",
@@ -517,8 +534,7 @@
         "Notes": "not visible",
         "booth_type": "LDL",
         "capacity_1_to_4": "4",
-        "ada_note": "accessible",
-        "Color Code": "Lavender"
+        "ada_note": "accessible"
       },
       "svg": {
         "id": "_104",
@@ -532,7 +548,8 @@
       }
     },
     "105": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-she1u-20260522000000",
+      "bookwhen_url": "",
+      "hide_in_nav": true,
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L1",
@@ -541,8 +558,7 @@
         "Notes": "not visible",
         "booth_type": "SDL",
         "capacity_1_to_4": "2",
-        "ada_note": "accessible",
-        "Color Code": "Green"
+        "ada_note": "accessible"
       },
       "svg": {
         "id": "_105",
@@ -556,7 +572,8 @@
       }
     },
     "106": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-sjp6u-20260522000000",
+      "bookwhen_url": "",
+      "hide_in_nav": true,
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L1",
@@ -565,8 +582,7 @@
         "Notes": "not visible",
         "booth_type": "LDL",
         "capacity_1_to_4": "4",
-        "ada_note": "accessible",
-        "Color Code": "Lavender"
+        "ada_note": "accessible"
       },
       "svg": {
         "id": "_106",
@@ -580,7 +596,8 @@
       }
     },
     "107": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-skriq-20260522000000",
+      "bookwhen_url": "",
+      "hide_in_nav": true,
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L1",
@@ -589,8 +606,7 @@
         "Notes": "not visible",
         "booth_type": "SDL",
         "capacity_1_to_4": "2",
-        "ada_note": "accessible",
-        "Color Code": "Green"
+        "ada_note": "accessible"
       },
       "svg": {
         "id": "_107",
@@ -743,16 +759,15 @@
       }
     },
     "117": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-s55tj-20260522000000",
+      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-sd4kb-20260521000000",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L1",
         "shape name": "117",
         "booth_name": "Room 117",
-        "booth_type": "SDL",
-        "capacity_1_to_4": "1",
+        "booth_type": "SLEEP",
         "ada_note": "accessible",
-        "Color Code": "Green"
+        "Color Code": "sleeproom"
       },
       "svg": {
         "id": "_117",
@@ -1205,7 +1220,8 @@
       }
     },
     "139": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-sna2l-20260522000000",
+      "bookwhen_url": "",
+      "hide_in_nav": true,
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L1",
@@ -1213,8 +1229,7 @@
         "booth_name": "Room 139",
         "booth_type": "SDL",
         "capacity_1_to_4": "0",
-        "ada_note": "accessible",
-        "Color Code": "Green"
+        "ada_note": "accessible"
       },
       "svg": {
         "id": "_139",
@@ -1228,7 +1243,8 @@
       }
     },
     "140": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-s7vjh-20260522000000",
+      "bookwhen_url": "",
+      "hide_in_nav": true,
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L1",
@@ -1236,8 +1252,7 @@
         "booth_name": "Room 140",
         "booth_type": "LDL",
         "capacity_1_to_4": "0",
-        "ada_note": "accessible",
-        "Color Code": "Lavender"
+        "ada_note": "accessible"
       },
       "svg": {
         "id": "_140",
@@ -1251,16 +1266,15 @@
       }
     },
     "202": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-sw4s6-20260522000000",
+      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-s6y6g-20260521000000",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L2",
         "shape name": "202",
         "booth_name": "Room 202",
-        "booth_type": "LDL",
-        "capacity_1_to_4": "4",
+        "booth_type": "SLEEP",
         "ada_note": "stair-access",
-        "Color Code": "Lavender"
+        "Color Code": "sleeproom"
       },
       "svg": {
         "id": "_202",
@@ -1274,16 +1288,15 @@
       }
     },
     "203": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-sqxh7-20260522000000",
+      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-smbun-20260521000000",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L2",
         "shape name": "203",
         "booth_name": "Room 203",
-        "booth_type": "SDL",
-        "capacity_1_to_4": "2",
+        "booth_type": "SLEEP",
         "ada_note": "stair-access",
-        "Color Code": "Green"
+        "Color Code": "sleeproom"
       },
       "svg": {
         "id": "_203",
@@ -1297,17 +1310,16 @@
       }
     },
     "204": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-stv4l-20260522000000",
+      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-s1jay-20260521000000",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L2",
         "shape name": "204",
         "booth_name": "Room 204",
-        "booth_type": "LDL",
-        "capacity_1_to_4": "4",
+        "booth_type": "SLEEP",
         "buyout_price": "",
         "ada_note": "stair-access",
-        "Color Code": "Lavender"
+        "Color Code": "sleeproom"
       },
       "svg": {
         "id": "_204",
@@ -1321,16 +1333,15 @@
       }
     },
     "205": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-sa6v3-20260522000000",
+      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-s20gz-20260521000000",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L2",
         "shape name": "205",
         "booth_name": "Room 205",
-        "booth_type": "SDL",
-        "capacity_1_to_4": "2",
+        "booth_type": "SLEEP",
         "ada_note": "stair-access",
-        "Color Code": "Green"
+        "Color Code": "sleeproom"
       },
       "svg": {
         "id": "_205",
@@ -1344,16 +1355,15 @@
       }
     },
     "206": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-scenh-20260522000000",
+      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-sjfmg-20260521000000",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L2",
         "shape name": "206",
         "booth_name": "Room 206",
-        "booth_type": "LDL",
-        "capacity_1_to_4": "4",
+        "booth_type": "SLEEP",
         "ada_note": "stair-access",
-        "Color Code": "Lavender"
+        "Color Code": "sleeproom"
       },
       "svg": {
         "id": "_206",
@@ -1367,16 +1377,15 @@
       }
     },
     "207": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-s61z8-20260522000000",
+      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-srglt-20260521000000",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L2",
         "shape name": "207",
         "booth_name": "Room 207",
-        "booth_type": "SDL",
-        "capacity_1_to_4": "2",
+        "booth_type": "SLEEP",
         "ada_note": "stair-access",
-        "Color Code": "Green"
+        "Color Code": "sleeproom"
       },
       "svg": {
         "id": "_207",
@@ -1390,16 +1399,15 @@
       }
     },
     "208": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-sn6vc-20260522000000",
+      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-sujx4-20260521000000",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L2",
         "shape name": "208",
         "booth_name": "Room 208",
-        "booth_type": "LDL",
-        "capacity_1_to_4": "4",
+        "booth_type": "SLEEP",
         "ada_note": "stair-access",
-        "Color Code": "Lavender"
+        "Color Code": "sleeproom"
       },
       "svg": {
         "id": "_208",
@@ -1413,16 +1421,15 @@
       }
     },
     "210": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-st3td-20260522000000",
+      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-sn5yn-20260521000000",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L2",
         "shape name": "210",
         "booth_name": "Room 210",
-        "booth_type": "LDL",
-        "capacity_1_to_4": "4",
+        "booth_type": "SLEEP",
         "ada_note": "stair-access",
-        "Color Code": "Lavender"
+        "Color Code": "sleeproom"
       },
       "svg": {
         "id": "_210",
@@ -1436,16 +1443,15 @@
       }
     },
     "212": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-s5vah-20260522000000",
+      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-siv6a-20260521000000",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L2",
         "shape name": "212",
         "booth_name": "Room 212",
-        "booth_type": "LDL",
-        "capacity_1_to_4": "4",
+        "booth_type": "SLEEP",
         "ada_note": "stair-access",
-        "Color Code": "Lavender"
+        "Color Code": "sleeproom"
       },
       "svg": {
         "id": "_212",
@@ -1459,16 +1465,15 @@
       }
     },
     "213": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-swr95-20260522000000",
+      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-sdhrw-20260521000000",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L2",
         "shape name": "213",
         "booth_name": "Room 213",
-        "booth_type": "SDL",
-        "capacity_1_to_4": "2",
+        "booth_type": "SLEEP",
         "ada_note": "stair-access",
-        "Color Code": "Green"
+        "Color Code": "sleeproom"
       },
       "svg": {
         "id": "_213",
@@ -1482,16 +1487,15 @@
       }
     },
     "214": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-sh1u6-20260522000000",
+      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-stire-20260521000000",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L2",
         "shape name": "214",
         "booth_name": "Room 214",
-        "booth_type": "LDL",
-        "capacity_1_to_4": "4",
+        "booth_type": "SLEEP",
         "ada_note": "stair-access",
-        "Color Code": "Lavender"
+        "Color Code": "sleeproom"
       },
       "svg": {
         "id": "_214",
@@ -1505,16 +1509,15 @@
       }
     },
     "215": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-sh1u6-20260522000000",
+      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-s8xmq-20260521000000",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L2",
         "shape name": "215",
         "booth_name": "Room 215",
-        "booth_type": "SDL",
-        "capacity_1_to_4": "2",
+        "booth_type": "SLEEP",
         "ada_note": "stair-access",
-        "Color Code": "Green"
+        "Color Code": "sleeproom"
       },
       "svg": {
         "id": "_215",
@@ -1528,16 +1531,15 @@
       }
     },
     "216": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-sxw57-20260522000000",
+      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-s3gx7-20260521000000",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L2",
         "shape name": "216",
         "booth_name": "Room 216",
-        "booth_type": "LDL",
-        "capacity_1_to_4": "4",
+        "booth_type": "SLEEP",
         "ada_note": "stair-access",
-        "Color Code": "Lavender"
+        "Color Code": "sleeproom"
       },
       "svg": {
         "id": "_216",
@@ -1551,16 +1553,15 @@
       }
     },
     "217": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-sdow4-20260522000000",
+      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-sfer6-20260521000000",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L2",
         "shape name": "217",
         "booth_name": "Room 217",
-        "booth_type": "SDL",
-        "capacity_1_to_4": "1",
+        "booth_type": "SLEEP",
         "ada_note": "stair-access",
-        "Color Code": "Green",
+        "Color Code": "sleeproom",
         "Notes": "tiny"
       },
       "svg": {
@@ -1575,16 +1576,15 @@
       }
     },
     "218": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-sgs5o-20260522000000",
+      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-smzsd-20260521000000",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L2",
         "shape name": "218",
         "booth_name": "Room 218",
-        "booth_type": "SDL",
-        "capacity_1_to_4": "3",
+        "booth_type": "SLEEP",
         "ada_note": "stair-access",
-        "Color Code": "Pink"
+        "Color Code": "sleeproom"
       },
       "svg": {
         "id": "_218",
@@ -1598,16 +1598,15 @@
       }
     },
     "219": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-svimb-20260522000000",
+      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-sj1xa-20260521000000",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L2",
         "shape name": "219",
         "booth_name": "Room 219",
-        "booth_type": "MDL",
-        "capacity_1_to_4": "3",
+        "booth_type": "SLEEP",
         "ada_note": "stair-access",
-        "Color Code": "Pink"
+        "Color Code": "sleeproom"
       },
       "svg": {
         "id": "_219",
@@ -1621,16 +1620,15 @@
       }
     },
     "220": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-suu6k-20260522000000",
+      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-sd3wg-20260521000000",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L2",
         "shape name": "220",
         "booth_name": "Room 220",
-        "booth_type": "LDL",
-        "capacity_1_to_4": "3",
+        "booth_type": "SLEEP",
         "ada_note": "stair-access",
-        "Color Code": "Lavender"
+        "Color Code": "sleeproom"
       },
       "svg": {
         "id": "_220",
@@ -1644,16 +1642,15 @@
       }
     },
     "221": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-suoqu-20260522000000",
+      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-s07cw-20260521000000",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L2",
         "shape name": "221",
         "booth_name": "Room 221",
-        "booth_type": "MDL",
-        "capacity_1_to_4": "3",
+        "booth_type": "SLEEP",
         "ada_note": "stair-access",
-        "Color Code": "Pink"
+        "Color Code": "sleeproom"
       },
       "svg": {
         "id": "_221",
@@ -1667,16 +1664,15 @@
       }
     },
     "222": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-s0v9s-20260522000000",
+      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-sxnge-20260521000000",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L2",
         "shape name": "222",
         "booth_name": "Room 222",
-        "booth_type": "MDL",
-        "capacity_1_to_4": "3",
+        "booth_type": "SLEEP",
         "ada_note": "stair-access",
-        "Color Code": "Pink"
+        "Color Code": "sleeproom"
       },
       "svg": {
         "id": "_222",
@@ -1690,16 +1686,15 @@
       }
     },
      "223": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-s2lth-20260522000000",
+      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-stt3g-20260521000000",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L2",
         "shape name": "223",
         "booth_name": "Room 223",
-        "booth_type": "MDL",
-        "capacity_1_to_4": "3",
+        "booth_type": "SLEEP",
         "ada_note": "stair-access",
-        "Color Code": "Pink"
+        "Color Code": "sleeproom"
       },
       "svg": {
         "id": "_223",
@@ -1713,16 +1708,15 @@
       }
     },
      "224": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-sd004-20260522000000",
+      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-sdpxz-20260521000000",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L2",
         "shape name": "224",
         "booth_name": "Room 224",
-        "booth_type": "MDL",
-        "capacity_1_to_4": "3",
+        "booth_type": "SLEEP",
         "ada_note": "stair-access",
-        "Color Code": "Pink"
+        "Color Code": "sleeproom"
       },
       "svg": {
         "id": "_224",
@@ -1828,17 +1822,15 @@
       }
     },
     "231": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-sgy1v-20260522000000",
+      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-sv0nv-20260521000000",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L2",
         "shape name": "231",
         "booth_name": "Room 231",
-        "booth_type": "SDL",
-        "capacity_1_to_4": "2",
+        "booth_type": "SLEEP",
         "ada_note": "stair-access",
-        "Color Code": "Green",
-        "Notes": "sleeping"
+        "Color Code": "sleeproom"
       },
       "svg": {
         "id": "_231",
@@ -1875,17 +1867,15 @@
       }
     },
     "233": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-sswmw-20260522000000",
+      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-s967w-20260521000000",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L2",
         "shape name": "233",
         "booth_name": "Room 233",
-        "booth_type": "SDL",
-        "capacity_1_to_4": "2",
+        "booth_type": "SLEEP",
         "ada_note": "stair-access",
-        "Color Code": "Green",
-        "Notes": "sleeping"
+        "Color Code": "sleeproom"
       },
       "svg": {
         "id": "_233",
@@ -1922,17 +1912,15 @@
       }
     },
     "235": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-stef0-20260522000000",
+      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-setz0-20260521000000",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L2",
         "shape name": "235",
         "booth_name": "Room 235",
-        "booth_type": "SDL",
-        "capacity_1_to_4": "2",
+        "booth_type": "SLEEP",
         "ada_note": "stair-access",
-        "Color Code": "Green",
-        "Notes": "sleeping"
+        "Color Code": "sleeproom"
       },
       "svg": {
         "id": "_235",
@@ -2015,17 +2003,15 @@
       }
     },
     "239": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-scf1k-20260522000000",
+      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-s3ix0-20260521000000",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L2",
         "shape name": "239",
         "booth_name": "Room 239",
-        "booth_type": "SDL",
-        "capacity_1_to_4": "2",
+        "booth_type": "SLEEP",
         "ada_note": "stair-access",
-        "Color Code": "Green",
-        "Notes": "sleeping"
+        "Color Code": "sleeproom"
       },
       "svg": {
         "id": "_239",
@@ -2108,16 +2094,15 @@
       }
     },
     "244": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-stf22-20260522000000",
+      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-s60gi-20260521000000",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L2",
         "shape name": "244",
         "booth_name": "Room 244",
-        "booth_type": "LDL",
-        "capacity_1_to_4": "4",
+        "booth_type": "SLEEP",
         "ada_note": "stair-access",
-        "Color Code": "Lavender"
+        "Color Code": "sleeproom"
       },
       "svg": {
         "id": "_244",
@@ -2177,17 +2162,15 @@
       }
     },
     "247": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-sjj1g-20260522000000",
+      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-ss0hl-20260521000000",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L2",
         "shape name": "247",
         "booth_name": "Room 247",
-        "booth_type": "SDL",
-        "capacity_1_to_4": "2",
+        "booth_type": "SLEEP",
         "ada_note": "stair-access",
-        "Color Code": "Green",
-        "Notes": "sleeping"
+        "Color Code": "sleeproom"
       },
       "svg": {
         "id": "_247",
@@ -2224,17 +2207,15 @@
       }
     },
     "249": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-spt4w-20260522000000",
+      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-smdhi-20260521000000",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L2",
         "shape name": "249",
         "booth_name": "Room 249",
-        "booth_type": "SDL",
-        "capacity_1_to_4": "2",
+        "booth_type": "SLEEP",
         "ada_note": "stair-access",
-        "Color Code": "Green",
-        "Notes": "sleeping"
+        "Color Code": "sleeproom"
       },
       "svg": {
         "id": "_249",
@@ -2271,17 +2252,15 @@
       }
     },
     "251": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-sd172-20260522000000",
+      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-smdhi-20260521000000",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L2",
         "shape name": "251",
         "booth_name": "Room 251",
-        "booth_type": "SDL",
-        "capacity_1_to_4": "2",
+        "booth_type": "SLEEP",
         "ada_note": "stair-access",
-        "Color Code": "Green",
-        "Notes": "sleeping"
+        "Color Code": "sleeproom"
       },
       "svg": {
         "id": "_251",
@@ -2318,17 +2297,15 @@
       }
     },
     "253": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-sk119-20260522000000",
+      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-srv9z-20260521000000",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L2",
         "shape name": "253",
         "booth_name": "Room 253",
-        "booth_type": "SDL",
-        "capacity_1_to_4": "2",
+        "booth_type": "SLEEP",
         "ada_note": "stair-access",
-        "Color Code": "Green",
-        "Notes": "sleeping"
+        "Color Code": "sleeproom"
       },
       "svg": {
         "id": "_253",
@@ -3302,41 +3279,5 @@
         }
       }
     }
-  },
-  "unpublished": [
-    "103",
-    "104",
-    "105",
-    "106",
-    "107",
-    "202",
-    "203",
-    "204",
-    "205",
-    "206",
-    "207",
-    "208",
-    "210",
-    "212",
-    "213",
-    "214",
-    "215",
-    "216",
-    "217",
-    "218",
-    "219",
-    "220",
-    "221",
-    "222",
-    "223",
-    "224",
-    "231",
-    "233",
-    "235",
-    "239",
-    "247",
-    "249",
-    "251",
-    "253"
-  ]
+  }
 }
