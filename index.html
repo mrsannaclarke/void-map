@@ -555,14 +555,22 @@
           boothTypes: ['STD10IN'],
           groupBy: null,
           restrictBuildings: ['Jupiter NEXT'],
-groupResolver: ({ shortLabel, booth, csv }) => {
-  const src = String(shortLabel || booth || (csv && csv.booth_name) || '').trim();
-  // Pull the A## booth number
-  const m = src.match(/\bA(\d{1,2})\b/i);
-  const n = m ? parseInt(m[1], 10) : NaN;
-  if (!isNaN(n) && n <= 2) return 'Arium';   // A1–A2
-  return 'Flex Lounge';                       // A3–A13
-},
+          groupResolver: ({ shortLabel, booth, csv }) => {
+            const src = String(shortLabel || booth || (csv && csv.booth_name) || '').trim();
+            // Pull the A## booth number
+            const m = src.match(/\bA(\d{1,2})\b/i);
+            const n = m ? parseInt(m[1], 10) : NaN;
+            if (!isNaN(n) && n <= 2) return 'Arium';   // A1–A2
+            return 'Flex Lounge';                       // A3–A13
+          },
+          // For A-series 10x10 booths, show "Booth A#" instead of "Jupiter NEXT - A#"
+          composeLabel: ({ booth }) => {
+            const b = String(booth || '').trim();
+            if (/^A\d{1,2}$/i.test(b)) {
+              return 'Booth ' + b.toUpperCase();
+            }
+            return b || 'Booth';
+          },
           rowComparator: defaultRowComparator
         },
         dreamtent_artist: {
@@ -728,21 +736,53 @@ groupResolver: ({ booth, csv }) => {
         return null;
       }
 
-      // Helper: derive a primary occupant link from either social or name
+      // Helper: derive a primary occupant link from either social or name,
+      // also respecting occupant-provided URL/website fields.
       function derivePrimaryOccupantLink_(spaceKey){
         const occMap = (window.__VOID_OCCUPANTS || {});
         const occ = occMap[spaceKey] || {};
         const primary = (Array.isArray(occ.groups) && occ.groups.length) ? occ.groups[0] : null;
 
         const name = String((primary && primary.name) || occ.name || '').trim();
-        let rawSocial = String((primary && primary.social) || occ.social || '').trim();
+
+        // Prefer an explicit social/URL field from the primary group, then fall back to the
+        // top-level occupant object. This lets us use things like "url" or "website"
+        // that came from the spreadsheet, not just "social".
+        let rawSocial = '';
+        if (primary) {
+          rawSocial =
+            primary.social ||
+            primary.url ||
+            primary.website ||
+            primary.link ||
+            '';
+        }
+        if (!rawSocial) {
+          rawSocial =
+            occ.social ||
+            occ.url ||
+            occ.website ||
+            occ.link ||
+            '';
+        }
+        rawSocial = String(rawSocial).trim();
 
         // Normalize to href first
         let href = normalizeSocialHref_(rawSocial);
 
-        // If no href yet, scan the combined text for a domain or @handle
+        // If no href yet, scan the combined text (including any other URL-like fields)
+        // for a bare domain or @handle.
         if (!href){
-          const scan = (rawSocial + ' ' + name).trim();
+          const extraBits = [
+            occ.social,
+            occ.url,
+            occ.website,
+            occ.link
+          ]
+            .filter(Boolean)
+            .join(' ');
+          const scan = (rawSocial + ' ' + name + ' ' + extraBits).trim();
+
           let m = scan.match(/([a-z0-9.-]+\.[a-z]{2,})(?:\/\S*)?/i);
           if (m) {
             href = normalizeSocialHref_(m[1]);
@@ -1617,6 +1657,7 @@ groupResolver: ({ booth, csv }) => {
             ? composeLabel(Object.assign({}, context, { group }))
             : (building ? `${building} - ${booth}` : booth);
           const row = {
+            id: String(id).replace(/^_+/, ''),
             group,
             label,
             shortLabel: booth,
@@ -1687,10 +1728,13 @@ groupResolver: ({ booth, csv }) => {
               const li = document.createElement('li');
               const textValue = spec.useShortLabel === true ? r.shortLabel : r.label;
 
-              // Try to detect a numeric room ID (e.g., "Room 117") or direct number "117"
-              let spaceKey = null;
-              let mId = String(r.shortLabel || r.label || '').match(/\b(\d{3})\b/);
-              if (mId) spaceKey = mId[1];
+              // Use canonical space id when available (covers A6/A7, 136, etc.)
+              let spaceKey = (r.id && String(r.id).trim()) || null;
+              if (!spaceKey) {
+                // Fallback: try to detect a 3‑digit room number in the label
+                const mId = String(r.shortLabel || r.label || '').match(/\b(\d{3})\b/);
+                if (mId) spaceKey = mId[1];
+              }
 
               // Capacity & occupancy summary
               const boothType = (r && r.csv && r.csv.booth_type) ? String(r.csv.booth_type).trim() : (r.booth_type || '');
@@ -1734,40 +1778,28 @@ groupResolver: ({ booth, csv }) => {
                 return;
               }
 
-              // Non-sleep logic: existing behavior
+              // Non-sleep logic
               if (isFull && groups && groups.length) {
-                // Use centralized derivation so every booked room auto-links
+                // For fully booked booths, show a single bracketed line:
+                // [ Room 136 - Switchblade Tattoo Club ]
                 const { name, href } = derivePrimaryOccupantLink_(spaceKey);
+                const primaryName = name || (groups[0] && groups[0].name) || '';
+                const displayName = primaryName || 'Booked';
+                const lineText = `${textValue} - ${displayName}`;
 
-                // Title line: e.g., "Room 140"
-                const title = document.createElement('div');
-                title.className = 'result-title';
-                title.textContent = textValue;
-                li.appendChild(title);
-
-                // Pill line below the title
-                const pill = document.createElement('div');
-                pill.className = 'nolink';
-
-                if (href && name) {
+                if (href) {
                   const a = document.createElement('a');
-                  a.href = href; a.target = '_blank'; a.rel = 'noopener';
-                  a.textContent = name;
-                  pill.appendChild(a);
-                } else if (name) {
+                  a.href = href;
+                  a.target = '_blank';
+                  a.rel = 'noopener';
+                  a.textContent = lineText;
+                  li.appendChild(a);
+                } else {
                   const span = document.createElement('span');
-                  span.textContent = name;
-                  pill.appendChild(span);
-                } else if (href) {
-                  const a = document.createElement('a');
-                  a.href = href; a.target = '_blank'; a.rel = 'noopener';
-                  a.textContent = /instagram\.com/i.test(href)
-                    ? (function(u){ const m=u.match(/instagram\.com\/([^\/?#]+)/i); return m? m[1] : href; })(href)
-                    : (function(u){ try { return (new URL(u)).host.replace(/^www\./,''); } catch(_) { return href; } })(href);
-                  pill.appendChild(a);
+                  span.className = 'nolink';
+                  span.textContent = lineText;
+                  li.appendChild(span);
                 }
-
-                li.appendChild(pill);
               } else {
                 // fallback to original behavior when not fully booked or no occupant info
                 const makeLine = () => {
