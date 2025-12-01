@@ -180,7 +180,7 @@
     <rect id="dreambox" class="st5" x="158.32" y="35.21" width="20.27" height="35.07"/>
     <rect id="bunker" class="st5" x="141.9" y="510.8" width="27.7" height="41.4"/>
     <rect id="stage" class="st5" x="133.4" y="51.6" width="24.5" height="16"/>
-    <rect id="sb" class="st5" x="74" y="607.3" width="16.6" height="15.9"/>
+    <rect id="sb" class="st5" x="72.37912" y="568.88519" width="16.6" height="15.9"/>
     <rect id="h" class="st11" x="138.4" y="324.3" width="7.8" height="9"/>
     <rect id="i" class="st11" x="103.4" y="329.1" width="10.8" height="7.6"/>
     <rect id="j" class="st11" x="86.2" y="329.1" width="10.8" height="7.6"/>
@@ -214,17 +214,17 @@
     <rect id="hlblable" class="st2" x="26.2" y="527.8" width="45.7" height="94.5"/>
     <rect id="a2" class="st10" x="64.3" y="466.1" width="14.9" height="15.5"/>
     <rect id="a1" class="st10" x="64.3" y="481.4" width="14.9" height="15.5"/>
-    <rect id="a13" class="st10" x="116.9" y="552.9" width="15.3" height="16.1"/>
-    <rect id="a12" class="st10" x="116.9" y="568.8" width="15.3" height="16.1"/>
-    <rect id="a10" class="st10" x="86.4" y="568.8" width="15.3" height="16.1"/>
-    <rect id="a11" class="st10" x="101.6" y="568.8" width="15.3" height="16.1"/>
+    <rect id="a13" class="st10" x="119.81758" y="553.06213" width="15.3" height="16.1"/>
+    <rect id="a12" class="st10" x="119.81758" y="568.9621" width="15.3" height="16.1"/>
+    <rect id="a10" class="st10" x="89.317581" y="568.9621" width="15.3" height="16.1"/>
+    <rect id="a11" class="st10" x="104.51758" y="568.9621" width="15.3" height="16.1"/>
     <rect id="a3" class="st10" x="154" y="552.3" width="15.5" height="15.6"/>
     <rect id="a4" class="st10" x="154" y="567.6" width="15.5" height="15.6"/>
-    <rect id="a5" class="st10" x="154" y="583.2" width="15.5" height="15.6"/>
-    <rect id="a8" class="st10" x="106.9" y="607.3" width="16.6" height="15.9"/>
-    <rect id="a7" class="st10" x="123.3" y="607.4" width="16.6" height="15.9"/>
-    <rect id="a6" class="st10" x="139.9" y="607.4" width="16.6" height="15.9"/>
-    <rect id="a9" class="st10" x="90.4" y="607.3" width="16.6" height="15.9"/>
+    <path id="a5" class="st10" style="fill:#3d7ef2;stroke:#ffffff;stroke-miterlimit:10" d="m 154,583.20001 h 15.5 v 15.6 l -13.55271,24.82794 -15.64878,-0.42479 -0.0705,-14.7049 z" />
+    <rect id="a8" class="st10" x="92.383759" y="607.76581" width="16.040398" height="15.135302" style="stroke-width:0.95907"/>
+    <rect id="a7" class="st10" x="108.2309" y="607.86102" width="16.040398" height="15.135302" style="stroke-width:0.95907"/>
+    <rect id="a6" class="st10" x="124.27129" y="607.86102" width="16.040398" height="15.135302" style="stroke-width:0.95907"/>
+    <rect id="a9" class="st10" x="76.439995" y="607.76581" width="16.040398" height="15.135302" style="stroke-width:0.95907"/>
     <rect id="aa" class="st11" x="82.3" y="469.9" width="12.9" height="13.5"/>
     <rect id="bb" class="st11" x="96.3" y="469.9" width="12.9" height="13.5"/>
     <rect id="cc" class="st11" x="110.4" y="469.9" width="12.9" height="13.5"/>
