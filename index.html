@@ -83,16 +83,16 @@
       overflow:hidden; cursor:pointer;
     }
     .legend-row:hover{ transform:translateY(-2px); box-shadow:0 12px 24px rgba(7,13,26,.45); border-color:rgba(124,201,255,.4); background:rgba(64, 122, 238, 0.263) }
-    /* Sleep gradient chips (45deg) */
+    /* Sleep chips: available = solid teal, full = teal→white gradient (45deg) */
     .legend-chip.sleep-available {
+      background: var(--sleep-available-start);
+    }
+    .legend-chip.sleep-full {
       background: linear-gradient(
         45deg,
         var(--sleep-available-start),
         var(--sleep-available-end)
       );
-    }
-    .legend-chip.sleep-full {
-      background: var(--sleep-full);
     }
 
     /* Hide 'Wayfinding' label and center chips */
@@ -205,49 +205,49 @@
           <div class="legend-label">Street Fair Vendor Booths<br>Saturday Only</div>
           <div class="legend-swatches">
             <div class="legend-swatch"><span class="legend-chip" style="background:#af003f"></span>Available</div>
-            <div class="legend-swatch"><span class="legend-chip" style="background:#f25f94"></span>Full</div>
+            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#af003f,#ffffff)"></span>Full</div>
           </div>
         </div>
         <div class="legend-row" data-list-key="vendor" tabindex="0" role="button" aria-pressed="false">
           <div class="legend-label">Vendor Booths</div>
           <div class="legend-swatches">
             <div class="legend-swatch"><span class="legend-chip" style="background:#e05600"></span>Available</div>
-            <div class="legend-swatch"><span class="legend-chip" style="background:#ff9959"></span>Full</div>
+            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#e05600,#ffffff)"></span>Full</div>
           </div>
         </div>
         <div class="legend-row" data-list-key="ariumflex" tabindex="0" role="button" aria-pressed="false">
           <div class="legend-label">Arium / Flex Lounge<br>Artist Booths 10x10</div>
           <div class="legend-swatches">
             <div class="legend-swatch"><span class="legend-chip" style="background:#3d7ef2"></span>Available</div>
-            <div class="legend-swatch"><span class="legend-chip" style="background:#78b0ff"></span>Full</div>
+            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#3d7ef2,#ffffff)"></span>Full</div>
           </div>
         </div>
         <div class="legend-row" data-list-key="dreamtent_artist" tabindex="0" role="button" aria-pressed="false">
           <div class="legend-label">Dream Tent<br>Artist Booths 10x10</div>
           <div class="legend-swatches">
             <div class="legend-swatch"><span class="legend-chip" style="background:#00e5ff"></span>Available</div>
-            <div class="legend-swatch"><span class="legend-chip" style="background:#8ff0f5"></span>Full</div>
+            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#00e5ff,#ffffff)"></span>Full</div>
           </div>
         </div>
         <div class="legend-row" data-list-key="small_deluxe" tabindex="0" role="button" aria-pressed="false">
           <div class="legend-label">Small Deluxe<br>Artist Booths</div>
           <div class="legend-swatches">
             <div class="legend-swatch"><span class="legend-chip" style="background:#51b848"></span>Available</div>
-            <div class="legend-swatch"><span class="legend-chip" style="background:#b9f2b3"></span>Full</div>
+            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#51b848,#ffffff)"></span>Full</div>
           </div>
         </div>
         <div class="legend-row" data-list-key="medium_deluxe" tabindex="0" role="button" aria-pressed="false">
           <div class="legend-label">Medium Deluxe<br>Artist Booths</div>
           <div class="legend-swatches">
             <div class="legend-swatch"><span class="legend-chip" style="background:#dd3ac6"></span>Available</div>
-            <div class="legend-swatch"><span class="legend-chip" style="background:#f599ec"></span>Full</div>
+            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#dd3ac6,#ffffff)"></span>Full</div>
           </div>
         </div>
         <div class="legend-row" data-list-key="large_deluxe" tabindex="0" role="button" aria-pressed="false">
           <div class="legend-label">Large Deluxe<br>Artist Booths</div>
           <div class="legend-swatches">
             <div class="legend-swatch"><span class="legend-chip" style="background:#8551c8"></span>Available</div>
-            <div class="legend-swatch"><span class="legend-chip" style="background:#b99df1"></span>Full</div>
+            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#8551c8,#ffffff)"></span>Full</div>
           </div>
         </div>
         <!-- Sleep Rooms legend row -->
@@ -339,6 +339,80 @@
         // Street Fair
         VND10STREET: '#f25f94'  // Street Fair — Full
       };
+
+      // Available (base) colors by booth_type (match legend "Available" chips)
+      const AVAILABLE_FILL_BY_TYPE = {
+        SDL: '#51b848',
+        MDL: '#dd3ac6',
+        LDL: '#8551c8',
+        XLDL: '#8551c8',
+        SLEEP: '#288699',
+        STD10IN: '#3d7ef2',
+        STD10TENT: '#00e5ff',
+        VND10TENT: '#e05600',
+        VND10OUT: '#e05600',
+        VND10IN: '#e05600',
+        VND10STREET: '#af003f'
+      };
+
+      // Map booth_type codes to legend/list keys for category jumps
+      const LEGEND_KEY_BY_BOOTH_TYPE = {
+        // Street Fair
+        VND10STREET: 'streetfair',
+        // Vendors (Dream Tent, outdoor, indoor)
+        VND10TENT: 'vendor',
+        VND10OUT:  'vendor',
+        VND10IN:   'vendor',
+        // Arium / Flex lounge artist booths
+        STD10IN: 'ariumflex',
+        // Dream Tent artist booths
+        STD10TENT: 'dreamtent_artist',
+        // Deluxe artist rooms
+        SDL: 'small_deluxe',
+        SSDL: 'small_deluxe',
+        MDL: 'medium_deluxe',
+        LDL: 'large_deluxe',
+        XLDL: 'large_deluxe',
+        // Sleep rooms (list-only; map clicks remain disabled when full)
+        SLEEP: 'sleep'
+      };
+
+      // Ensure a per-type "full" gradient (base color → white) exists in <defs>
+      function ensureFullGradient_(svgRoot, gradKey, baseColor) {
+        if (!svgRoot || !gradKey || !baseColor) return;
+        const svg = svgRoot.ownerSVGElement || svgRoot;
+        if (!svg) return;
+
+        let defs = svg.querySelector('defs');
+        if (!defs) {
+          defs = document.createElementNS(SVG_NS, 'defs');
+          svg.insertBefore(defs, svg.firstChild);
+        }
+
+        const id = 'fullGrad-' + String(gradKey);
+        let grad = defs.querySelector('#' + cssEscape(id));
+        if (grad) return;
+
+        grad = document.createElementNS(SVG_NS, 'linearGradient');
+        grad.setAttribute('id', id);
+        grad.setAttribute('gradientUnits', 'objectBoundingBox');
+        grad.setAttribute('x1', '0');
+        grad.setAttribute('y1', '0');
+        grad.setAttribute('x2', '1');
+        grad.setAttribute('y2', '1');
+
+        const stop1 = document.createElementNS(SVG_NS, 'stop');
+        stop1.setAttribute('offset', '25%');
+        stop1.setAttribute('stop-color', baseColor);
+
+        const stop2 = document.createElementNS(SVG_NS, 'stop');
+        stop2.setAttribute('offset', '100%');
+        stop2.setAttribute('stop-color', '#ffffff');
+
+        grad.appendChild(stop1);
+        grad.appendChild(stop2);
+        defs.appendChild(grad);
+      }
       function ensureSleepGradient_(svgRoot) {
         if (!svgRoot) return;
         const svg = svgRoot.ownerSVGElement || svgRoot;
@@ -842,7 +916,7 @@ groupResolver: ({ booth, csv }) => {
           const isFull = !!(statusSummary && statusSummary.isFull);
           const published = isPublishedKey_(mapData, canonicalKey);
 
-          // Sleep rooms: use gradient when available; solid color when occupied.
+          // Sleep rooms: AVAILABLE = solid teal; FULL = teal→white gradient (same angle as before).
           if (boothType === 'SLEEP') {
             if (!published) {
               // Unpublished sleep rooms already get greyed/disabled in decorateShape
@@ -850,10 +924,12 @@ groupResolver: ({ booth, csv }) => {
             }
 
             if (isFull) {
-              // Occupied: solid "full" color + disable interaction
-              const bookedColor =
-                (FULL_FILL_BY_TYPE.SLEEP) ? FULL_FILL_BY_TYPE.SLEEP : '#9fdbe6';
-              try { node.style.fill = bookedColor; } catch (_) {}
+              // Occupied: apply 45° gradient fill (teal → white) and disable interaction
+              ensureSleepGradient_(svgRoot);
+              try {
+                node.removeAttribute('fill');
+                node.style.fill = 'url(#sleepRoomGradient)';
+              } catch (_) {}
               try {
                 node.classList.remove('shape-interactive');
                 node.style.pointerEvents = 'none';
@@ -862,28 +938,66 @@ groupResolver: ({ booth, csv }) => {
               } catch (_) {}
               disableLinkWrapper_(node);
             } else {
-              // Available: apply 45° gradient fill via inline style so it overrides SVG class fills
-              ensureSleepGradient_(svgRoot);
+              // Available: solid teal (matches legend "Available" chip)
+              const baseColor =
+                (AVAILABLE_FILL_BY_TYPE && AVAILABLE_FILL_BY_TYPE.SLEEP)
+                  ? AVAILABLE_FILL_BY_TYPE.SLEEP
+                  : '#288699';
               try {
                 node.removeAttribute('fill');
-                node.style.fill = 'url(#sleepRoomGradient)';
+                node.style.fill = baseColor;
               } catch (_) {}
             }
             continue;
           }
 
-          // Non-sleep booths: preserve existing behavior (only touch FULL ones)
-          if (isFull && published) {
-            const bookedColor =
-              (boothType && FULL_FILL_BY_TYPE[boothType]) ? FULL_FILL_BY_TYPE[boothType] : BOOKED_FILL;
-            try { node.style.fill = bookedColor; } catch (_) {}
-            try {
-              node.classList.remove('shape-interactive');
-              node.style.pointerEvents = 'none';
-              node.removeAttribute('tabindex');
-              node.removeAttribute('role');
-            } catch (_) {}
-            disableLinkWrapper_(node);
+          // Non-sleep booths: when full, use a gradient from the available color to white
+          // and make clicks behave like clicking the corresponding legend row (jump to list).
+          if (boothType !== 'SLEEP') {
+            if (isFull && published) {
+              const baseColor =
+                (boothType && AVAILABLE_FILL_BY_TYPE[boothType])
+                  ? AVAILABLE_FILL_BY_TYPE[boothType]
+                  : (boothType && FULL_FILL_BY_TYPE[boothType])
+                    ? FULL_FILL_BY_TYPE[boothType]
+                    : BOOKED_FILL;
+
+              const gradKey = boothType || 'default';
+              ensureFullGradient_(svgRoot, gradKey, baseColor);
+              try {
+                node.removeAttribute('fill');
+                node.style.fill = `url(#fullGrad-${gradKey})`;
+              } catch (_) {}
+
+              const legendKey = LEGEND_KEY_BY_BOOTH_TYPE[boothType];
+              if (legendKey) {
+                // Category-click mode: keep the shape interactive and let wireLink()
+                // route clicks to the Notes list instead of opening a booking URL.
+                node.classList.add('shape-interactive');
+                node.setAttribute('data-click-behavior', 'category');
+                node.setAttribute('data-legend-key', legendKey);
+                if (!node.hasAttribute('tabindex')) {
+                  node.setAttribute('tabindex', '0');
+                }
+                if (!node.hasAttribute('role')) {
+                  node.setAttribute('role', 'link');
+                }
+                // Do NOT disable pointer events; click handlers will still fire.
+              } else {
+                // Fallback: behave like a generic full/disabled shape (no category mapping)
+                try {
+                  node.classList.remove('shape-interactive');
+                  node.style.pointerEvents = 'none';
+                  node.removeAttribute('tabindex');
+                  node.removeAttribute('role');
+                } catch (_) {}
+                disableLinkWrapper_(node);
+              }
+            } else {
+              // Not full or not published: clear any category-click metadata
+              node.removeAttribute('data-click-behavior');
+              node.removeAttribute('data-legend-key');
+            }
           }
         }
       }
@@ -1278,8 +1392,8 @@ groupResolver: ({ booth, csv }) => {
     const letters = m[1].toLowerCase();
     const digits  = m[2];
 
-    // A-series booths should always show only the number: a1→"1", a13→"13"
-    if (letters === 'a') return String(parseInt(digits, 10));
+    // A-series booths (Arium/Flex booths) should display as `A1`, `A2`, ..., `A13`
+    if (letters === 'a') return 'A' + String(parseInt(digits, 10));
 
     // For other series: "...1" shows the letter only; otherwise show the digits
     if (digits === '1') return m[1].toUpperCase();
@@ -1491,7 +1605,37 @@ groupResolver: ({ booth, csv }) => {
         const openLink = (event) => {
           event.preventDefault();
           event.stopPropagation();
-          window.open(trimmed, "_blank", "noopener");
+
+          const behavior = node.getAttribute('data-click-behavior');
+          const legendKey = node.getAttribute('data-legend-key');
+
+          // If this shape is in "category" mode, mirror clicking the matching legend row:
+          // render the list for that category and scroll/highlight the Notes panel.
+          if (behavior === 'category' && legendKey) {
+            try {
+              const mapData = window.__VOID_MAPDATA;
+              if (mapData && typeof renderResultsForKey === 'function') {
+                renderResultsForKey(mapData, legendKey);
+              }
+              const notes = document.getElementById('notes');
+              if (notes) {
+                notes.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                notes.setAttribute('tabindex','-1');
+                notes.focus({ preventScroll:true });
+                notes.classList.remove('flash-notes');
+                // force reflow so the flash animation can re-trigger
+                void notes.offsetWidth;
+                notes.classList.add('flash-notes');
+              }
+            } catch (_) {}
+            try { node.blur(); } catch (_) {}
+            return false;
+          }
+
+          // Default behavior: open the booking URL in a new tab (if present)
+          if (trimmed) {
+            window.open(trimmed, "_blank", "noopener");
+          }
           try{ node.blur(); }catch(_){}
           return false;
         };
