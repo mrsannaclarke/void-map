@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <base target="_blank">
   <title>Jupiter Void Map</title>
+  <link rel="icon" type="image/webp" href="favicon.webp">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -277,7 +278,7 @@
       <p style="margin:0;color:var(--text-muted)">Click a shape on the map to open its booking page. Or click a row in the Key to see the full list for that group.</p>
       <br>
       <h2>Coupon Code</h2>
-      <p style="margin:0;color:var(--text-muted)">At checkout, enter <strong style="color:#a2d5fa">ALLWORKANDSOMEPLAY</strong> to take <strong>$100</strong> off any overnight hotel room or artist booth. One use per purchaser; cannot be combined with other offers.</p>
+      <p style="margin:0;color:var(--text-muted)">At checkout, enter <strong style="color:#a2d5fa">GETAROOM</strong> to take <strong>$100</strong> off any overnight sleeping room. One use per purchaser; cannot be combined with other offers.</p>
    </section>
   </div>
 
@@ -528,19 +529,42 @@
         if (!feedSpace) return result;
 
         if (Array.isArray(feedSpace.groups)){
-          result.groups = feedSpace.groups.slice(0, 12); // sane cap
+          // Keep the original order but drop entries that have no usable name/social
+          const cleaned = feedSpace.groups.filter(g => {
+            const name = String((g && g.name) || '').trim();
+            const social = String((g && g.social) || '').trim();
+            return !!(name || social);
+          });
+
+          // Start from the cleaned list; fall back to the raw array if *every* entry was empty.
+          let groups = cleaned.length ? cleaned : feedSpace.groups.slice();
+
+          // If groups is still empty but the top-level feedSpace has a name/social,
+          // synthesize a single group from those so the nav can still show an occupant.
+          if ((!groups || groups.length === 0) && (feedSpace.name || feedSpace.social)) {
+            groups = [{
+              name: String(feedSpace.name || '').trim(),
+              social: String(feedSpace.social || '').trim(),
+              ticket: ''
+            }];
+          }
+
+          // Cap to a reasonable size for display
+          result.groups = groups.slice(0, 12);
+
           // Prefer server-provided summary if present:
           if (typeof feedSpace.used_slots === 'number') result.used = feedSpace.used_slots;
           if (typeof feedSpace.has_buyout === 'boolean') result.hasBuyout = feedSpace.has_buyout;
 
+          // If server didn’t give us a full summary, derive from ticket names
           if (result.used === 0 || result.hasBuyout === false){
-            // Derive from tickets if available
             for (const g of result.groups){
               const { slots, buyout } = slotCostForTicket(g.ticket);
               result.hasBuyout = result.hasBuyout || buyout;
               if (!buyout) result.used += (slots || 0);
             }
           }
+
           return result;
         }
 
