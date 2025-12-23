@@ -23,6 +23,8 @@
       --sleep-available-start:#288699;
       --sleep-available-end:#ffffff;
       --sleep-full:#ffffff;
+      --full-white-start: 12%;
+      --full-white-start-dreamtent: 35%;
     }
 
     *,*::before,*::after{ box-sizing:border-box }
@@ -89,11 +91,7 @@
       background: var(--sleep-available-start);
     }
     .legend-chip.sleep-full {
-      background: linear-gradient(
-        45deg,
-        var(--sleep-available-start),
-        var(--sleep-available-end)
-      );
+      background: linear-gradient(45deg, var(--sleep-available-start) var(--full-white-start), var(--sleep-available-end) 100%);
     }
 
     /* Hide 'Wayfinding' label and center chips */
@@ -206,49 +204,49 @@
           <div class="legend-label">Street Fair Vendor Booths<br>Saturday Only</div>
           <div class="legend-swatches">
             <div class="legend-swatch"><span class="legend-chip" style="background:#af003f"></span>Available</div>
-            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#af003f,#ffffff)"></span>Full</div>
+            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#af003f var(--full-white-start),#ffffff)"></span>Full</div>
           </div>
         </div>
         <div class="legend-row" data-list-key="vendor" tabindex="0" role="button" aria-pressed="false">
           <div class="legend-label">Vendor Booths</div>
           <div class="legend-swatches">
             <div class="legend-swatch"><span class="legend-chip" style="background:#e05600"></span>Available</div>
-            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#e05600,#ffffff)"></span>Full</div>
+            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#e05600 var(--full-white-start),#ffffff)"></span>Full</div>
           </div>
         </div>
         <div class="legend-row" data-list-key="ariumflex" tabindex="0" role="button" aria-pressed="false">
           <div class="legend-label">Arium / Flex Lounge<br>Artist Booths 10x10</div>
           <div class="legend-swatches">
             <div class="legend-swatch"><span class="legend-chip" style="background:#3d7ef2"></span>Available</div>
-            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#3d7ef2,#ffffff)"></span>Full</div>
+            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#3d7ef2 var(--full-white-start),#ffffff)"></span>Full</div>
           </div>
         </div>
         <div class="legend-row" data-list-key="dreamtent_artist" tabindex="0" role="button" aria-pressed="false">
           <div class="legend-label">Dream Tent<br>Artist Booths 10x10</div>
           <div class="legend-swatches">
             <div class="legend-swatch"><span class="legend-chip" style="background:#00e5ff"></span>Available</div>
-            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#00e5ff,#ffffff)"></span>Full</div>
+            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#b8f6ff var(--full-white-start-dreamtent),#ffffff)"></span>Full</div>
           </div>
         </div>
         <div class="legend-row" data-list-key="small_deluxe" tabindex="0" role="button" aria-pressed="false">
           <div class="legend-label">Small Deluxe<br>Artist Booths</div>
           <div class="legend-swatches">
             <div class="legend-swatch"><span class="legend-chip" style="background:#51b848"></span>Available</div>
-            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#51b848,#ffffff)"></span>Full</div>
+            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#51b848 var(--full-white-start),#ffffff)"></span>Full</div>
           </div>
         </div>
         <div class="legend-row" data-list-key="medium_deluxe" tabindex="0" role="button" aria-pressed="false">
           <div class="legend-label">Medium Deluxe<br>Artist Booths</div>
           <div class="legend-swatches">
             <div class="legend-swatch"><span class="legend-chip" style="background:#dd3ac6"></span>Available</div>
-            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#dd3ac6,#ffffff)"></span>Full</div>
+            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#dd3ac6 var(--full-white-start),#ffffff)"></span>Full</div>
           </div>
         </div>
         <div class="legend-row" data-list-key="large_deluxe" tabindex="0" role="button" aria-pressed="false">
           <div class="legend-label">Large Deluxe<br>Artist Booths</div>
           <div class="legend-swatches">
             <div class="legend-swatch"><span class="legend-chip" style="background:#8551c8"></span>Available</div>
-            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#8551c8,#ffffff)"></span>Full</div>
+            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#8551c8 var(--full-white-start),#ffffff)"></span>Full</div>
           </div>
         </div>
         <!-- Sleep Rooms legend row -->
@@ -276,9 +274,13 @@
     <section class="results-panel panel" id="notes" aria-label="Info panel">
       <h2>Notes</h2>
       <p style="margin:0;color:var(--text-muted)">Click a shape on the map to open its booking page. Or click a row in the Key to see the full list for that group.</p>
+       <p style="margin:12px 0 0;color:var(--text-muted); font-size:13px;">
+        Sleeper room buyers remain private; occupant names are only shown for artist and vendor booths.
+      </p>
       <br>
       <h2>Coupon Code</h2>
       <p style="margin:0;color:var(--text-muted)">At checkout, enter <strong style="color:#a2d5fa">GETAROOM</strong> to take <strong>$100</strong> off any overnight sleeping room. One use per purchaser; cannot be combined with other offers.</p>
+     
    </section>
   </div>
 
@@ -322,6 +324,12 @@
       const BOOKED_FILL = "#b9f2b3";     // lighter green when fully booked
       const AVAILABLE_FILL = "#51b848";  // base available color for SDL
       // Full (booked) colors by booth_type (match legend)
+      // Per-booth-type "full" gradient settings (how quickly the gradient fades to white).
+      // Smaller % = more white across the shape.
+      const FULL_WHITE_START_BY_TYPE = {
+        STD10TENT: '60%',  // Dream Tent artist booths
+        VND10TENT: '2%'   // Dream Tent vendor booths
+      };
       const FULL_FILL_BY_TYPE = {
         // Artist rooms
         SDL: '#b9f2b3',   // Small Deluxe — Full
@@ -332,7 +340,7 @@
         // Arium / Flex (indoor 10x10)
         STD10IN: '#78b0ff',
         // Dream Tent artists (10x10)
-        STD10TENT: '#8ff0f5',
+        STD10TENT: '#b8f6ff',
         // Vendors
         VND10TENT: '#ff9959',   // Dream Tent Vendors — Full
         VND10OUT:  '#ff9959',   // Jupiter Original Vendors (outdoor) — Full
@@ -403,7 +411,8 @@
         grad.setAttribute('y2', '1');
 
         const stop1 = document.createElementNS(SVG_NS, 'stop');
-        stop1.setAttribute('offset', '25%');
+        const whiteStart = (FULL_WHITE_START_BY_TYPE && FULL_WHITE_START_BY_TYPE[String(gradKey)]) ? FULL_WHITE_START_BY_TYPE[String(gradKey)] : '12%';
+        stop1.setAttribute('offset', whiteStart);
         stop1.setAttribute('stop-color', baseColor);
 
         const stop2 = document.createElementNS(SVG_NS, 'stop');
@@ -437,7 +446,7 @@
         grad.setAttribute('y2', '1');
 
         const stop1 = document.createElementNS(SVG_NS, 'stop');
-        stop1.setAttribute('offset', '25%');
+        stop1.setAttribute('offset', '12%');
         stop1.setAttribute('stop-color', '#288699'); // sleep available
 
         const stop2 = document.createElementNS(SVG_NS, 'stop');
@@ -834,6 +843,56 @@ groupResolver: ({ booth, csv }) => {
         return null;
       }
 
+      // Build a list of possible keys to use when looking up a space in the occupants feed.
+      // Keeps map/SVG ids stable (e.g. dt5) while still joining feeds that may use "5".
+      function candidateFeedKeys_(rawKey){
+        const k0 = String(rawKey || '').trim().replace(/^_+/, '');
+        const keys = [];
+        const push = (v) => {
+          const s = String(v || '').trim();
+          if (!s) return;
+          if (keys.indexOf(s) === -1) keys.push(s);
+        };
+
+        push(k0);
+        push(k0.replace(/_/g, ''));
+
+        // dt5 / dt_05 / d5 / d-05 -> numeric + normalized variants
+        let m = k0.match(/^dt[\s_-]?(\d{1,2})$/i) || k0.match(/^d[\s_-]?(\d{1,2})$/i);
+        if (m) {
+          const n = String(parseInt(m[1], 10));
+          const pad = (n.length === 1) ? ('0' + n) : n;
+          push(n);
+          push('dt' + n);
+          push('d' + n);
+          push('dt' + pad);
+          push('d' + pad);
+        }
+
+        // If the key is already numeric, also try dt/d prefixed variants.
+        m = k0.match(/^(\d{1,2})$/);
+        if (m) {
+          const n = String(parseInt(m[1], 10));
+          const pad = (n.length === 1) ? ('0' + n) : n;
+          push('dt' + n);
+          push('d' + n);
+          push('dt' + pad);
+          push('d' + pad);
+        }
+
+        return keys;
+      }
+
+      function pickOccupantEntry_(occMap, rawKey){
+        const keys = candidateFeedKeys_(rawKey);
+        for (const kk of keys) {
+          if (occMap && Object.prototype.hasOwnProperty.call(occMap, kk)) {
+            return { key: kk, entry: occMap[kk] };
+          }
+        }
+        return { key: keys[0] || String(rawKey || '').trim(), entry: undefined };
+      }
+
       function formatSocialLabel_(raw){
         const s = String(raw || '').trim();
         if (!s) return '';
@@ -858,7 +917,8 @@ groupResolver: ({ booth, csv }) => {
       // also respecting occupant-provided URL/website fields.
       function derivePrimaryOccupantLink_(spaceKey){
         const occMap = (window.__VOID_OCCUPANTS || {});
-        const occ = occMap[spaceKey] || {};
+        const picked = pickOccupantEntry_(occMap, spaceKey);
+        const occ = (picked && picked.entry) ? picked.entry : {};
         const primary = (Array.isArray(occ.groups) && occ.groups.length) ? occ.groups[0] : null;
 
         const name = String((primary && primary.name) || occ.name || '').trim();
@@ -955,7 +1015,8 @@ groupResolver: ({ booth, csv }) => {
 
           const csv = (payload && payload.csv) ? payload.csv : {};
           const boothType = String(csv.booth_type || '').trim();
-          const feedSpace = spaces[canonicalKey];
+          const picked = pickOccupantEntry_(spaces, canonicalKey);
+          const feedSpace = picked && picked.entry;
           const statusSummary = computeFullStatus(canonicalKey, boothType, csv.capacity_1_to_4, feedSpace);
           const isFull = !!(statusSummary && statusSummary.isFull);
           const published = isPublishedKey_(mapData, canonicalKey);
@@ -999,12 +1060,14 @@ groupResolver: ({ booth, csv }) => {
           // and make clicks behave like clicking the corresponding legend row (jump to list).
           if (boothType !== 'SLEEP') {
             if (isFull && published) {
-              const baseColor =
-                (boothType && AVAILABLE_FILL_BY_TYPE[boothType])
+              let baseColor = (boothType && FULL_FILL_BY_TYPE[boothType])
+                ? FULL_FILL_BY_TYPE[boothType]
+                : null;
+              if (!baseColor) {
+                baseColor = (boothType && AVAILABLE_FILL_BY_TYPE[boothType])
                   ? AVAILABLE_FILL_BY_TYPE[boothType]
-                  : (boothType && FULL_FILL_BY_TYPE[boothType])
-                    ? FULL_FILL_BY_TYPE[boothType]
-                    : BOOKED_FILL;
+                  : BOOKED_FILL;
+              }
 
               const gradKey = boothType || 'default';
               ensureFullGradient_(svgRoot, gradKey, baseColor);
@@ -1061,7 +1124,8 @@ groupResolver: ({ booth, csv }) => {
 
       function occupantArrayForSpaceKey(spaceKey){
         const occMap = (window.__VOID_OCCUPANTS || {});
-        const entry = occMap[spaceKey];
+        const picked = pickOccupantEntry_(occMap, spaceKey);
+        const entry = picked && picked.entry;
         if (!entry) return [];
         const summary = summarizeFeedBookings(entry);
         return summary.groups || [];
