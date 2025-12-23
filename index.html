@@ -646,7 +646,7 @@
           },
           groupOrder: ['Dream Tent','Jupiter Original','Jupiter NEXT'],
           useShortLabel: true,
-          dedupeKey: (row) => `${row.group || ''}::${row.shortLabel.toLowerCase()}`
+          dedupeKey: (row) => `${row.group || ''}::${(row.spaceKey || row.shortLabel || '').toLowerCase()}`
         },
         ariumflex: {
           title: 'Arium / Flex Lounge — Artist Booth 10×10',
@@ -1784,6 +1784,28 @@ groupResolver: ({ booth, csv }) => {
         notesPanel.appendChild(container);
       }
 
+      function deriveSpaceKeyForRow(row){
+        if (!row) return null;
+        const csvKeyRaw = row.csv && row.csv.space_key ? String(row.csv.space_key).trim() : '';
+        let candidate = csvKeyRaw ? csvKeyRaw.replace(/_/g, '') : '';
+        if (!candidate){
+          const idRaw = row.id ? String(row.id).trim() : '';
+          candidate = idRaw ? idRaw.replace(/_/g, '') : '';
+        }
+        if (!candidate){
+          const labelSource = String(row.shortLabel || row.label || '').trim();
+          const m = labelSource.match(/\b(\d{3})\b/);
+          if (m) candidate = m[1];
+        }
+        if (!candidate) return null;
+        const dtMatch = candidate.match(/^dt(\d{1,2})$/i);
+        if (dtMatch){
+          const num = parseInt(dtMatch[1], 10);
+          return String(isNaN(num) ? dtMatch[1] : num);
+        }
+        return candidate;
+      }
+
       function buildListFromData(mapData, spec){
         const shapes = mapData && mapData.shapes ? mapData.shapes : {};
         const wantTypes = new Set((spec.boothTypes || []).map(String));
@@ -1835,6 +1857,7 @@ groupResolver: ({ booth, csv }) => {
             payload,
             booth_type: type
           };
+          row.spaceKey = deriveSpaceKeyForRow(row);
           if(transformRow) transformRow(row, context);
           rows.push(row);
         }
@@ -1896,13 +1919,8 @@ groupResolver: ({ booth, csv }) => {
               const li = document.createElement('li');
               const textValue = spec.useShortLabel === true ? r.shortLabel : r.label;
 
-              // Use canonical space id when available (covers A6/A7, 136, etc.)
-              let spaceKey = (r.id && String(r.id).trim()) || null;
-              if (!spaceKey) {
-                // Fallback: try to detect a 3‑digit room number in the label
-                const mId = String(r.shortLabel || r.label || '').match(/\b(\d{3})\b/);
-                if (mId) spaceKey = mId[1];
-              }
+              // Use canonical space id (prefers csv.space_key, handles Dream Tent normalization)
+              const spaceKey = r.spaceKey || deriveSpaceKeyForRow(r);
 
               // Capacity & occupancy summary
               const boothType = (r && r.csv && r.csv.booth_type) ? String(r.csv.booth_type).trim() : (r.booth_type || '');
@@ -2028,10 +2046,8 @@ groupResolver: ({ booth, csv }) => {
             const li = document.createElement('li');
             const textValue = spec.useShortLabel === true ? r.shortLabel : r.label;
 
-            // Try to detect a numeric room ID (e.g., "Room 117") or direct number "117"
-            let spaceKey = null;
-            let mId = String(r.shortLabel || r.label || '').match(/\b(\d{3})\b/);
-            if (mId) spaceKey = mId[1];
+            // Use canonical space id (prefers csv.space_key, handles Dream Tent normalization)
+            const spaceKey = r.spaceKey || deriveSpaceKeyForRow(r);
 
             // Capacity & occupancy summary
             const boothType = (r && r.csv && r.csv.booth_type) ? String(r.csv.booth_type).trim() : (r.booth_type || '');
