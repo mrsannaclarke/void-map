@@ -834,6 +834,26 @@ groupResolver: ({ booth, csv }) => {
         return null;
       }
 
+      function formatSocialLabel_(raw){
+        const s = String(raw || '').trim();
+        if (!s) return '';
+        if (s.startsWith('@')) return s;
+        const ig = s.match(/instagram\.com\/([^\/?#]+)/i);
+        if (ig && ig[1]) return '@' + ig[1];
+        if (/^https?:\/\//i.test(s)) {
+          try {
+            const u = new URL(s);
+            return u.host.replace(/^www\./i, '');
+          } catch(_) {
+            return s;
+          }
+        }
+        if (/^[a-z0-9.-]+\.[a-z]{2,}([\/?#].*)?$/i.test(s)) {
+          return s.replace(/^https?:\/\//i, '').replace(/^www\./i, '');
+        }
+        return s;
+      }
+
       // Helper: derive a primary occupant link from either social or name,
       // also respecting occupant-provided URL/website fields.
       function derivePrimaryOccupantLink_(spaceKey){
@@ -1969,8 +1989,18 @@ groupResolver: ({ booth, csv }) => {
                 // For fully booked booths, show a single bracketed line:
                 // [ Room 136 - Switchblade Tattoo Club ]
                 const { name, href } = derivePrimaryOccupantLink_(spaceKey);
-                const primaryName = name || (groups[0] && groups[0].name) || '';
-                const displayName = primaryName || 'Booked';
+                const primaryGroup = (groups && groups.length) ? groups[0] : null;
+                const socialLabel = primaryGroup
+                  ? formatSocialLabel_(
+                      primaryGroup.social ||
+                      primaryGroup.url ||
+                      primaryGroup.website ||
+                      primaryGroup.link ||
+                      ''
+                    )
+                  : '';
+                const primaryName = name || (primaryGroup && primaryGroup.name) || '';
+                const displayName = primaryName || socialLabel || 'Booked';
                 const lineText = `${textValue} - ${displayName}`;
 
                 if (href) {
@@ -2084,40 +2114,66 @@ groupResolver: ({ booth, csv }) => {
               return;
             }
 
-            // Non-sleep logic: existing behavior
+            // Non-sleep logic: existing behavior with Dream Tent override
             if (isFull && groups && groups.length) {
               // Use centralized derivation so every booked room auto-links
               const { name, href } = derivePrimaryOccupantLink_(spaceKey);
+              const primaryGroup = groups[0] || null;
+              const socialLabel = primaryGroup
+                ? formatSocialLabel_(
+                    primaryGroup.social ||
+                    primaryGroup.url ||
+                    primaryGroup.website ||
+                    primaryGroup.link ||
+                    ''
+                  )
+                : '';
+              const displayName = name || (primaryGroup && primaryGroup.name) || socialLabel || '';
 
-              // Title line: e.g., "Room 140"
-              const title = document.createElement('div');
-              title.className = 'result-title';
-              title.textContent = textValue;
-              li.appendChild(title);
+              if (boothType === 'STD10TENT') {
+                const lineText = `${textValue} - ${displayName || 'Booked'}`;
+                if (href) {
+                  const a = document.createElement('a');
+                  a.href = href; a.target = '_blank'; a.rel = 'noopener';
+                  a.textContent = lineText;
+                  li.appendChild(a);
+                } else {
+                  const span = document.createElement('span');
+                  span.className = 'nolink';
+                  span.textContent = lineText;
+                  li.appendChild(span);
+                }
+              } else {
+                // Title line: e.g., "Room 140"
+                const title = document.createElement('div');
+                title.className = 'result-title';
+                title.textContent = textValue;
+                li.appendChild(title);
 
-              // Pill line below the title
-              const pill = document.createElement('div');
-              pill.className = 'nolink';
+                // Pill line below the title
+                const pill = document.createElement('div');
+                pill.className = 'nolink';
 
-              if (href && name) {
-                const a = document.createElement('a');
-                a.href = href; a.target = '_blank'; a.rel = 'noopener';
-                a.textContent = name;
-                pill.appendChild(a);
-              } else if (name) {
-                const span = document.createElement('span');
-                span.textContent = name;
-                pill.appendChild(span);
-              } else if (href) {
-                const a = document.createElement('a');
-                a.href = href; a.target = '_blank'; a.rel = 'noopener';
-                a.textContent = /instagram\.com/i.test(href)
-                  ? (function(u){ const m=u.match(/instagram\.com\/([^\/?#]+)/i); return m? m[1] : href; })(href)
-                  : (function(u){ try { return (new URL(u)).host.replace(/^www\./,''); } catch(_) { return href; } })(href);
-                pill.appendChild(a);
+                if (href && (name || socialLabel)) {
+                  const a = document.createElement('a');
+                  a.href = href; a.target = '_blank'; a.rel = 'noopener';
+                  a.textContent = displayName || name || socialLabel;
+                  pill.appendChild(a);
+                } else if (displayName) {
+                  const span = document.createElement('span');
+                  span.textContent = displayName;
+                  pill.appendChild(span);
+                } else if (href) {
+                  const a = document.createElement('a');
+                  a.href = href; a.target = '_blank'; a.rel = 'noopener';
+                  a.textContent = /instagram\.com/i.test(href)
+                    ? (function(u){ const m=u.match(/instagram\.com\/([^\/?#]+)/i); return m? m[1] : href; })(href)
+                    : (function(u){ try { return (new URL(u)).host.replace(/^www\./,''); } catch(_) { return href; } })(href);
+                  pill.appendChild(a);
+                }
+
+                li.appendChild(pill);
               }
-
-              li.appendChild(pill);
             } else {
               // fallback to original behavior when not fully booked or no occupant info
               const makeLine = () => {
