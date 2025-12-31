@@ -590,7 +590,9 @@
 
       function computeFullStatus(spaceKey, boothType, csvCapRaw, feedSpace){
         const flags = SPACE_FLAGS[spaceKey] || {};
-        if (flags.buyoutOnly && feedSpace){
+        // Buyout-only logic should NOT apply to sleeper rooms, because sleeper occupants are private
+        // and may not include groups/name even when the room is occupied.
+        if (flags.buyoutOnly && feedSpace && boothType !== 'SLEEP'){
           // Any booking makes it full
           const s = summarizeFeedBookings(feedSpace);
           const any = (Array.isArray(s.groups) && s.groups.length > 0) || !!(feedSpace.name || feedSpace.social);
@@ -1014,7 +1016,8 @@ groupResolver: ({ booth, csv }) => {
           if (!node) continue;
 
           const csv = (payload && payload.csv) ? payload.csv : {};
-          const boothType = String(csv.booth_type || '').trim();
+          // Normalize booth_type so lookups match our constants (SDL/MDL/LDL/SLEEP/STD10IN/etc)
+          const boothType = String(csv.booth_type || '').trim().toUpperCase();
           const picked = pickOccupantEntry_(spaces, canonicalKey);
           const feedSpace = picked && picked.entry;
           const statusSummary = computeFullStatus(canonicalKey, boothType, csv.capacity_1_to_4, feedSpace);
@@ -1594,7 +1597,8 @@ groupResolver: ({ booth, csv }) => {
       }
 
       function decorateShape(node, label, payload, mapData) {
-        const boothType = payload && payload.csv ? String(payload.csv.booth_type || '').trim() : '';
+        // Normalize booth_type so comparisons like boothType === 'SLEEP' work reliably
+        const boothType = payload && payload.csv ? String(payload.csv.booth_type || '').trim().toUpperCase() : '';
         node.setAttribute("data-shape", label);
         const boothName = payload.csv && payload.csv.booth_name ? payload.csv.booth_name : `Shape ${label}`;
         node.setAttribute("aria-label", `${boothName} (${label})`);
