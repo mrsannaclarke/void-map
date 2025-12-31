@@ -495,9 +495,8 @@
         // Example: 'a9': 2,
       };
       const SPACE_FLAGS = {
-        // Buy-out only test rooms (SSDL behavior) — any booking = full
-        '117': { buyoutOnly: true },
-        '217': { buyoutOnly: true }
+        // buyoutOnly is intended for NON-sleep spaces only.
+        // Sleep rooms are privacy-protected, so frontend occupancy must be derived from feed status only.
       };
 
       // Ticket patterns → slot cost (and buyout flag)
