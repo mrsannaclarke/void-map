@@ -572,17 +572,17 @@
       }
     },
     "106": {
-      "bookwhen_url": "",
-      "hide_in_nav": true,
+      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-sww3o-20260522000000",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L1",
         "shape name": "106",
         "booth_name": "Room 106",
         "Notes": "not visible",
-        "booth_type": "LDL",
+        "booth_type": "XLDL",
         "capacity_1_to_4": "4",
-        "ada_note": "accessible"
+        "ada_note": "accessible",
+        "Color Code": "Void Activations"
       },
       "svg": {
         "id": "_106",
