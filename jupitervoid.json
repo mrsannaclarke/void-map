@@ -578,11 +578,10 @@
         "floor_code": "L1",
         "shape name": "106",
         "booth_name": "Room 106",
-        "Notes": "not visible",
-        "booth_type": "XLDL",
+        "booth_type": "LDL",
         "capacity_1_to_4": "4",
         "ada_note": "accessible",
-        "Color Code": "Void Activations"
+        "Color Code": "Lavender"
       },
       "svg": {
         "id": "_106",

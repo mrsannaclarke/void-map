@@ -98,6 +98,8 @@
     .legend-row.wayfinding .legend-label { display:none; }
     .legend-row.wayfinding .legend-swatches { justify-content:center; }
     .legend-label{ font-size:15px; font-weight:600; text-align:left; padding:0 }
+    .legend-count{ margin-left:8px; font-size:12px; font-weight:700; color:var(--text-muted); white-space:nowrap; }
+    .legend-count[data-state="soldout"]{ color:var(--text-primary); }
     /* Keep chips on a single line; allow horizontal scroll on very small screens */
     .legend-swatches{
       display:flex; flex-wrap:nowrap; gap:8px; justify-content:flex-end;
@@ -200,11 +202,51 @@
     <section class="legend panel" aria-label="Booth legend">
       <h2>Navigation Key<a class="key-jump" href="#notes"> </a></h2>
       <div class="legend-grid">
-        <div class="legend-row" data-list-key="streetfair" tabindex="0" role="button" aria-pressed="false">
-          <div class="legend-label">Street Fair Vendor Booths<br>Saturday Only</div>
+        <!-- Sleep Rooms legend row -->
+        <div class="legend-row" data-list-key="sleep" tabindex="0" role="button" aria-pressed="false">
+          <div class="legend-label">Overnight Hotel Rooms <span class="legend-count" data-count-key="sleep"></span></div>
           <div class="legend-swatches">
-            <div class="legend-swatch"><span class="legend-chip" style="background:#af003f"></span>Available</div>
-            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#af003f var(--full-white-start),#ffffff)"></span>Full</div>
+            <div class="legend-swatch">
+              <span class="legend-chip sleep-available"></span>Available
+            </div>
+            <div class="legend-swatch">
+              <span class="legend-chip sleep-full"></span>Full
+            </div>
+          </div>
+        </div>
+        <div class="legend-row" data-list-key="small_deluxe" tabindex="0" role="button" aria-pressed="false">
+          <div class="legend-label">Artist Booths: Small Deluxe <span class="legend-count" data-count-key="small_deluxe"></span></div>
+          <div class="legend-swatches">
+            <div class="legend-swatch"><span class="legend-chip" style="background:#51b848"></span>Available</div>
+            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#51b848 var(--full-white-start),#ffffff)"></span>Full</div>
+          </div>
+        </div>
+        <div class="legend-row" data-list-key="medium_deluxe" tabindex="0" role="button" aria-pressed="false">
+          <div class="legend-label">Artist Booths: Medium Deluxe <span class="legend-count" data-count-key="medium_deluxe"></span></div>
+          <div class="legend-swatches">
+            <div class="legend-swatch"><span class="legend-chip" style="background:#dd3ac6"></span>Available</div>
+            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#dd3ac6 var(--full-white-start),#ffffff)"></span>Full</div>
+          </div>
+        </div>
+        <div class="legend-row" data-list-key="large_deluxe" tabindex="0" role="button" aria-pressed="false">
+          <div class="legend-label">Artist Booths: Large Deluxe <span class="legend-count" data-count-key="large_deluxe"></span></div>
+          <div class="legend-swatches">
+            <div class="legend-swatch"><span class="legend-chip" style="background:#8551c8"></span>Available</div>
+            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#8551c8 var(--full-white-start),#ffffff)"></span>Full</div>
+          </div>
+        </div>
+        <div class="legend-row" data-list-key="ariumflex" tabindex="0" role="button" aria-pressed="false">
+          <div class="legend-label">Arium/Flex Lounge - Sold Out</div>
+          <div class="legend-swatches">
+            <div class="legend-swatch"><span class="legend-chip" style="background:#3d7ef2"></span>Available</div>
+            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#3d7ef2 var(--full-white-start),#ffffff)"></span>Full</div>
+          </div>
+        </div>
+        <div class="legend-row" data-list-key="dreamtent_artist" tabindex="0" role="button" aria-pressed="false">
+          <div class="legend-label">Dream Tent - Sold Out</div>
+          <div class="legend-swatches">
+            <div class="legend-swatch"><span class="legend-chip" style="background:#00e5ff"></span>Available</div>
+            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#b8f6ff var(--full-white-start-dreamtent),#ffffff)"></span>Full</div>
           </div>
         </div>
         <div class="legend-row" data-list-key="vendor" tabindex="0" role="button" aria-pressed="false">
@@ -214,51 +256,11 @@
             <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#e05600 var(--full-white-start),#ffffff)"></span>Full</div>
           </div>
         </div>
-        <div class="legend-row" data-list-key="ariumflex" tabindex="0" role="button" aria-pressed="false">
-          <div class="legend-label">Arium / Flex Lounge<br>Artist Booths 10x10</div>
+        <div class="legend-row" data-list-key="streetfair" tabindex="0" role="button" aria-pressed="false">
+          <div class="legend-label">Street Fair Vendor Booths<br>(Saturday only)</div>
           <div class="legend-swatches">
-            <div class="legend-swatch"><span class="legend-chip" style="background:#3d7ef2"></span>Available</div>
-            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#3d7ef2 var(--full-white-start),#ffffff)"></span>Full</div>
-          </div>
-        </div>
-        <div class="legend-row" data-list-key="dreamtent_artist" tabindex="0" role="button" aria-pressed="false">
-          <div class="legend-label">Dream Tent<br>Artist Booths 10x10</div>
-          <div class="legend-swatches">
-            <div class="legend-swatch"><span class="legend-chip" style="background:#00e5ff"></span>Available</div>
-            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#b8f6ff var(--full-white-start-dreamtent),#ffffff)"></span>Full</div>
-          </div>
-        </div>
-        <div class="legend-row" data-list-key="small_deluxe" tabindex="0" role="button" aria-pressed="false">
-          <div class="legend-label">Small Deluxe<br>Artist Booths</div>
-          <div class="legend-swatches">
-            <div class="legend-swatch"><span class="legend-chip" style="background:#51b848"></span>Available</div>
-            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#51b848 var(--full-white-start),#ffffff)"></span>Full</div>
-          </div>
-        </div>
-        <div class="legend-row" data-list-key="medium_deluxe" tabindex="0" role="button" aria-pressed="false">
-          <div class="legend-label">Medium Deluxe<br>Artist Booths</div>
-          <div class="legend-swatches">
-            <div class="legend-swatch"><span class="legend-chip" style="background:#dd3ac6"></span>Available</div>
-            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#dd3ac6 var(--full-white-start),#ffffff)"></span>Full</div>
-          </div>
-        </div>
-        <div class="legend-row" data-list-key="large_deluxe" tabindex="0" role="button" aria-pressed="false">
-          <div class="legend-label">Large Deluxe<br>Artist Booths</div>
-          <div class="legend-swatches">
-            <div class="legend-swatch"><span class="legend-chip" style="background:#8551c8"></span>Available</div>
-            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#8551c8 var(--full-white-start),#ffffff)"></span>Full</div>
-          </div>
-        </div>
-        <!-- Sleep Rooms legend row -->
-        <div class="legend-row" data-list-key="sleep" tabindex="0" role="button" aria-pressed="false">
-          <div class="legend-label">Overnight Hotel Rooms</div>
-          <div class="legend-swatches">
-            <div class="legend-swatch">
-              <span class="legend-chip sleep-available"></span>Available
-            </div>
-            <div class="legend-swatch">
-              <span class="legend-chip sleep-full"></span>Full
-            </div>
+            <div class="legend-swatch"><span class="legend-chip" style="background:#af003f"></span>Available</div>
+            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#af003f var(--full-white-start),#ffffff)"></span>Full</div>
           </div>
         </div>
         <div class="legend-row wayfinding" tabindex="0" role="button" aria-pressed="false">
@@ -611,6 +613,123 @@
         return { isFull, capacity, usedSlots: s.used, groups: s.groups };
       }
 
+      function collectRowsForLegendSpec_(mapData, spec){
+        const shapes = mapData && mapData.shapes ? mapData.shapes : {};
+        const wantTypes = new Set((spec && spec.boothTypes ? spec.boothTypes : []).map(String));
+        const restrict = spec && spec.restrictBuildings ? new Set(spec.restrictBuildings) : null;
+        const groupResolver = spec && typeof spec.groupResolver === 'function' ? spec.groupResolver : null;
+        const composeLabel = spec && typeof spec.composeLabel === 'function' ? spec.composeLabel : null;
+        const transformRow = spec && typeof spec.transformRow === 'function' ? spec.transformRow : null;
+        const rows = [];
+
+        for(const [id,payload] of Object.entries(shapes)){
+          const csv = payload && payload.csv ? payload.csv : null;
+          if(!csv) continue;
+          if (!isPublishedKey_(mapData, id)) continue;
+          const hideInNav =
+            (payload && (
+              payload.hide_in_nav === true ||
+              String(payload.hide_in_nav).toLowerCase() === 'true'
+            )) ||
+            (csv && (
+              csv.hide_in_nav === true ||
+              String(csv.hide_in_nav).toLowerCase() === 'true'
+            ));
+          if (hideInNav) continue;
+
+          const type = String(csv.booth_type || '').trim();
+          if(!wantTypes.has(type)) continue;
+
+          const building = String(csv.building_label || '').trim();
+          if(restrict && !restrict.has(building)) continue;
+
+          const booth = String(csv.booth_name || id).trim();
+          const url = String(payload.bookwhen_url || csv.bookwhen_url || '').trim();
+          const context = { id, payload, csv, booth, building };
+          let group = null;
+          if(groupResolver){
+            group = groupResolver(Object.assign({}, context, { shortLabel: booth })) || null;
+          } else if(spec && spec.groupBy){
+            group = String(csv[spec.groupBy] || '').trim() || null;
+          }
+          const label = composeLabel
+            ? composeLabel(Object.assign({}, context, { group }))
+            : (building ? `${building} - ${booth}` : booth);
+          const row = {
+            id: String(id).replace(/^_+/, ''),
+            group,
+            label,
+            shortLabel: booth,
+            building,
+            url,
+            csv,
+            payload,
+            booth_type: type
+          };
+          row.spaceKey = deriveSpaceKeyForRow(row);
+          if(transformRow) transformRow(row, context);
+          rows.push(row);
+        }
+
+        if(spec && typeof spec.dedupeKey === 'function'){
+          const seen = new Set();
+          return rows.filter(row=>{
+            const key = spec.dedupeKey(row);
+            if(!key) return true;
+            if(seen.has(key)) return false;
+            seen.add(key);
+            return true;
+          });
+        }
+        return rows;
+      }
+
+      function computeLegendAvailability_(mapData, legendKey){
+        const spec = LEGEND_FILTERS && LEGEND_FILTERS[legendKey] ? LEGEND_FILTERS[legendKey] : null;
+        if (!spec) return null;
+        const occMap = (window.__VOID_OCCUPANTS || {});
+
+        const rows = collectRowsForLegendSpec_(mapData, spec);
+        let total = 0;     // count booths (shapes), not slots
+        let remaining = 0; // booths that are not full
+
+        for (const r of rows){
+          const spaceKey = r && r.spaceKey ? String(r.spaceKey) : '';
+          if (!spaceKey) continue;
+          const boothType = (r && r.csv && r.csv.booth_type) ? String(r.csv.booth_type).trim().toUpperCase() : '';
+          const picked = pickOccupantEntry_(occMap, spaceKey);
+          const feedSpace = picked && picked.entry;
+          const s = computeFullStatus(spaceKey, boothType, (r.csv && r.csv.capacity_1_to_4), feedSpace || null);
+          total += 1;
+          if (!(s && s.isFull)) remaining += 1;
+        }
+        return { remaining, total };
+      }
+
+      function updateLegendCounts_(mapData){
+        const data = mapData || window.__VOID_MAPDATA;
+        if (!data) return;
+        const nodes = document.querySelectorAll('.legend .legend-count[data-count-key]');
+        nodes.forEach(node => {
+          const k = String(node.getAttribute('data-count-key') || '').trim();
+          if (!k) return;
+          const res = computeLegendAvailability_(data, k);
+          if (!res || !Number.isFinite(res.total) || res.total <= 0){
+            node.textContent = '';
+            node.removeAttribute('data-state');
+            return;
+          }
+          if (res.remaining <= 0){
+            node.textContent = 'Sold Out';
+            node.setAttribute('data-state', 'soldout');
+            return;
+          }
+          node.textContent = `${res.remaining}/${res.total}`;
+          node.setAttribute('data-state', 'count');
+        });
+      }
+      window.updateLegendCounts = updateLegendCounts_;
+
       // ===== Wayfinding label controls (matchers + explicit sizes) =====
       const WAYFINDING_MATCHERS = [
         /^(?:Bunker)$/i,
@@ -640,13 +759,13 @@
       window.__LAST_LIST_KEY = null; // remember last legend key rendered
       const LEGEND_FILTERS = {
         streetfair: {
-          title: 'Street Fair — Saturday Only',
+          title: 'Street Fair Vendor Booths (Saturday only)',
           boothTypes: ['VND10STREET'],
           groupBy: null,
           rowComparator: defaultRowComparator
         },
         vendor: {
-          title: 'Vendors',
+          title: 'Vendor Booths',
           boothTypes: ['VND10TENT','VND10OUT','VND10IN'],
           groupBy: 'building_label',
           headings: {
@@ -659,7 +778,7 @@
           dedupeKey: (row) => `${row.group || ''}::${(row.spaceKey || row.shortLabel || '').toLowerCase()}`
         },
         ariumflex: {
-          title: 'Arium / Flex Lounge — Artist Booth 10×10',
+          title: 'Arium/Flex Lounge - Sold Out',
           boothTypes: ['STD10IN'],
           groupBy: null,
           restrictBuildings: ['Jupiter NEXT'],
@@ -682,7 +801,7 @@
           rowComparator: defaultRowComparator
         },
         dreamtent_artist: {
-          title: 'Dream Tent — Artist Booth 10×10',
+          title: 'Dream Tent - Sold Out',
           boothTypes: ['STD10TENT'],
           groupBy: null,
           restrictBuildings: ['Dream Tent'],
@@ -690,7 +809,7 @@
           useShortLabel: true
         },
         small_deluxe: {
-          title: 'Small Deluxe — Artist Booth',
+          title: 'Artist Booths: Small Deluxe',
           boothTypes: ['SDL','SSDL'],
           groupBy: null,
 groupResolver: ({ booth, csv }) => {
@@ -709,7 +828,7 @@ groupResolver: ({ booth, csv }) => {
           rowComparator: defaultRowComparator
         },
         medium_deluxe: {
-          title: 'Medium Deluxe — Artist Booth',
+          title: 'Artist Booths: Medium Deluxe',
           boothTypes: ['MDL'],
           groupBy: null,
           groupResolver: ({ booth, csv }) => {
@@ -728,7 +847,7 @@ groupResolver: ({ booth, csv }) => {
           rowComparator: defaultRowComparator
         },
         large_deluxe: {
-          title: 'Large Deluxe — Artist Booth',
+          title: 'Artist Booths: Large Deluxe',
           boothTypes: ['LDL','XLDL'],
           groupBy: null,
           groupResolver: ({ booth, csv }) => {
@@ -747,7 +866,7 @@ groupResolver: ({ booth, csv }) => {
           rowComparator: defaultRowComparator
         },
         sleep: {
-          title: 'Sleep Rooms',
+          title: 'Overnight Hotel Rooms',
           boothTypes: ['SLEEP'],
           groupBy: null,
           groupResolver: ({ booth, csv }) => {
@@ -1117,6 +1236,7 @@ groupResolver: ({ booth, csv }) => {
           const mapData = window.__VOID_MAPDATA;
           if (!svg || !mapData) return;
           await applyOccupantsToSvg_(svg, mapData);
+          updateLegendCounts_(mapData);
           const key = window.__LAST_LIST_KEY;
           if (key){ try { renderResultsForKey(mapData, key); } catch(_){} }
         }catch(e){ console.warn('refreshOccupantsAndRerender error', e); }
@@ -1185,6 +1305,7 @@ groupResolver: ({ booth, csv }) => {
 
           applyInteractivity(frontSvg, mapData);
           wireLegendClicks(mapData);
+          updateLegendCounts_(mapData);
           // Ensure wayfinding labels visually match room 131 label height with padding
           matchVisualLabelSize(frontSvg, '131');
           // Custom multi-line labels for specific shapes (runs after auto-labels)
@@ -1197,6 +1318,7 @@ groupResolver: ({ booth, csv }) => {
           occReady.then(() => {
             // Expose mapData globally for later lookups
             window.__VOID_MAPDATA = mapData;
+            updateLegendCounts_(mapData);
             // Quick-start renderer to mirror the minimal hookup instructions:
             window.renderLegendAndMap = function(listKey){
               try{
