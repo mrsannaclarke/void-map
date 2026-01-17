@@ -66,25 +66,35 @@
     }
     .map-top > *{ min-width:0 }
 
-    .panel{ background:var(--panel-bg); border:1px solid var(--panel-border); border-radius:24px; box-shadow:var(--card-shadow); backdrop-filter:blur(14px) }
-    .legend{ padding:10px 10px }
-    .legend h2,.results-panel h2{ margin:0 0 6px; font-size:20px; font-weight:600; text-transform:uppercase; letter-spacing:.08em; color:var(--accent) }
-    .legend h2 a.key-jump{ color:var(--accent); text-decoration:none; outline:none }
-    .legend h2 a.key-jump:focus{ text-decoration:underline }
-    @keyframes notesFlash {
-      0% { box-shadow:0 0 0 0 rgba(63,161,255,.0), inset 0 0 0 0 rgba(63,161,255,.0) }
-      30% { box-shadow:0 0 0 4px rgba(63,161,255,.25), inset 0 0 0 2px rgba(63,161,255,.35) }
-      100% { box-shadow:var(--card-shadow), inset 0 0 0 0 rgba(63,161,255,0) }
-    }
+	    .panel{ background:var(--panel-bg); border:1px solid var(--panel-border); border-radius:24px; box-shadow:var(--card-shadow); backdrop-filter:blur(14px) }
+	    .legend{ padding:10px 10px }
+	    .legend h2,.results-panel h2{ margin:0 0 6px; font-size:20px; font-weight:600; text-transform:uppercase; letter-spacing:.08em; color:var(--accent) }
+	    .legend h2 a.key-jump{ color:var(--accent); text-decoration:none; outline:none }
+	    .legend h2 a.key-jump:focus{ text-decoration:underline }
+	    .legend-subhead{
+	      margin:10px 0 2px;
+	      padding:0 8px;
+	      font-size:13px;
+	      font-weight:800;
+	      color:var(--accent-strong);
+	      text-transform:uppercase;
+	      letter-spacing:.10em;
+	    }
+	    .legend-grid > .legend-subhead:first-child{ margin-top:0 }
+	    @keyframes notesFlash {
+	      0% { box-shadow:0 0 0 0 rgba(63,161,255,.0), inset 0 0 0 0 rgba(63,161,255,.0) }
+	      30% { box-shadow:0 0 0 4px rgba(63,161,255,.25), inset 0 0 0 2px rgba(63,161,255,.35) }
+	      100% { box-shadow:var(--card-shadow), inset 0 0 0 0 rgba(63,161,255,0) }
+	    }
     .results-panel.flash-notes{ animation: notesFlash 900ms ease; }
     .legend-grid{ display:grid; grid-template-columns:1fr; gap:6px }
 
-    .legend-row{
-      display:grid; grid-template-columns:1fr auto; align-items:center; gap:8px;
-      border:1px solid var(--panel-border); border-radius:10px; padding:6px 10px;
-      background:var(--panel-inner); transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease;
-      overflow:hidden; cursor:pointer;
-    }
+	    .legend-row{
+	      display:grid; grid-template-columns:1fr auto; align-items:center; gap:8px;
+	      border:1px solid var(--panel-border); border-radius:10px; padding:6px 8px;
+	      background:var(--panel-inner); transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease;
+	      overflow:hidden; cursor:pointer;
+	    }
     .legend-row:hover{ transform:translateY(-2px); box-shadow:0 12px 24px rgba(7,13,26,.45); border-color:rgba(124,201,255,.4); background:rgba(64, 122, 238, 0.263) }
     /* Sleep chips: available = solid teal, full = teal→white gradient (45deg) */
     .legend-chip.sleep-available {
@@ -99,7 +109,6 @@
     .legend-row.wayfinding .legend-swatches { justify-content:center; }
     .legend-label{ font-size:15px; font-weight:600; text-align:left; padding:0 }
     .legend-count{ margin-left:8px; font-size:12px; font-weight:700; color:var(--text-muted); white-space:nowrap; }
-    .legend-count[data-state="soldout"]{ color:var(--text-primary); }
     /* Keep chips on a single line; allow horizontal scroll on very small screens */
     .legend-swatches{
       display:flex; flex-wrap:nowrap; gap:8px; justify-content:flex-end;
@@ -189,92 +198,103 @@
 
     a{ color:var(--accent); text-decoration:underline } a:hover{ color:var(--accent-strong) }
 
-    @media (max-width:900px){ body{ padding:30px 14px 44px; gap:22px } .legend{ padding:20px } }
-    @media (max-width:640px){
-      header.header-band h1{ font-size:24px }
-    }
+	    @media (max-width:900px){
+	      body{ padding:10px 8px 14px; gap:10px }
+	      .legend{ padding:8px }
+	    }
+	    @media (max-width:640px){
+	      body{ padding:10px 6px 12px; gap:10px }
+	      .legend{ padding:6px }
+	      .legend-subhead{ padding:0 6px }
+	      .legend-row{ padding:6px 6px }
+	      header.header-band h1{ font-size:24px }
+	    }
     @media (prefers-reduced-motion:reduce){    .legend-row{ transition:none } }
   </style>
 </head>
 <body>
 
-  <div class="map-top">
-    <section class="legend panel" aria-label="Booth legend">
-      <h2>Navigation Key<a class="key-jump" href="#notes"> </a></h2>
-      <div class="legend-grid">
-        <!-- Sleep Rooms legend row -->
-        <div class="legend-row" data-list-key="sleep" tabindex="0" role="button" aria-pressed="false">
-          <div class="legend-label">Overnight Hotel Rooms <span class="legend-count" data-count-key="sleep"></span></div>
-          <div class="legend-swatches">
-            <div class="legend-swatch">
-              <span class="legend-chip sleep-available"></span>Available
-            </div>
-            <div class="legend-swatch">
-              <span class="legend-chip sleep-full"></span>Full
-            </div>
-          </div>
-        </div>
-        <div class="legend-row" data-list-key="small_deluxe" tabindex="0" role="button" aria-pressed="false">
-          <div class="legend-label">Artist Booths: Small Deluxe <span class="legend-count" data-count-key="small_deluxe"></span></div>
-          <div class="legend-swatches">
-            <div class="legend-swatch"><span class="legend-chip" style="background:#51b848"></span>Available</div>
-            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#51b848 var(--full-white-start),#ffffff)"></span>Full</div>
-          </div>
-        </div>
-        <div class="legend-row" data-list-key="medium_deluxe" tabindex="0" role="button" aria-pressed="false">
-          <div class="legend-label">Artist Booths: Medium Deluxe <span class="legend-count" data-count-key="medium_deluxe"></span></div>
-          <div class="legend-swatches">
-            <div class="legend-swatch"><span class="legend-chip" style="background:#dd3ac6"></span>Available</div>
-            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#dd3ac6 var(--full-white-start),#ffffff)"></span>Full</div>
-          </div>
-        </div>
-        <div class="legend-row" data-list-key="large_deluxe" tabindex="0" role="button" aria-pressed="false">
-          <div class="legend-label">Artist Booths: Large Deluxe <span class="legend-count" data-count-key="large_deluxe"></span></div>
-          <div class="legend-swatches">
-            <div class="legend-swatch"><span class="legend-chip" style="background:#8551c8"></span>Available</div>
-            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#8551c8 var(--full-white-start),#ffffff)"></span>Full</div>
-          </div>
-        </div>
-        <div class="legend-row" data-list-key="ariumflex" tabindex="0" role="button" aria-pressed="false">
-          <div class="legend-label">Arium/Flex Lounge - Sold Out</div>
-          <div class="legend-swatches">
-            <div class="legend-swatch"><span class="legend-chip" style="background:#3d7ef2"></span>Available</div>
-            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#3d7ef2 var(--full-white-start),#ffffff)"></span>Full</div>
-          </div>
-        </div>
-        <div class="legend-row" data-list-key="dreamtent_artist" tabindex="0" role="button" aria-pressed="false">
-          <div class="legend-label">Dream Tent - Sold Out</div>
-          <div class="legend-swatches">
-            <div class="legend-swatch"><span class="legend-chip" style="background:#00e5ff"></span>Available</div>
-            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#b8f6ff var(--full-white-start-dreamtent),#ffffff)"></span>Full</div>
-          </div>
-        </div>
-        <div class="legend-row" data-list-key="vendor" tabindex="0" role="button" aria-pressed="false">
-          <div class="legend-label">Vendor Booths</div>
-          <div class="legend-swatches">
-            <div class="legend-swatch"><span class="legend-chip" style="background:#e05600"></span>Available</div>
-            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#e05600 var(--full-white-start),#ffffff)"></span>Full</div>
-          </div>
-        </div>
-        <div class="legend-row" data-list-key="streetfair" tabindex="0" role="button" aria-pressed="false">
-          <div class="legend-label">Street Fair Vendor Booths<br>(Saturday only)</div>
-          <div class="legend-swatches">
-            <div class="legend-swatch"><span class="legend-chip" style="background:#af003f"></span>Available</div>
-            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#af003f var(--full-white-start),#ffffff)"></span>Full</div>
-          </div>
-        </div>
-        <div class="legend-row wayfinding" tabindex="0" role="button" aria-pressed="false">
-          <div class="legend-label">Wayfinding</div>
-          <div class="legend-swatches">
-            <div class="legend-swatch"><span class="legend-chip" style="background:#c5862b"></span>Void Activations</div>
-            <div class="legend-swatch"><span class="legend-chip" style="background:#3108eb"></span>Restrooms</div>
-            <div class="legend-swatch"><span class="legend-chip" style="background:#fbe100"></span>Exits</div>
-          </div>
-        </div>
-      </div>
-    </section>
+	  <div class="map-top">
+	    <section class="legend panel" aria-label="Booth legend">
+	      <h2>Navigation Key<a class="key-jump" href="#notes"> </a></h2>
+	      <div class="legend-grid">
+	        <div class="legend-subhead" role="heading" aria-level="3">Hotel Rooms (for sleeping)</div>
+	        <!-- Sleep Rooms legend row -->
+	        <div class="legend-row" data-list-key="sleep" tabindex="0" role="button" aria-pressed="false">
+	          <div class="legend-label">Overnight Hotel Rooms <span class="legend-count" data-count-key="sleep"></span></div>
+	          <div class="legend-swatches">
+	            <div class="legend-swatch">
+	              <span class="legend-chip sleep-available"></span>Available
+	            </div>
+	            <div class="legend-swatch">
+	              <span class="legend-chip sleep-full"></span>Full
+	            </div>
+	          </div>
+	        </div>
+	        <div class="legend-subhead" role="heading" aria-level="3">Artist Booths</div>
+	        <div class="legend-row" data-list-key="small_deluxe" tabindex="0" role="button" aria-pressed="false">
+	          <div class="legend-label">Small Deluxe <span class="legend-count" data-count-key="small_deluxe"></span></div>
+	          <div class="legend-swatches">
+	            <div class="legend-swatch"><span class="legend-chip" style="background:#51b848"></span>Available</div>
+	            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#51b848 var(--full-white-start),#ffffff)"></span>Full</div>
+	          </div>
+	        </div>
+	        <div class="legend-row" data-list-key="medium_deluxe" tabindex="0" role="button" aria-pressed="false">
+	          <div class="legend-label">Medium Deluxe <span class="legend-count" data-count-key="medium_deluxe"></span></div>
+	          <div class="legend-swatches">
+	            <div class="legend-swatch"><span class="legend-chip" style="background:#dd3ac6"></span>Available</div>
+	            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#dd3ac6 var(--full-white-start),#ffffff)"></span>Full</div>
+	          </div>
+	        </div>
+	        <div class="legend-row" data-list-key="large_deluxe" tabindex="0" role="button" aria-pressed="false">
+	          <div class="legend-label">Large Deluxe <span class="legend-count" data-count-key="large_deluxe"></span></div>
+	          <div class="legend-swatches">
+	            <div class="legend-swatch"><span class="legend-chip" style="background:#8551c8"></span>Available</div>
+	            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#8551c8 var(--full-white-start),#ffffff)"></span>Full</div>
+	          </div>
+	        </div>
+	        <div class="legend-row" data-list-key="ariumflex" tabindex="0" role="button" aria-pressed="false">
+	          <div class="legend-label">Arium/Flex Lounge <span class="legend-count" data-state="soldout">Sold Out</span></div>
+	          <div class="legend-swatches">
+	            <div class="legend-swatch"><span class="legend-chip" style="background:#3d7ef2"></span>Available</div>
+	            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#3d7ef2 var(--full-white-start),#ffffff)"></span>Full</div>
+	          </div>
+	        </div>
+	        <div class="legend-row" data-list-key="dreamtent_artist" tabindex="0" role="button" aria-pressed="false">
+	          <div class="legend-label">Dream Tent <span class="legend-count" data-state="soldout">Sold Out</span></div>
+	          <div class="legend-swatches">
+	            <div class="legend-swatch"><span class="legend-chip" style="background:#00e5ff"></span>Available</div>
+	            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#b8f6ff var(--full-white-start-dreamtent),#ffffff)"></span>Full</div>
+	          </div>
+	        </div>
+	        <div class="legend-subhead" role="heading" aria-level="3">Vendor</div>
+	        <div class="legend-row" data-list-key="vendor" tabindex="0" role="button" aria-pressed="false">
+	          <div class="legend-label">Vendor Booths</div>
+	          <div class="legend-swatches">
+	            <div class="legend-swatch"><span class="legend-chip" style="background:#e05600"></span>Available</div>
+	            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#e05600 var(--full-white-start),#ffffff)"></span>Full</div>
+	          </div>
+	        </div>
+	        <div class="legend-row" data-list-key="streetfair" tabindex="0" role="button" aria-pressed="false">
+	          <div class="legend-label">Street Fair Vendor Booths<br>(Saturday only)</div>
+	          <div class="legend-swatches">
+	            <div class="legend-swatch"><span class="legend-chip" style="background:#af003f"></span>Available</div>
+	            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#af003f var(--full-white-start),#ffffff)"></span>Full</div>
+	          </div>
+	        </div>
+	        <div class="legend-subhead" role="heading" aria-level="3">Wayfinding</div>
+	        <div class="legend-row wayfinding" tabindex="0" role="button" aria-pressed="false">
+	          <div class="legend-label">Wayfinding</div>
+	          <div class="legend-swatches">
+	            <div class="legend-swatch"><span class="legend-chip" style="background:#c5862b"></span>Void Activations</div>
+	            <div class="legend-swatch"><span class="legend-chip" style="background:#3108eb"></span>Restrooms</div>
+	            <div class="legend-swatch"><span class="legend-chip" style="background:#fbe100"></span>Exits</div>
+	          </div>
+	        </div>
+	      </div>
+	    </section>
     <section class="results-panel panel" id="notes" aria-label="Info panel">
-      <h2>Notes</h2>
+      <h2>Instructions</h2>
       <p style="margin:0;color:var(--text-muted)">Click a shape on the map to open its booking page. Or click a row in the Key to see the full list for that group.</p>
        <p style="margin:12px 0 0;color:var(--text-muted); font-size:13px;">
         Sleeper room buyers remain private; occupant names are only shown for artist and vendor booths.
