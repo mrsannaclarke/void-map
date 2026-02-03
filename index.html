@@ -2152,20 +2152,26 @@ groupResolver: ({ booth, csv }) => {
               const spaceKey = r.spaceKey || deriveSpaceKeyForRow(r);
 
               // Capacity & occupancy summary
-              const boothType = (r && r.csv && r.csv.booth_type) ? String(r.csv.booth_type).trim() : (r.booth_type || '');
+              const boothType = String((r && r.csv && r.csv.booth_type) ? r.csv.booth_type : (r.booth_type || '')).trim().toUpperCase();
               const isSleep = (boothType === 'SLEEP');
               const cap = resolveCapacityFor(spaceKey, boothType, (r.csv && r.csv.capacity_1_to_4));
-              const groups = spaceKey ? occupantArrayForSpaceKey(spaceKey) : [];
 
-              // If feed has explicit status for this spaceKey, prefer that:
-              const occEntry = (window.__VOID_OCCUPANTS||{})[spaceKey || ''];
-              let isFull = false;
-              if (occEntry && typeof occEntry.status === 'string') {
-                isFull = /full/i.test(occEntry.status);
-              } else {
-                const used = groups.length;
-                isFull = (cap > 0) ? (used >= cap) : false;
+              // Occupants lookup (try derived key, then shape id, then csv.space_key raw)
+              const occMap = (window.__VOID_OCCUPANTS || {});
+              let picked = spaceKey ? pickOccupantEntry_(occMap, spaceKey) : null;
+              if ((!picked || !picked.entry) && r && r.id) picked = pickOccupantEntry_(occMap, r.id);
+              if ((!picked || !picked.entry) && r && r.csv && r.csv.space_key) {
+                const raw = String(r.csv.space_key || '').trim().replace(/_/g, '');
+                if (raw) picked = pickOccupantEntry_(occMap, raw);
               }
+              const occKey = (picked && picked.key) ? picked.key : (spaceKey || (r && r.id) || '');
+              const occEntry = (picked && picked.entry) ? picked.entry : null;
+
+              const statusSummary = occEntry
+                ? computeFullStatus((spaceKey || occKey), boothType, (r.csv && r.csv.capacity_1_to_4), occEntry)
+                : null;
+              const groups = statusSummary ? (statusSummary.groups || []) : (occKey ? occupantArrayForSpaceKey(occKey) : []);
+              const isFull = statusSummary ? !!statusSummary.isFull : ((cap > 0) ? (groups.length >= cap) : false);
 
               // Sleep Rooms: privacy — no occupant names/socials.
               // Only show "### - Occupied" when feed/app marks the room as full.
@@ -2194,10 +2200,10 @@ groupResolver: ({ booth, csv }) => {
               }
 
               // Non-sleep logic
-              if (isFull && groups && groups.length) {
+              if (isFull && (groups && groups.length || /^VND/i.test(boothType))) {
                 // For fully booked booths, show a single bracketed line:
                 // [ Room 136 - Switchblade Tattoo Club ]
-                const { name, href } = derivePrimaryOccupantLink_(spaceKey);
+                const { name, href } = derivePrimaryOccupantLink_(occKey || spaceKey);
                 const primaryGroup = (groups && groups.length) ? groups[0] : null;
                 const socialLabel = primaryGroup
                   ? formatSocialLabel_(
@@ -2289,20 +2295,26 @@ groupResolver: ({ booth, csv }) => {
             const spaceKey = r.spaceKey || deriveSpaceKeyForRow(r);
 
             // Capacity & occupancy summary
-            const boothType = (r && r.csv && r.csv.booth_type) ? String(r.csv.booth_type).trim() : (r.booth_type || '');
+            const boothType = String((r && r.csv && r.csv.booth_type) ? r.csv.booth_type : (r.booth_type || '')).trim().toUpperCase();
             const isSleep = (boothType === 'SLEEP');
             const cap = resolveCapacityFor(spaceKey, boothType, (r.csv && r.csv.capacity_1_to_4));
-            const groups = spaceKey ? occupantArrayForSpaceKey(spaceKey) : [];
 
-            // If feed has explicit status for this spaceKey, prefer that:
-            const occEntry = (window.__VOID_OCCUPANTS||{})[spaceKey || ''];
-            let isFull = false;
-            if (occEntry && typeof occEntry.status === 'string') {
-              isFull = /full/i.test(occEntry.status);
-            } else {
-              const used = groups.length;
-              isFull = (cap > 0) ? (used >= cap) : false;
+            // Occupants lookup (try derived key, then shape id, then csv.space_key raw)
+            const occMap = (window.__VOID_OCCUPANTS || {});
+            let picked = spaceKey ? pickOccupantEntry_(occMap, spaceKey) : null;
+            if ((!picked || !picked.entry) && r && r.id) picked = pickOccupantEntry_(occMap, r.id);
+            if ((!picked || !picked.entry) && r && r.csv && r.csv.space_key) {
+              const raw = String(r.csv.space_key || '').trim().replace(/_/g, '');
+              if (raw) picked = pickOccupantEntry_(occMap, raw);
             }
+            const occKey = (picked && picked.key) ? picked.key : (spaceKey || (r && r.id) || '');
+            const occEntry = (picked && picked.entry) ? picked.entry : null;
+
+            const statusSummary = occEntry
+              ? computeFullStatus((spaceKey || occKey), boothType, (r.csv && r.csv.capacity_1_to_4), occEntry)
+              : null;
+            const groups = statusSummary ? (statusSummary.groups || []) : (occKey ? occupantArrayForSpaceKey(occKey) : []);
+            const isFull = statusSummary ? !!statusSummary.isFull : ((cap > 0) ? (groups.length >= cap) : false);
 
             // Sleep Rooms: privacy — no occupant names/socials. Clickable ONLY when not full.
             if (isSleep) {
@@ -2324,9 +2336,9 @@ groupResolver: ({ booth, csv }) => {
             }
 
             // Non-sleep logic: existing behavior with Dream Tent override
-            if (isFull && groups && groups.length) {
+            if (isFull && (groups && groups.length || /^VND/i.test(boothType))) {
               // Use centralized derivation so every booked room auto-links
-              const { name, href } = derivePrimaryOccupantLink_(spaceKey);
+              const { name, href } = derivePrimaryOccupantLink_(occKey || spaceKey);
               const primaryGroup = groups[0] || null;
               const socialLabel = primaryGroup
                 ? formatSocialLabel_(
@@ -2339,7 +2351,7 @@ groupResolver: ({ booth, csv }) => {
                 : '';
               const displayName = name || (primaryGroup && primaryGroup.name) || socialLabel || '';
 
-              if (boothType === 'STD10TENT') {
+              if (boothType === 'STD10TENT' || /^VND/i.test(boothType)) {
                 const lineText = `${textValue} - ${displayName || 'Booked'}`;
                 if (href) {
                   const a = document.createElement('a');
