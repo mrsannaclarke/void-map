@@ -784,19 +784,28 @@
           groupBy: null,
           rowComparator: defaultRowComparator
         },
-        vendor: {
-          title: 'Vendor Booths',
-          boothTypes: ['VND10TENT','VND10OUT','VND10IN'],
-          groupBy: 'building_label',
-          headings: {
-            'Dream Tent': 'Jupiter Original - Dream Tent - (Tented / Outdoor)',
-            'Jupiter Original': 'Jupiter Original — Outdoor',
-            'Jupiter NEXT': 'Jupiter NEXT — Flex Lounge (Indoor)'
-          },
-          groupOrder: ['Dream Tent','Jupiter Original','Jupiter NEXT'],
-          useShortLabel: true,
-          dedupeKey: (row) => `${row.group || ''}::${(row.spaceKey || row.shortLabel || '').toLowerCase()}`
-        },
+	        vendor: {
+	          title: 'Vendor Booths',
+	          boothTypes: ['VND10TENT','VND10OUT','VND10IN'],
+	          groupBy: 'building_label',
+	          headings: {
+	            'Dream Tent': 'Jupiter Original - Dream Tent - (Tented / Outdoor)',
+	            'Jupiter Original': 'Jupiter Original — Outdoor',
+	            'Jupiter NEXT': 'Jupiter NEXT — Flex Lounge (Indoor)'
+	          },
+	          groupOrder: ['Dream Tent','Jupiter Original','Jupiter NEXT'],
+	          useShortLabel: true,
+	          dedupeKey: (row) => {
+	            const group = String(row && row.group ? row.group : '');
+	            if (group === 'Jupiter Original') {
+	              if (!row || !row.shortLabel) return null;
+	              return `${group}::${String(row.shortLabel).toLowerCase()}`;
+	            }
+	            const kSrc = row ? (row.spaceKey || row.shortLabel) : '';
+	            if (!kSrc) return null;
+	            return `${group}::${String(kSrc).toLowerCase()}`;
+	          }
+	        },
         ariumflex: {
           title: 'Arium/Flex Lounge - Sold Out',
           boothTypes: ['STD10IN'],
