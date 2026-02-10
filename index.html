@@ -1149,30 +1149,34 @@ groupResolver: ({ booth, csv }) => {
         }catch(_){ return true; }
       }
 
-      async function applyOccupantsToSvg_(svgRoot, mapData) {
-        const spaces = await fetchOccupants_();
-        window.__VOID_OCCUPANTS = spaces;
+	      async function applyOccupantsToSvg_(svgRoot, mapData) {
+	        const spaces = await fetchOccupants_();
+	        window.__VOID_OCCUPANTS = spaces;
 
-        const shapes = (mapData && mapData.shapes) ? mapData.shapes : {};
-        for (const [rawKey, payload] of Object.entries(shapes)) {
-          const canonicalKey = String(rawKey).replace(/^_+/, '');
-          const node =
-            svgRoot.querySelector("#_" + cssEscape(canonicalKey)) ||
-            svgRoot.querySelector("#" + cssEscape(canonicalKey)) ||
-            svgRoot.querySelector('[data-name="' + cssEscape(canonicalKey) + '"]');
-          if (!node) continue;
+	        const shapes = (mapData && mapData.shapes) ? mapData.shapes : {};
+	        for (const [rawKey, payload] of Object.entries(shapes)) {
+	          const canonicalKey = String(rawKey).replace(/^_+/, '');
+	          const node =
+	            svgRoot.querySelector("#_" + cssEscape(canonicalKey)) ||
+	            svgRoot.querySelector("#" + cssEscape(canonicalKey)) ||
+	            svgRoot.querySelector('[data-name="' + cssEscape(canonicalKey) + '"]');
+	          if (!node) continue;
 
-          const csv = (payload && payload.csv) ? payload.csv : {};
-          // Normalize booth_type so lookups match our constants (SDL/MDL/LDL/SLEEP/STD10IN/etc)
-          const boothType = String(csv.booth_type || '').trim().toUpperCase();
-          const picked = pickOccupantEntry_(spaces, canonicalKey);
-          const feedSpace = picked && picked.entry;
-          const statusSummary = computeFullStatus(canonicalKey, boothType, csv.capacity_1_to_4, feedSpace);
-          const isFull = !!(statusSummary && statusSummary.isFull);
-          const published = isPublishedKey_(mapData, canonicalKey);
+	          const csv = (payload && payload.csv) ? payload.csv : {};
+	          // Normalize booth_type so lookups match our constants (SDL/MDL/LDL/SLEEP/STD10IN/etc)
+	          const boothType = String(csv.booth_type || '').trim().toUpperCase();
+	          // Some spaces appear multiple times across map segments (e.g., H/H1).
+	          // Use `csv.space_key` (when present) as the canonical booking key so both
+	          // shapes reflect the same reservation status.
+	          const spaceKey = deriveSpaceKeyForRow({ id: canonicalKey, csv }) || canonicalKey;
+	          const picked = pickOccupantEntry_(spaces, spaceKey);
+	          const feedSpace = picked && picked.entry;
+	          const statusSummary = computeFullStatus(spaceKey, boothType, csv.capacity_1_to_4, feedSpace);
+	          const isFull = !!(statusSummary && statusSummary.isFull);
+	          const published = isPublishedKey_(mapData, canonicalKey);
 
-          // Sleep rooms: AVAILABLE = solid teal; FULL = teal→white gradient (same angle as before).
-          if (boothType === 'SLEEP') {
+	          // Sleep rooms: AVAILABLE = solid teal; FULL = teal→white gradient (same angle as before).
+	          if (boothType === 'SLEEP') {
             if (!published) {
               // Unpublished sleep rooms already get greyed/disabled in decorateShape
               continue;

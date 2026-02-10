@@ -2927,20 +2927,21 @@
         }
       }
     },
-    "h1": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-stb9b-20260522000000",
-      "csv": {
-        "building_label": "Jupiter Original",
-        "floor_code": "L1",
-        "shape name": "h1",
-        "booth_name": "Vendor H",
-        "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-stb9b-20260522000000",
-        "booth_type": "VND10OUT",
-        "capacity_1_to_4": "1",
-        "buyout_price": "",
-        "ada_note": "accessible",
-        "Color Code": "Orange"
-      },
+	    "h1": {
+	      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-stb9b-20260522000000",
+	      "csv": {
+	        "building_label": "Jupiter Original",
+	        "floor_code": "L1",
+	        "shape name": "h1",
+	        "space_key": "h",
+	        "booth_name": "Vendor H",
+	        "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-stb9b-20260522000000",
+	        "booth_type": "VND10OUT",
+	        "capacity_1_to_4": "1",
+	        "buyout_price": "",
+	        "ada_note": "accessible",
+	        "Color Code": "Orange"
+	      },
       "svg": {
         "id": "h1",
         "class": "cls-4",
@@ -2999,18 +3000,19 @@
         }
       }
     },
-    "i1": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-sy0w9-20260522000000",
-      "csv": {
-        "building_label": "Jupiter Original",
-        "floor_code": "L1",
-        "shape name": "i1",
-        "booth_name": "Vendor I",
-        "booth_type": "VND10OUT",
-        "capacity_1_to_4": "1",
-        "ada_note": "accessible",
-        "Color Code": "Orange"
-      },
+	    "i1": {
+	      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-sy0w9-20260522000000",
+	      "csv": {
+	        "building_label": "Jupiter Original",
+	        "floor_code": "L1",
+	        "shape name": "i1",
+	        "space_key": "i",
+	        "booth_name": "Vendor I",
+	        "booth_type": "VND10OUT",
+	        "capacity_1_to_4": "1",
+	        "ada_note": "accessible",
+	        "Color Code": "Orange"
+	      },
       "svg": {
         "id": "i1",
         "tag": "rect",
@@ -3068,18 +3070,19 @@
         }
       }
     },
-    "j1": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-sr086-20260522000000",
-      "csv": {
-        "building_label": "Jupiter Original",
-        "floor_code": "L1",
-        "shape name": "j1",
-        "booth_name": "Vendor J",
-        "booth_type": "VND10OUT",
-        "capacity_1_to_4": "1",
-        "ada_note": "accessible",
-        "Color Code": "Orange"
-      },
+	    "j1": {
+	      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-sr086-20260522000000",
+	      "csv": {
+	        "building_label": "Jupiter Original",
+	        "floor_code": "L1",
+	        "shape name": "j1",
+	        "space_key": "j",
+	        "booth_name": "Vendor J",
+	        "booth_type": "VND10OUT",
+	        "capacity_1_to_4": "1",
+	        "ada_note": "accessible",
+	        "Color Code": "Orange"
+	      },
       "svg": {
         "id": "j1",
         "tag": "rect",
@@ -3114,18 +3117,19 @@
         }
       }
     },
-    "k1": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-sktik-20260522000000",
-      "csv": {
-        "building_label": "Jupiter Original",
-        "floor_code": "L1",
-        "shape name": "k1",
-        "booth_name": "Vendor K",
-        "booth_type": "VND10OUT",
-        "capacity_1_to_4": "1",
-        "ada_note": "accessible",
-        "Color Code": "Orange"
-      },
+	    "k1": {
+	      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-sktik-20260522000000",
+	      "csv": {
+	        "building_label": "Jupiter Original",
+	        "floor_code": "L1",
+	        "shape name": "k1",
+	        "space_key": "k",
+	        "booth_name": "Vendor K",
+	        "booth_type": "VND10OUT",
+	        "capacity_1_to_4": "1",
+	        "ada_note": "accessible",
+	        "Color Code": "Orange"
+	      },
       "svg": {
         "id": "k1",
         "tag": "polygon",
@@ -3154,18 +3158,19 @@
         }
       }
     },
-    "l1": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-s236t-20260522000000",
-      "csv": {
-        "building_label": "Jupiter Original",
-        "floor_code": "L1",
-        "shape name": "l1",
-        "booth_name": "Vendor L",
-        "booth_type": "VND10OUT",
-        "capacity_1_to_4": "1",
-        "ada_note": "accessible",
-        "Color Code": "Orange"
-      },
+	    "l1": {
+	      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-s236t-20260522000000",
+	      "csv": {
+	        "building_label": "Jupiter Original",
+	        "floor_code": "L1",
+	        "shape name": "l1",
+	        "space_key": "l",
+	        "booth_name": "Vendor L",
+	        "booth_type": "VND10OUT",
+	        "capacity_1_to_4": "1",
+	        "ada_note": "accessible",
+	        "Color Code": "Orange"
+	      },
       "svg": {
         "id": "l1",
         "tag": "polygon",
