@@ -1156,10 +1156,13 @@ groupResolver: ({ booth, csv }) => {
 	        const shapes = (mapData && mapData.shapes) ? mapData.shapes : {};
 	        for (const [rawKey, payload] of Object.entries(shapes)) {
 	          const canonicalKey = String(rawKey).replace(/^_+/, '');
-	          const node =
-	            svgRoot.querySelector("#_" + cssEscape(canonicalKey)) ||
-	            svgRoot.querySelector("#" + cssEscape(canonicalKey)) ||
-	            svgRoot.querySelector('[data-name="' + cssEscape(canonicalKey) + '"]');
+	          // Some SVG ids don’t match the canonical map key (e.g. Street Fair "sf1" uses SVG id "s1").
+	          // Mirror the more robust lookup used by applyInteractivity().
+	          let node = findShapeNode(svgRoot, canonicalKey);
+	          if (!node && payload && payload.svg) {
+	            const elementId = String(payload.svg.id || payload.svg.resolved_from || '').replace(/^_+/, '').trim();
+	            if (elementId) node = findShapeNode(svgRoot, elementId);
+	          }
 	          if (!node) continue;
 
 	          const csv = (payload && payload.csv) ? payload.csv : {};
