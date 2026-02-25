@@ -520,6 +520,15 @@
         // buyoutOnly is intended for NON-sleep spaces only.
         // Sleep rooms are privacy-protected, so frontend occupancy must be derived from feed status only.
       };
+      // Temporary local overrides for spaces that should ignore the live occupancy feed.
+      // This keeps the map/nav using the JSON classification + booking URL.
+      const FEED_IGNORE_SPACES = new Set([
+        '106'
+      ]);
+      // Space-specific available-color overrides (used sparingly for feed exceptions).
+      const FORCE_AVAILABLE_COLOR_SPACES = new Set([
+        '106'
+      ]);
 
       // Ticket patterns → slot cost (and buyout flag)
       // NOTE: The site JS only uses this if the feed includes ticket names per booking.
@@ -1034,6 +1043,9 @@ groupResolver: ({ booth, csv }) => {
 
       function pickOccupantEntry_(occMap, rawKey){
         const keys = candidateFeedKeys_(rawKey);
+        if (keys.some((k) => FEED_IGNORE_SPACES.has(String(k).replace(/^_+/, '')))) {
+          return { key: keys[0] || String(rawKey || '').trim(), entry: undefined };
+        }
         for (const kk of keys) {
           if (occMap && Object.prototype.hasOwnProperty.call(occMap, kk)) {
             return { key: kk, entry: occMap[kk] };
@@ -1261,6 +1273,19 @@ groupResolver: ({ booth, csv }) => {
               // Not full or not published: clear any category-click metadata
               node.removeAttribute('data-click-behavior');
               node.removeAttribute('data-legend-key');
+              // Only force the base available color for explicitly overridden spaces.
+              // This keeps Room 106 purple without changing nearby standard-room fills.
+              if (published && FORCE_AVAILABLE_COLOR_SPACES.has(String(spaceKey || canonicalKey))) {
+                const availableColor = (boothType && AVAILABLE_FILL_BY_TYPE[boothType])
+                  ? AVAILABLE_FILL_BY_TYPE[boothType]
+                  : null;
+                if (availableColor) {
+                  try {
+                    node.removeAttribute('fill');
+                    node.style.fill = availableColor;
+                  } catch (_) {}
+                }
+              }
             }
           }
         }
