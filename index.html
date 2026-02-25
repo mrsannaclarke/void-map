@@ -39,6 +39,64 @@
       -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
     }
 
+    /* Initial loading overlay (stays until map + data + occupancy render complete) */
+    #page-loader{
+      position:fixed;
+      inset:0;
+      z-index:9999;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(124,201,255,.16), transparent 45%),
+        radial-gradient(circle at 80% 75%, rgba(162,213,250,.12), transparent 50%),
+        rgba(7,12,24,.78);
+      backdrop-filter: blur(10px);
+      transition: opacity .28s ease, visibility .28s ease;
+    }
+    #page-loader.is-hidden{
+      opacity:0;
+      visibility:hidden;
+      pointer-events:none;
+    }
+    .page-loader-card{
+      min-width:min(92vw, 340px);
+      padding:18px 20px;
+      border-radius:18px;
+      background:rgba(11,19,38,.86);
+      border:1px solid rgba(255,255,255,.16);
+      box-shadow:0 24px 48px rgba(6,10,25,.45);
+      display:grid;
+      grid-template-columns:auto 1fr;
+      align-items:center;
+      gap:12px;
+    }
+    .page-loader-spinner{
+      width:20px;
+      height:20px;
+      border-radius:50%;
+      border:2px solid rgba(255,255,255,.25);
+      border-top-color:var(--accent);
+      animation:loaderSpin 900ms linear infinite;
+      flex:0 0 auto;
+    }
+    .page-loader-text strong{
+      display:block;
+      font-size:13px;
+      line-height:1.2;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:var(--accent-strong);
+    }
+    .page-loader-text span{
+      display:block;
+      margin-top:3px;
+      font-size:13px;
+      color:var(--text-muted);
+    }
+    @keyframes loaderSpin { to { transform: rotate(360deg); } }
+
     /* Header band */
     header.header-band{
       width:min(100%,var(--maxw)); margin:0 auto; text-align:center;
@@ -209,10 +267,23 @@
 	      .legend-row{ padding:6px 6px }
 	      header.header-band h1{ font-size:24px }
 	    }
-    @media (prefers-reduced-motion:reduce){    .legend-row{ transition:none } }
+    @media (prefers-reduced-motion:reduce){
+      .legend-row{ transition:none }
+      #page-loader{ transition:none }
+      .page-loader-spinner{ animation:none }
+    }
   </style>
 </head>
 <body>
+  <div id="page-loader" role="status" aria-live="polite" aria-label="Loading map">
+    <div class="page-loader-card">
+      <div class="page-loader-spinner" aria-hidden="true"></div>
+      <div class="page-loader-text">
+        <strong>Loading Map</strong>
+        <span>Preparing rooms and availability...</span>
+      </div>
+    </div>
+  </div>
 
 	  <div class="map-top">
 	    <section class="legend panel" aria-label="Booth legend">
@@ -783,9 +854,39 @@
       const svgHostBack = document.getElementById("svg-root-back");
       const svgHost = document.getElementById("svg-root");
       const svgFallback = document.getElementById("svg-fallback");
+      const mapBaseImg = document.getElementById("map-base");
       const statusEl = document.getElementById("status");
       const notesPanel = document.querySelector('.results-panel');
+      const pageLoader = document.getElementById("page-loader");
       window.__LAST_LIST_KEY = null; // remember last legend key rendered
+      let pageLoaderHidden_ = false;
+
+      function hidePageLoader_(){
+        if (!pageLoader || pageLoaderHidden_) return;
+        pageLoaderHidden_ = true;
+        pageLoader.classList.add('is-hidden');
+        pageLoader.setAttribute('aria-hidden', 'true');
+        window.setTimeout(() => {
+          try { pageLoader.remove(); } catch (_) {}
+        }, 360);
+      }
+
+      function waitForImageLoad_(img){
+        return new Promise((resolve) => {
+          if (!img) return resolve();
+          if (img.complete) return resolve();
+          let done = false;
+          const finish = () => {
+            if (done) return;
+            done = true;
+            try { img.removeEventListener('load', finish); } catch (_) {}
+            try { img.removeEventListener('error', finish); } catch (_) {}
+            resolve();
+          };
+          img.addEventListener('load', finish);
+          img.addEventListener('error', finish);
+        });
+      }
       const LEGEND_FILTERS = {
         streetfair: {
           title: 'Street Fair Vendor Booths (Saturday only)',
@@ -1285,6 +1386,13 @@ groupResolver: ({ booth, csv }) => {
                     node.style.fill = availableColor;
                   } catch (_) {}
                 }
+                try {
+                  node.classList.add('shape-interactive');
+                  node.style.removeProperty('pointer-events');
+                  node.style.removeProperty('cursor');
+                  if (!node.hasAttribute('tabindex')) node.setAttribute('tabindex', '0');
+                  if (!node.hasAttribute('role')) node.setAttribute('role', 'link');
+                } catch (_) {}
               }
             }
           }
@@ -1318,21 +1426,28 @@ groupResolver: ({ booth, csv }) => {
         return normalizeSocialHref_(s);
       }
 
+      function cacheBustUrl_(url){
+        const s = String(url || '');
+        if (!s) return s;
+        return s + (s.includes('?') ? '&' : '?') + 'v=' + Date.now();
+      }
+
       Promise.all([
-        fetch(SVG_URL).then((response) => {
+        waitForImageLoad_(mapBaseImg),
+        fetch(cacheBustUrl_(SVG_URL), { cache: "no-store" }).then((response) => {
           if (!response.ok) {
             throw new Error("Unable to load SVG overlay");
           }
           return response.text();
         }),
-        fetch(DATA_URL).then((response) => {
+        fetch(cacheBustUrl_(DATA_URL), { cache: "no-store" }).then((response) => {
           if (!response.ok) {
             throw new Error("Unable to load booth data");
           }
           return response.json();
         })
       ])
-        .then(([svgMarkup, mapData]) => {
+        .then(([, svgMarkup, mapData]) => {
           const parser = new DOMParser();
           const svgDocument = parser.parseFromString(svgMarkup, "image/svg+xml");
           const baseSvg = svgDocument.documentElement;
@@ -1399,12 +1514,15 @@ groupResolver: ({ booth, csv }) => {
                 renderResultsForKey(window.__VOID_MAPDATA, String(listKey));
               }catch(err){ console.warn('renderLegendAndMap error', err); }
             };
+          }).finally(() => {
+            hidePageLoader_();
           });
           // status hidden in embed mode
           if (statusEl) statusEl.innerHTML = "";
         })
         .catch((error) => {
           console.error(error);
+          hidePageLoader_();
           // status hidden in embed mode
           if (statusEl) statusEl.innerHTML = "";
         });
