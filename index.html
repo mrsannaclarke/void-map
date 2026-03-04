@@ -20,9 +20,9 @@
       --card-shadow: 0 24px 48px rgba(6,10,25,.55);
       --text-primary:#f4f6ff; --text-muted: rgba(244,246,255,.7);
       --accent:#7cc9ff; --accent-strong:#a2d5fa;
-      --sleep-available-start:#288699;
+      --sleep-available-start:#ffffff;
       --sleep-available-end:#ffffff;
-      --sleep-full:#ffffff;
+      --sleep-full:#00e5ff;
       --full-white-start: 12%;
       --full-white-start-dreamtent: 35%;
     }
@@ -31,7 +31,7 @@
     html,body{ min-height:100% }
 
     body{
-      margin:0; padding:10px 10px 10px; gap:8px;
+      margin:0; padding:40px 10px 10px; gap:8px;
       display:flex; flex-direction:column; align-items:center;
       font-family:"Montserrat","Segoe UI",Helvetica,Arial,sans-serif;
       background:linear-gradient(135deg,var(--bg-start),var(--bg-mid) 48%,var(--bg-end));
@@ -127,10 +127,11 @@
 	    .panel{ background:var(--panel-bg); border:1px solid var(--panel-border); border-radius:24px; box-shadow:var(--card-shadow); backdrop-filter:blur(14px) }
 	    .legend{ padding:10px 10px }
 	    .legend h2,.results-panel h2{ margin:0 0 6px; font-size:20px; font-weight:600; text-transform:uppercase; letter-spacing:.08em; color:var(--accent) }
+      .legend > h2{ padding:15px; text-align:center; }
 	    .legend h2 a.key-jump{ color:var(--accent); text-decoration:none; outline:none }
 	    .legend h2 a.key-jump:focus{ text-decoration:underline }
 	    .legend-subhead{
-	      margin:10px 0 2px;
+	      margin:48px 0 2px;
 	      padding:0 8px;
 	      font-size:13px;
 	      font-weight:800;
@@ -139,6 +140,45 @@
 	      letter-spacing:.10em;
 	    }
 	    .legend-grid > .legend-subhead:first-child{ margin-top:0 }
+    .legend-intro{
+      margin:0 0 10px;
+      padding:0 8px;
+    }
+    .legend-intro .legend-intro-title{
+      margin:0 0 4px;
+      font-size:13px;
+      font-weight:800;
+      color:var(--accent-strong);
+      text-transform:uppercase;
+      letter-spacing:.10em;
+    }
+    .legend-intro p{
+      margin:0;
+      font-size:15px;
+      color:#ffffff;
+      line-height:1.5;
+      font-weight:500;
+    }
+    .legend-intro p + p{ margin-top:8px; }
+    .legend-intro p.legend-lodging-header{
+      margin-top:48px;
+      font-size:13px;
+      font-weight:800;
+      color:var(--accent-strong);
+      text-transform:uppercase;
+      letter-spacing:.10em;
+      line-height:1.2;
+    }
+    .wayfinding-preview{
+      margin:0 8px 48px;
+    }
+    .wayfinding-preview img{
+      display:block;
+      width:100%;
+      height:auto;
+      border-radius:15px;
+      border:2px solid #CB00F5;
+    }
 	    @keyframes notesFlash {
 	      0% { box-shadow:0 0 0 0 rgba(63,161,255,.0), inset 0 0 0 0 rgba(63,161,255,.0) }
 	      30% { box-shadow:0 0 0 4px rgba(63,161,255,.25), inset 0 0 0 2px rgba(63,161,255,.35) }
@@ -147,26 +187,67 @@
     .results-panel.flash-notes{ animation: notesFlash 900ms ease; }
     .legend-grid{ display:grid; grid-template-columns:1fr; gap:6px }
 
-	    .legend-row{
-	      display:grid; grid-template-columns:1fr auto; align-items:center; gap:8px;
-	      border:1px solid var(--panel-border); border-radius:10px; padding:6px 8px;
-	      background:var(--panel-inner); transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease;
-	      overflow:hidden; cursor:pointer;
-	    }
+    .legend-row{
+      display:grid; grid-template-columns:1fr auto; align-items:center; gap:8px;
+      border:1px solid var(--panel-border); border-radius:10px; padding:6px 8px;
+      background:var(--panel-inner); transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease;
+      overflow:hidden; cursor:pointer;
+    }
     .legend-row:hover{ transform:translateY(-2px); box-shadow:0 12px 24px rgba(7,13,26,.45); border-color:rgba(124,201,255,.4); background:rgba(64, 122, 238, 0.263) }
-    /* Sleep chips: available = solid teal, full = teal→white gradient (45deg) */
+    .legend-row[data-list-key="sleep_opener"]{
+      transform:translateY(-2px);
+      box-shadow:0 12px 24px rgba(7,13,26,.45);
+      border-color:rgba(124,201,255,.4);
+      background:rgba(64, 122, 238, 0.263);
+    }
+    .legend-row[data-list-key="sleep_opener"]:hover{
+      border-color:rgba(255,105,180,.55);
+      background:rgba(255,105,180,.22);
+    }
+    .legend-row[data-list-key^="sleep_"][data-row-state="soldout"]{
+      cursor:default;
+    }
+    .legend-row[data-list-key^="sleep_"][data-row-state="soldout"]:hover{
+      transform:none;
+      box-shadow:none;
+      border-color:var(--panel-border);
+      background:var(--panel-inner);
+    }
+    .legend-row[data-row-state="soldout"] .legend-swatches .legend-swatch:first-child{ display:none; }
+    /* Sleep chips: available = white, full = pink */
     .legend-chip.sleep-available {
       background: var(--sleep-available-start);
     }
     .legend-chip.sleep-full {
-      background: linear-gradient(45deg, var(--sleep-available-start) var(--full-white-start), var(--sleep-available-end) 100%);
+      background: var(--sleep-full);
     }
 
-    /* Hide 'Wayfinding' label and center chips */
-    .legend-row.wayfinding .legend-label { display:none; }
-    .legend-row.wayfinding .legend-swatches { justify-content:center; }
+    /* Wayfinding chips only (no enclosing row/card) */
+    .wayfinding-chips{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:8px;
+      justify-items:stretch;
+      padding:0 8px;
+    }
+    .wayfinding-chips .legend-swatch{
+      width:100%;
+      justify-content:flex-start;
+    }
+    .wayfinding-chips .legend-swatch.artist-wayfinding-jump{
+      cursor:pointer;
+      transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease;
+    }
+    .wayfinding-chips .legend-swatch.artist-wayfinding-jump:hover,
+    .wayfinding-chips .legend-swatch.artist-wayfinding-jump:focus-visible{
+      transform:translateY(-1px);
+      box-shadow:0 10px 20px rgba(7,13,26,.45);
+      border-color:rgba(255,105,180,.55);
+      background:rgba(255,105,180,.22);
+    }
     .legend-label{ font-size:15px; font-weight:600; text-align:left; padding:0 }
     .legend-count{ margin-left:8px; font-size:12px; font-weight:700; color:var(--text-muted); white-space:nowrap; }
+    .legend-row[data-list-key^="sleep_"] .legend-count{ display:none; }
     /* Keep chips on a single line; allow horizontal scroll on very small screens */
     .legend-swatches{
       display:flex; flex-wrap:nowrap; gap:8px; justify-content:flex-end;
@@ -205,6 +286,55 @@
     }
     .results-panel .results-group a:hover{background:rgba(255,255,255,.1); border-color:rgba(124,201,255,.45)}
     .results-panel .muted{color:var(--text-muted); font-weight:500}
+    .artist-catalog{
+      width:min(100%,var(--maxw));
+      margin:8px auto 0;
+      padding:15px;
+      background:transparent;
+      border:0;
+      box-shadow:none;
+      backdrop-filter:none;
+      color:var(--text-primary);
+    }
+    .artist-catalog .artist-list-title{
+      margin:0 0 8px;
+      font-size:24px;
+      font-weight:700;
+      letter-spacing:.01em;
+      color:var(--text-primary);
+      text-transform:none;
+      text-align:center;
+    }
+    .artist-catalog .campus-head{ margin:0 0 10px; font-size:20px; font-weight:700; letter-spacing:.02em; color:var(--text-primary); text-transform:none; }
+    .artist-catalog .campus-group{ margin:12px 0 14px; }
+    .artist-catalog .campus-group + .campus-group{ margin-top:28px; }
+    .artist-catalog .campus-group > h2,
+    .artist-catalog .campus-group > h3{ margin:0 0 8px; font-size:16px; font-weight:700; color:var(--text-primary); letter-spacing:0; }
+    .artist-catalog .subgroup{ margin:8px 0 10px; }
+    .artist-catalog .subgroup + .subgroup{ margin-top:18px; }
+    .artist-catalog .subgroup > h3,
+    .artist-catalog .subgroup > h4{ margin:0 0 4px; font-size:14px; font-weight:700; color:var(--text-primary); text-transform:none; letter-spacing:0; }
+    .artist-catalog .results-group ul{ list-style:none; margin:0; padding:0; display:block; }
+    .artist-catalog .results-group li{ margin:0 0 4px; padding:0; }
+    .artist-catalog .results-group a,
+    .artist-catalog .results-group .nolink{
+      display:inline;
+      padding:0;
+      margin:0;
+      border:0;
+      border-radius:0;
+      background:none;
+      box-shadow:none;
+      backdrop-filter:none;
+      font-size:14px;
+      font-weight:500;
+      color:var(--text-primary);
+    }
+    .artist-catalog .results-group a{
+      color:var(--accent);
+      text-decoration:underline;
+    }
+    .artist-catalog .results-group a:hover{ color:var(--accent-strong); }
 
     /* Map table container */
     .map-table-wrap{ width:min(100%,var(--maxw)); border-radius:24px; box-shadow:var(--card-shadow); overflow:hidden; border:1px solid var(--panel-border) }
@@ -257,11 +387,11 @@
     a{ color:var(--accent); text-decoration:underline } a:hover{ color:var(--accent-strong) }
 
 	    @media (max-width:900px){
-	      body{ padding:10px 8px 14px; gap:10px }
+	      body{ padding:40px 8px 14px; gap:10px }
 	      .legend{ padding:8px }
 	    }
 	    @media (max-width:640px){
-	      body{ padding:10px 6px 12px; gap:10px }
+	      body{ padding:40px 6px 12px; gap:10px }
 	      .legend{ padding:6px }
 	      .legend-subhead{ padding:0 6px }
 	      .legend-row{ padding:6px 6px }
@@ -287,63 +417,104 @@
 
 	  <div class="map-top">
 	    <section class="legend panel" aria-label="Booth legend">
-	      <h2>Navigation Key<a class="key-jump" href="#notes"> </a></h2>
-	      <div class="legend-grid">
-	        <div class="legend-subhead" role="heading" aria-level="3">Hotel Rooms (for sleeping)</div>
-	        <!-- Sleep Rooms legend row -->
-	        <div class="legend-row" data-list-key="sleep" tabindex="0" role="button" aria-pressed="false">
-	          <div class="legend-label">Overnight Hotel Rooms <span class="legend-count" data-count-key="sleep"></span></div>
+			      <h2>JUPITER CAMPUS MAP<a class="key-jump" href="#artist-catalog"> </a></h2>
+			      <div class="legend-grid">
+            <div class="wayfinding-preview">
+              <img src="wayfinding.png" alt="Wayfinding map reference">
+            </div>
+	          <div class="legend-intro" aria-label="Instructions">
+	            <div class="legend-intro-title">Instructions</div>
+	            <p>Click a shape on the map to open its booking page. Or click a row in the Key to see the full list for that group.</p>
+              <p class="legend-lodging-header">NEED LODGING?</p>
+	            <p>We reserved the WHOLE Jupiter Original Motel side! Book through us for a killer deal and stay on-site for a tattooer summer camp style weekend. You can literally buy a hotel room on this page too!</p>
+	          </div>
+	        <div class="legend-subhead" role="heading" aria-level="3">Hotel Rooms</div>
+	        <div class="legend-row" data-list-key="sleep_opener" tabindex="0" role="button" aria-pressed="false">
+	          <div class="legend-label">Opener Queen (Capacity 1-2) <span class="legend-count" data-count-key="sleep_opener"></span></div>
+	          <div class="legend-swatches">
+	            <div class="legend-swatch">
+	              <span class="legend-chip sleep-available"></span>Available
+	            </div>
+	          </div>
+	        </div>
+	        <div class="legend-row" data-list-key="sleep_entourage" tabindex="0" role="button" aria-pressed="false">
+	          <div class="legend-label">Entourage Double (Capacity 2-4) <span class="legend-count" data-count-key="sleep_entourage"></span></div>
 	          <div class="legend-swatches">
 	            <div class="legend-swatch">
 	              <span class="legend-chip sleep-available"></span>Available
 	            </div>
 	            <div class="legend-swatch">
-	              <span class="legend-chip sleep-full"></span>Full
+	              <span class="legend-chip sleep-full"></span>Sold Out
 	            </div>
 	          </div>
 	        </div>
-	        <div class="legend-subhead" role="heading" aria-level="3">Artist Booths</div>
-	        <div class="legend-row" data-list-key="small_deluxe" tabindex="0" role="button" aria-pressed="false">
-	          <div class="legend-label">Small Deluxe <span class="legend-count" data-count-key="small_deluxe"></span></div>
+	        <div class="legend-row" data-list-key="sleep_headliner" tabindex="0" role="button" aria-pressed="false">
+	          <div class="legend-label">Headliner King (Capacity 1-2) <span class="legend-count" data-count-key="sleep_headliner"></span></div>
 	          <div class="legend-swatches">
-	            <div class="legend-swatch"><span class="legend-chip" style="background:#51b848"></span>Available</div>
-	            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#51b848 var(--full-white-start),#ffffff)"></span>Full</div>
+	            <div class="legend-swatch">
+	              <span class="legend-chip sleep-available"></span>Available
+	            </div>
+	            <div class="legend-swatch">
+	              <span class="legend-chip sleep-full"></span>Sold Out
+	            </div>
+	          </div>
+	        </div>
+	        <div class="legend-row" data-list-key="sleep_encore" tabindex="0" role="button" aria-pressed="false">
+	          <div class="legend-label">Encore King (Capacity 1-2) <span class="legend-count" data-count-key="sleep_encore"></span></div>
+	          <div class="legend-swatches">
+	            <div class="legend-swatch">
+	              <span class="legend-chip sleep-available"></span>Available
+	            </div>
+	            <div class="legend-swatch">
+	              <span class="legend-chip sleep-full"></span>Sold Out
+	            </div>
+	          </div>
+	        </div>
+		        <!--
+		        <div class="legend-subhead" role="heading" aria-level="3">Artist Booths</div>
+		        <div class="legend-row" data-list-key="small_deluxe" tabindex="0" role="button" aria-pressed="false">
+		          <div class="legend-label">Small Deluxe <span class="legend-count" data-count-key="small_deluxe"></span></div>
+		          <div class="legend-swatches">
+		            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#25FF29 var(--full-white-start),#ffffff)"></span>Available</div>
+		            <div class="legend-swatch"><span class="legend-chip" style="background:#25FF29"></span>Full</div>
 	          </div>
 	        </div>
 	        <div class="legend-row" data-list-key="medium_deluxe" tabindex="0" role="button" aria-pressed="false">
 	          <div class="legend-label">Medium Deluxe <span class="legend-count" data-count-key="medium_deluxe"></span></div>
 	          <div class="legend-swatches">
-	            <div class="legend-swatch"><span class="legend-chip" style="background:#dd3ac6"></span>Available</div>
-	            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#dd3ac6 var(--full-white-start),#ffffff)"></span>Full</div>
+	            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#25FF29 var(--full-white-start),#ffffff)"></span>Available</div>
+	            <div class="legend-swatch"><span class="legend-chip" style="background:#25FF29"></span>Full</div>
 	          </div>
 	        </div>
 	        <div class="legend-row" data-list-key="large_deluxe" tabindex="0" role="button" aria-pressed="false">
 	          <div class="legend-label">Large Deluxe <span class="legend-count" data-count-key="large_deluxe"></span></div>
 	          <div class="legend-swatches">
-	            <div class="legend-swatch"><span class="legend-chip" style="background:#8551c8"></span>Available</div>
-	            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#8551c8 var(--full-white-start),#ffffff)"></span>Full</div>
+	            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#25FF29 var(--full-white-start),#ffffff)"></span>Available</div>
+	            <div class="legend-swatch"><span class="legend-chip" style="background:#25FF29"></span>Full</div>
 	          </div>
 	        </div>
 	        <div class="legend-row" data-list-key="ariumflex" tabindex="0" role="button" aria-pressed="false">
 	          <div class="legend-label">Arium/Flex Lounge <span class="legend-count" data-state="soldout">Sold Out</span></div>
 	          <div class="legend-swatches">
-	            <div class="legend-swatch"><span class="legend-chip" style="background:#3d7ef2"></span>Available</div>
-	            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#3d7ef2 var(--full-white-start),#ffffff)"></span>Full</div>
+	            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#25FF29 var(--full-white-start),#ffffff)"></span>Available</div>
+	            <div class="legend-swatch"><span class="legend-chip" style="background:#25FF29"></span>Full</div>
 	          </div>
 	        </div>
 	        <div class="legend-row" data-list-key="dreamtent_artist" tabindex="0" role="button" aria-pressed="false">
 	          <div class="legend-label">Dream Tent <span class="legend-count" data-state="soldout">Sold Out</span></div>
-	          <div class="legend-swatches">
-	            <div class="legend-swatch"><span class="legend-chip" style="background:#00e5ff"></span>Available</div>
-	            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#b8f6ff var(--full-white-start-dreamtent),#ffffff)"></span>Full</div>
-	          </div>
-	        </div>
-	        <div class="legend-subhead" role="heading" aria-level="3">Vendor</div>
-	        <div class="legend-row" data-list-key="vendor" tabindex="0" role="button" aria-pressed="false">
+		          <div class="legend-swatches">
+		            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#25FF29 var(--full-white-start),#ffffff)"></span>Available</div>
+		            <div class="legend-swatch"><span class="legend-chip" style="background:#25FF29"></span>Full</div>
+		          </div>
+		        </div>
+		        -->
+		        <!--
+		        <div class="legend-subhead" role="heading" aria-level="3">Vendor</div>
+		        <div class="legend-row" data-list-key="vendor" tabindex="0" role="button" aria-pressed="false">
 	          <div class="legend-label">Vendor Booths</div>
 	          <div class="legend-swatches">
-	            <div class="legend-swatch"><span class="legend-chip" style="background:#e05600"></span>Available</div>
-	            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#e05600 var(--full-white-start),#ffffff)"></span>Full</div>
+	            <div class="legend-swatch"><span class="legend-chip" style="background:#ff7300"></span>Available</div>
+	            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#ff7300 var(--full-white-start),#ffffff)"></span>Full</div>
 	          </div>
 	        </div>
 	        <div class="legend-row" data-list-key="streetfair" tabindex="0" role="button" aria-pressed="false">
@@ -353,31 +524,21 @@
 	            <div class="legend-swatch"><span class="legend-chip" style="background:linear-gradient(45deg,#af003f var(--full-white-start),#ffffff)"></span>Full</div>
 	          </div>
 	        </div>
-	        <div class="legend-subhead" role="heading" aria-level="3">Wayfinding</div>
-	        <div class="legend-row wayfinding" tabindex="0" role="button" aria-pressed="false">
-	          <div class="legend-label">Wayfinding</div>
-	          <div class="legend-swatches">
-	            <div class="legend-swatch"><span class="legend-chip" style="background:#c5862b"></span>Void Activations</div>
-	            <div class="legend-swatch"><span class="legend-chip" style="background:#3108eb"></span>Restrooms</div>
-	            <div class="legend-swatch"><span class="legend-chip" style="background:#fbe100"></span>Exits</div>
-	          </div>
-	        </div>
+	        -->
+		        <div class="legend-subhead" role="heading" aria-level="3">Wayfinding</div>
+            <div class="wayfinding-chips" aria-label="Wayfinding chips">
+              <div class="legend-swatch artist-wayfinding-jump" tabindex="0" role="button" aria-label="Jump to Artist List"><span class="legend-chip" style="background:#25FF29"></span>Artist Booths</div>
+              <div class="legend-swatch"><span class="legend-chip" style="background:#CB00F5"></span>Void Activations</div>
+              <div class="legend-swatch"><span class="legend-chip" style="background:#ff7300"></span>Vendor Booths</div>
+              <div class="legend-swatch"><span class="legend-chip" style="background:#3108eb"></span>Restrooms</div>
+              <div class="legend-swatch"><span class="legend-chip" style="background:#e7ff00"></span>Exits</div>
+            </div>
 	      </div>
 	    </section>
-    <section class="results-panel panel" id="notes" aria-label="Info panel">
-      <h2>Instructions</h2>
-      <p style="margin:0;color:var(--text-muted)">Click a shape on the map to open its booking page. Or click a row in the Key to see the full list for that group.</p>
-       <p style="margin:12px 0 0;color:var(--text-muted); font-size:13px;">
-        Sleeper room buyers remain private; occupant names are only shown for artist and vendor booths.
-      </p>
-      <br>
-      <h2>Coupon Code</h2>
-      <p style="margin:0;color:var(--text-muted)">NEED LODGING? We reserved the WHOLE Jupiter Original Motel side! Book through us for a killer deal and stay on-site for a tattooer summer camp style weekend. You can literally buy a hotel room on this page too! At checkout, enter <strong style="color:#a2d5fa">GETAROOM</strong> to take <strong>$80</strong> off any overnight sleeping room. One use per purchaser; cannot be combined with other offers.</p>
-     
-   </section>
+	    <section class="results-panel panel" id="notes" aria-label="Info panel" style="display:none;"></section>
   </div>
 
-  <div class="map-table-wrap">
+	  <div class="map-table-wrap">
     <table class="map-table" role="presentation">
       <tr>
         <td>
@@ -390,12 +551,17 @@
         </td>
       </tr>
     </table>
-  </div>
+	  </div>
+
+	  <section class="artist-catalog" id="artist-catalog" aria-label="Artist booth directory">
+	    <h1 class="artist-list-title">Artist List</h1>
+	    <p class="muted" style="margin:0;">Loading artist booth directory…</p>
+	  </section>
 
 
-  <section class="legend" id="status">
-    Loading interactive layer…
-  </section>
+	  <section class="legend" id="status">
+	    Loading interactive layer…
+	  </section>
 
   <script>
     (function () {
@@ -414,26 +580,26 @@
       // Public-safe occupants feed (Google Apps Script Web App)
       const FEED_URL = "https://script.google.com/macros/s/AKfycbyzpcszlKqLhTdV-ffkD86qwPG8kPQpKkdukG7q8-mbXMGF2xO9GpzTRukdKvvDgbDZQQ/exec";
       // Colors for booked/available overrides (Small Deluxe example)
-      const BOOKED_FILL = "#b9f2b3";     // lighter green when fully booked
-      const AVAILABLE_FILL = "#51b848";  // base available color for SDL
+      const BOOKED_FILL = "#25FF29";     // artist base color (solid full)
+      const AVAILABLE_FILL = "#25FF29";  // artist base color (gradient available)
       // Full (booked) colors by booth_type (match legend)
       // Per-booth-type "full" gradient settings (how quickly the gradient fades to white).
       // Smaller % = more white across the shape.
       const FULL_WHITE_START_BY_TYPE = {
-        STD10TENT: '60%',  // Dream Tent artist booths
+        STD10TENT: '12%',  // Dream Tent artist booths
         VND10TENT: '2%'   // Dream Tent vendor booths
       };
       const FULL_FILL_BY_TYPE = {
         // Artist rooms
-        SDL: '#b9f2b3',   // Small Deluxe — Full
-        MDL: '#f599ec',   // Medium Deluxe — Full
-        LDL: '#b99df1',   // Large Deluxe — Full
-        XLDL: '#b99df1',  // Extra Large Deluxe (108) — Full (same family as Large)
-        SLEEP: '#ffffff', // Sleep Rooms — Occupied
+        SDL: '#25FF29',   // Deluxe — Full
+        MDL: '#25FF29',   // Deluxe — Full
+        LDL: '#25FF29',   // Deluxe — Full
+        XLDL: '#25FF29',  // Deluxe — Full
+        SLEEP: '#00e5ff', // Sleep Rooms — Full
         // Arium / Flex (indoor 10x10)
-        STD10IN: '#78b0ff',
+        STD10IN: '#25FF29',
         // Dream Tent artists (10x10)
-        STD10TENT: '#b8f6ff',
+        STD10TENT: '#25FF29',
         // Vendors
         VND10TENT: '#ff9959',   // Dream Tent Vendors — Full
         VND10OUT:  '#ff9959',   // Jupiter Original Vendors (outdoor) — Full
@@ -444,16 +610,16 @@
 
       // Available (base) colors by booth_type (match legend "Available" chips)
       const AVAILABLE_FILL_BY_TYPE = {
-        SDL: '#51b848',
-        MDL: '#dd3ac6',
-        LDL: '#8551c8',
-        XLDL: '#8551c8',
-        SLEEP: '#288699',
-        STD10IN: '#3d7ef2',
-        STD10TENT: '#00e5ff',
-        VND10TENT: '#e05600',
-        VND10OUT: '#e05600',
-        VND10IN: '#e05600',
+        SDL: '#25FF29',
+        MDL: '#25FF29',
+        LDL: '#25FF29',
+        XLDL: '#25FF29',
+        SLEEP: '#ffffff',
+        STD10IN: '#25FF29',
+        STD10TENT: '#25FF29',
+        VND10TENT: '#ff7300',
+        VND10OUT: '#ff7300',
+        VND10IN: '#ff7300',
         VND10STREET: '#af003f'
       };
 
@@ -465,16 +631,14 @@
         VND10TENT: 'vendor',
         VND10OUT:  'vendor',
         VND10IN:   'vendor',
-        // Arium / Flex lounge artist booths
-        STD10IN: 'ariumflex',
-        // Dream Tent artist booths
-        STD10TENT: 'dreamtent_artist',
-        // Deluxe artist rooms
-        SDL: 'small_deluxe',
-        SSDL: 'small_deluxe',
-        MDL: 'medium_deluxe',
-        LDL: 'large_deluxe',
-        XLDL: 'large_deluxe',
+        // All artist booths route to the campus directory panel
+        STD10IN: 'artist_campus',
+        STD10TENT: 'artist_campus',
+        SDL: 'artist_campus',
+        SSDL: 'artist_campus',
+        MDL: 'artist_campus',
+        LDL: 'artist_campus',
+        XLDL: 'artist_campus',
         // Sleep rooms (list-only; map clicks remain disabled when full)
         SLEEP: 'sleep'
       };
@@ -540,7 +704,7 @@
 
         const stop1 = document.createElementNS(SVG_NS, 'stop');
         stop1.setAttribute('offset', '12%');
-        stop1.setAttribute('stop-color', '#288699'); // sleep available
+        stop1.setAttribute('stop-color', '#ffffff'); // sleep available (white)
 
         const stop2 = document.createElementNS(SVG_NS, 'stop');
         stop2.setAttribute('offset', '100%');
@@ -594,12 +758,62 @@
       // Temporary local overrides for spaces that should ignore the live occupancy feed.
       // This keeps the map/nav using the JSON classification + booking URL.
       const FEED_IGNORE_SPACES = new Set([
-        '106'
+        '106',
+        '244'
       ]);
       // Space-specific available-color overrides (used sparingly for feed exceptions).
-      const FORCE_AVAILABLE_COLOR_SPACES = new Set([
-        '106'
+      const FORCE_AVAILABLE_COLOR_SPACES = new Set([]);
+      const VOID_ACTIVATION_FILL = '#CB00F5';
+      const HEY_LOVE_FILL = '#FF69B4';
+      const VOID_ACTIVATION_SPACES = new Set([
+        '102',
+        '103',
+        '104',
+        '105',
+        '106',
+        '107',
+        '139',
+        '140',
+        '244'
       ]);
+      // Disable direct booking links for spaces we now assign manually.
+      const BOOKING_DISABLED_BOOTH_TYPES = new Set([
+        'VND10TENT',
+        'VND10OUT',
+        'VND10IN',
+        'VND10STREET'
+      ]);
+      const BOOKING_DISABLED_SPACE_KEYS = new Set([
+        '102',
+        '103',
+        '104',
+        '105',
+        '106',
+        '107',
+        '139',
+        '140',
+        '244',
+        '226',
+        '252'
+      ]);
+      const ARTIST_PLACEHOLDER_LINK_SPACES = new Set([
+        '226',
+        '252'
+      ]);
+
+      function resolveBookwhenUrl_(payload, csv, rawKey){
+        const boothType = String((csv && csv.booth_type) || '').trim().toUpperCase();
+        const keyFromCsv = String((csv && csv.space_key) || '').trim().replace(/_/g, '');
+        const keyFromRaw = String(rawKey || '').trim().replace(/^_+/, '').replace(/_/g, '');
+        const spaceKey = keyFromCsv || keyFromRaw;
+        if (BOOKING_DISABLED_BOOTH_TYPES.has(boothType)) return '';
+        if (spaceKey && BOOKING_DISABLED_SPACE_KEYS.has(spaceKey)) return '';
+        return String(
+          (payload && payload.bookwhen_url) ||
+          (csv && csv.bookwhen_url) ||
+          ''
+        ).trim();
+      }
 
       // Ticket patterns → slot cost (and buyout flag)
       // NOTE: The site JS only uses this if the feed includes ticket names per booking.
@@ -744,7 +958,11 @@
           if(restrict && !restrict.has(building)) continue;
 
           const booth = String(csv.booth_name || id).trim();
-          const url = String(payload.bookwhen_url || csv.bookwhen_url || '').trim();
+          if (spec && spec.sleepCategory) {
+            const cat = sleepCategoryForRow_(booth, csv);
+            if (cat !== String(spec.sleepCategory)) continue;
+          }
+          const url = resolveBookwhenUrl_(payload, csv, id);
           const context = { id, payload, csv, booth, building };
           let group = null;
           if(groupResolver){
@@ -811,21 +1029,25 @@
         if (!data) return;
         const nodes = document.querySelectorAll('.legend .legend-count[data-count-key]');
         nodes.forEach(node => {
+          const row = node.closest('.legend-row[data-list-key]');
           const k = String(node.getAttribute('data-count-key') || '').trim();
           if (!k) return;
           const res = computeLegendAvailability_(data, k);
           if (!res || !Number.isFinite(res.total) || res.total <= 0){
             node.textContent = '';
             node.removeAttribute('data-state');
+            if (row) row.removeAttribute('data-row-state');
             return;
           }
           if (res.remaining <= 0){
             node.textContent = 'Sold Out';
             node.setAttribute('data-state', 'soldout');
+            if (row) row.setAttribute('data-row-state', 'soldout');
             return;
           }
           node.textContent = `${res.remaining}/${res.total}`;
           node.setAttribute('data-state', 'count');
+          if (row) row.setAttribute('data-row-state', 'count');
         });
       }
       window.updateLegendCounts = updateLegendCounts_;
@@ -856,10 +1078,19 @@
       const svgFallback = document.getElementById("svg-fallback");
       const mapBaseImg = document.getElementById("map-base");
       const statusEl = document.getElementById("status");
-      const notesPanel = document.querySelector('.results-panel');
+      const notesPanel = document.getElementById('notes');
+      const artistCatalogPanel = document.getElementById('artist-catalog');
       const pageLoader = document.getElementById("page-loader");
       window.__LAST_LIST_KEY = null; // remember last legend key rendered
       let pageLoaderHidden_ = false;
+      const ARTIST_BOOTH_TYPES = new Set(['SDL','SSDL','MDL','LDL','XLDL','STD10TENT','STD10IN']);
+      const ARTIST_SEGMENT_ANCHORS = {
+        ORIGINAL_LEVEL1: 'artist-seg-original-level1',
+        ORIGINAL_DREAM_TENT: 'artist-seg-original-dreamtent',
+        ORIGINAL_LEVEL2: 'artist-seg-original-level2',
+        NEXT_FLEX: 'artist-seg-next-flex',
+        NEXT_ARIUM: 'artist-seg-next-arium'
+      };
 
       function hidePageLoader_(){
         if (!pageLoader || pageLoaderHidden_) return;
@@ -887,6 +1118,48 @@
           img.addEventListener('error', finish);
         });
       }
+
+      const SLEEP_CATEGORY_BY_ROOM = {
+        '117': 'opener',
+        '203': 'opener',
+        '205': 'opener',
+        '207': 'opener',
+        '213': 'opener',
+        '215': 'opener',
+        '217': 'opener',
+        '218': 'opener',
+        '231': 'opener',
+        '233': 'opener',
+        '235': 'opener',
+        '239': 'opener',
+        '247': 'opener',
+        '249': 'opener',
+        '251': 'opener',
+        '253': 'opener',
+        '202': 'entourage',
+        '204': 'entourage',
+        '206': 'entourage',
+        '208': 'entourage',
+        '212': 'entourage',
+        '214': 'entourage',
+        '216': 'entourage',
+        '219': 'headliner',
+        '221': 'headliner',
+        '224': 'headliner',
+        '210': 'encore',
+        '220': 'encore',
+        '222': 'encore',
+        '223': 'encore'
+      };
+
+      function sleepCategoryForRow_(booth, csv){
+        const src = String(booth || (csv && csv.booth_name) || '').trim();
+        const m = src.match(/\b(\d{3})\b/);
+        if (!m) return null;
+        const room = m[1];
+        return SLEEP_CATEGORY_BY_ROOM[room] || null;
+      }
+
       const LEGEND_FILTERS = {
         streetfair: {
           title: 'Street Fair Vendor Booths (Saturday only)',
@@ -1008,37 +1281,46 @@ groupResolver: ({ booth, csv }) => {
           title: 'Overnight Hotel Rooms',
           boothTypes: ['SLEEP'],
           groupBy: null,
-          groupResolver: ({ booth, csv }) => {
-            const src = String(booth || (csv && csv.booth_name) || '').trim();
-            const m = src.match(/\b(\d{3})\b/);
-            if (!m) return null;
-            const room = m[1];
-
-            // Opener Queen
-            if (['203','205','207','213','215','217','218','231','233','235','239','247','249','251','253','117'].includes(room)) {
-              return 'opener';
-            }
-            // Entourage Double
-            if (['202','204','206','208','212','214','216'].includes(room)) {
-              return 'entourage';
-            }
-            // Headliner King
-            if (['219','221','224'].includes(room)) {
-              return 'headliner';
-            }
-            // Encore King
-            if (['210','220','222','223','244'].includes(room)) {
-              return 'encore';
-            }
-            return null;
-          },
+          groupResolver: ({ booth, csv }) => sleepCategoryForRow_(booth, csv),
           headings: {
-            opener: 'Opener Queen [1 - 2]',
-            entourage: 'Entourage Double [2 - 4]',
-            headliner: 'Headliner King [1 - 2]',
-            encore: 'Encore King [1 - 2]'
+            opener: 'Opener Queen (Capacity 1-2)',
+            entourage: 'Entourage Double (Capacity 2-4)',
+            headliner: 'Headliner King (Capacity 1-2)',
+            encore: 'Encore King (Capacity 1-2)'
           },
           groupOrder: ['opener','entourage','headliner','encore'],
+          useShortLabel: true,
+          rowComparator: defaultRowComparator
+        },
+        sleep_opener: {
+          title: 'Overnight Hotel Rooms: Opener Queen (Capacity 1-2)',
+          boothTypes: ['SLEEP'],
+          sleepCategory: 'opener',
+          groupBy: null,
+          useShortLabel: true,
+          rowComparator: defaultRowComparator
+        },
+        sleep_entourage: {
+          title: 'Overnight Hotel Rooms: Entourage Double (Capacity 2-4)',
+          boothTypes: ['SLEEP'],
+          sleepCategory: 'entourage',
+          groupBy: null,
+          useShortLabel: true,
+          rowComparator: defaultRowComparator
+        },
+        sleep_headliner: {
+          title: 'Overnight Hotel Rooms: Headliner King (Capacity 1-2)',
+          boothTypes: ['SLEEP'],
+          sleepCategory: 'headliner',
+          groupBy: null,
+          useShortLabel: true,
+          rowComparator: defaultRowComparator
+        },
+        sleep_encore: {
+          title: 'Overnight Hotel Rooms: Encore King (Capacity 1-2)',
+          boothTypes: ['SLEEP'],
+          sleepCategory: 'encore',
+          groupBy: null,
           useShortLabel: true,
           rowComparator: defaultRowComparator
         }
@@ -1284,26 +1566,84 @@ groupResolver: ({ booth, csv }) => {
 	          // Some spaces appear multiple times across map segments (e.g., H/H1).
 	          // Use `csv.space_key` (when present) as the canonical booking key so both
 	          // shapes reflect the same reservation status.
-	          const spaceKey = deriveSpaceKeyForRow({ id: canonicalKey, csv }) || canonicalKey;
-	          const picked = pickOccupantEntry_(spaces, spaceKey);
-	          const feedSpace = picked && picked.entry;
-	          const statusSummary = computeFullStatus(spaceKey, boothType, csv.capacity_1_to_4, feedSpace);
-	          const isFull = !!(statusSummary && statusSummary.isFull);
-	          const published = isPublishedKey_(mapData, canonicalKey);
+		          const spaceKey = deriveSpaceKeyForRow({ id: canonicalKey, csv }) || canonicalKey;
+		          const picked = pickOccupantEntry_(spaces, spaceKey);
+		          const feedSpace = picked && picked.entry;
+		          const statusSummary = computeFullStatus(spaceKey, boothType, csv.capacity_1_to_4, feedSpace);
+		          const isFull = !!(statusSummary && statusSummary.isFull);
+		          const published = isPublishedKey_(mapData, canonicalKey);
+		          const resolvedSpaceKey = String(spaceKey || canonicalKey);
+          const artistSegmentAnchor = artistSegmentAnchorFor_(
+            boothType,
+            csv && csv.building_label,
+            csv && csv.booth_name
+          );
+          const isVendorBooth = /^VND/i.test(boothType);
+          const hideInNav =
+            (payload && (
+              payload.hide_in_nav === true ||
+              String(payload.hide_in_nav).toLowerCase() === 'true'
+            )) ||
+            (csv && (
+              csv.hide_in_nav === true ||
+              String(csv.hide_in_nav).toLowerCase() === 'true'
+            ));
+          const rawBookwhenUrl = String(
+            (payload && payload.bookwhen_url) ||
+            (csv && csv.bookwhen_url) ||
+            ''
+          ).trim();
+          const hasFeedSignal = !!(
+            feedSpace && (
+              String(feedSpace.status || '').trim() ||
+              (Array.isArray(feedSpace.groups) && feedSpace.groups.length) ||
+              String(feedSpace.name || '').trim() ||
+              String(feedSpace.social || '').trim()
+            )
+          );
+          const isStaticNonOccupancyShape = hideInNav && !rawBookwhenUrl && !hasFeedSignal;
 
-	          // Sleep rooms: AVAILABLE = solid teal; FULL = teal→white gradient (same angle as before).
-	          if (boothType === 'SLEEP') {
+		          // Void activation rooms: fixed gold/ochre styling, no booking interactions.
+		          if (published && VOID_ACTIVATION_SPACES.has(resolvedSpaceKey)) {
+		            try {
+		              node.removeAttribute('fill');
+		              node.style.fill = VOID_ACTIVATION_FILL;
+		            } catch (_) {}
+		            try {
+		              node.classList.remove('shape-interactive');
+		              node.style.removeProperty('pointer-events');
+		              node.style.removeProperty('cursor');
+		              node.removeAttribute('tabindex');
+			              node.removeAttribute('role');
+			              node.removeAttribute('data-click-behavior');
+			              node.removeAttribute('data-legend-key');
+                    node.removeAttribute('data-segment-anchor');
+			            } catch (_) {}
+		            disableLinkWrapper_(node);
+		            continue;
+		          }
+          if (isStaticNonOccupancyShape) {
+            // Keep static/map-only geometry at its authored SVG color.
+            continue;
+          }
+
+          // Sleep rooms:
+          // AVAILABLE = solid white; FULL = solid pink.
+          if (boothType === 'SLEEP') {
             if (!published) {
               // Unpublished sleep rooms already get greyed/disabled in decorateShape
               continue;
             }
 
             if (isFull) {
-              // Occupied: apply 45° gradient fill (teal → white) and disable interaction
-              ensureSleepGradient_(svgRoot);
+              // Occupied/full: solid pink fill and disable interaction
+              const baseColor =
+                (FULL_FILL_BY_TYPE && FULL_FILL_BY_TYPE.SLEEP)
+                  ? FULL_FILL_BY_TYPE.SLEEP
+                  : '#FF69B4';
               try {
                 node.removeAttribute('fill');
-                node.style.fill = 'url(#sleepRoomGradient)';
+                node.style.fill = baseColor;
               } catch (_) {}
               try {
                 node.classList.remove('shape-interactive');
@@ -1313,11 +1653,11 @@ groupResolver: ({ booth, csv }) => {
               } catch (_) {}
               disableLinkWrapper_(node);
             } else {
-              // Available: solid teal (matches legend "Available" chip)
+              // Available: solid white fill
               const baseColor =
                 (AVAILABLE_FILL_BY_TYPE && AVAILABLE_FILL_BY_TYPE.SLEEP)
                   ? AVAILABLE_FILL_BY_TYPE.SLEEP
-                  : '#288699';
+                  : '#ffffff';
               try {
                 node.removeAttribute('fill');
                 node.style.fill = baseColor;
@@ -1326,41 +1666,48 @@ groupResolver: ({ booth, csv }) => {
             continue;
           }
 
-          // Non-sleep booths: when full, use a gradient from the available color to white
-          // and make clicks behave like clicking the corresponding legend row (jump to list).
+          // Non-sleep booths (reversed color convention):
+          // FULL = solid available-color; AVAILABLE = white-gradient.
           if (boothType !== 'SLEEP') {
             if (isFull && published) {
-              let baseColor = (boothType && FULL_FILL_BY_TYPE[boothType])
-                ? FULL_FILL_BY_TYPE[boothType]
+              let baseColor = (boothType && AVAILABLE_FILL_BY_TYPE[boothType])
+                ? AVAILABLE_FILL_BY_TYPE[boothType]
                 : null;
               if (!baseColor) {
-                baseColor = (boothType && AVAILABLE_FILL_BY_TYPE[boothType])
-                  ? AVAILABLE_FILL_BY_TYPE[boothType]
+                baseColor = (boothType && FULL_FILL_BY_TYPE[boothType])
+                  ? FULL_FILL_BY_TYPE[boothType]
                   : BOOKED_FILL;
               }
 
-              const gradKey = boothType || 'default';
-              ensureFullGradient_(svgRoot, gradKey, baseColor);
               try {
                 node.removeAttribute('fill');
-                node.style.fill = `url(#fullGrad-${gradKey})`;
+                node.style.fill = baseColor;
               } catch (_) {}
 
-              const legendKey = LEGEND_KEY_BY_BOOTH_TYPE[boothType];
-              if (legendKey) {
-                // Category-click mode: keep the shape interactive and let wireLink()
-                // route clicks to the Notes list instead of opening a booking URL.
-                node.classList.add('shape-interactive');
-                node.setAttribute('data-click-behavior', 'category');
-                node.setAttribute('data-legend-key', legendKey);
-                if (!node.hasAttribute('tabindex')) {
-                  node.setAttribute('tabindex', '0');
-                }
-                if (!node.hasAttribute('role')) {
-                  node.setAttribute('role', 'link');
-                }
-                // Do NOT disable pointer events; click handlers will still fire.
-              } else {
+	              const legendKey = LEGEND_KEY_BY_BOOTH_TYPE[boothType];
+	              if (legendKey) {
+	                node.classList.add('shape-interactive');
+                  if (artistSegmentAnchor) {
+                    node.setAttribute('data-click-behavior', 'artist-segment');
+                    node.setAttribute('data-segment-anchor', artistSegmentAnchor);
+                    node.removeAttribute('data-legend-key');
+                  } else {
+                    // Category-click mode: keep the shape interactive and let wireLink()
+                    // route clicks to the Notes list instead of opening a booking URL.
+                    node.setAttribute('data-click-behavior', 'category');
+                    node.setAttribute('data-legend-key', legendKey);
+                    node.removeAttribute('data-segment-anchor');
+                  }
+	                if (!node.hasAttribute('tabindex')) {
+	                  node.setAttribute('tabindex', '0');
+	                }
+	                if (!node.hasAttribute('role')) {
+	                  node.setAttribute('role', 'link');
+	                }
+                  wireLink(node, '');
+                  wireHighlight(node);
+	                // Do NOT disable pointer events; click handlers will still fire.
+	              } else {
                 // Fallback: behave like a generic full/disabled shape (no category mapping)
                 try {
                   node.classList.remove('shape-interactive');
@@ -1371,32 +1718,54 @@ groupResolver: ({ booth, csv }) => {
                 disableLinkWrapper_(node);
               }
             } else {
-              // Not full or not published: clear any category-click metadata
-              node.removeAttribute('data-click-behavior');
-              node.removeAttribute('data-legend-key');
-              // Only force the base available color for explicitly overridden spaces.
-              // This keeps Room 106 purple without changing nearby standard-room fills.
-              if (published && FORCE_AVAILABLE_COLOR_SPACES.has(String(spaceKey || canonicalKey))) {
-                const availableColor = (boothType && AVAILABLE_FILL_BY_TYPE[boothType])
-                  ? AVAILABLE_FILL_BY_TYPE[boothType]
+	              // Not full or not published: clear any category-click metadata
+	              node.removeAttribute('data-click-behavior');
+	              node.removeAttribute('data-legend-key');
+                node.removeAttribute('data-segment-anchor');
+	              if (published) {
+                let gradientBase = (boothType && FULL_FILL_BY_TYPE[boothType])
+                  ? FULL_FILL_BY_TYPE[boothType]
                   : null;
-                if (availableColor) {
-                  try {
-                    node.removeAttribute('fill');
-                    node.style.fill = availableColor;
-                  } catch (_) {}
+                if (!gradientBase) {
+                  gradientBase = (boothType && AVAILABLE_FILL_BY_TYPE[boothType])
+                    ? AVAILABLE_FILL_BY_TYPE[boothType]
+                    : BOOKED_FILL;
                 }
+                const gradKey = 'avail-' + (boothType || 'default');
+                ensureFullGradient_(svgRoot, gradKey, gradientBase);
+	                try {
+	                  node.removeAttribute('fill');
+	                  node.style.fill = `url(#fullGrad-${gradKey})`;
+	                } catch (_) {}
+
+                  if (artistSegmentAnchor) {
+                    node.classList.add('shape-interactive');
+                    node.setAttribute('data-click-behavior', 'artist-segment');
+                    node.setAttribute('data-segment-anchor', artistSegmentAnchor);
+                    node.removeAttribute('data-legend-key');
+                    if (!node.hasAttribute('tabindex')) node.setAttribute('tabindex', '0');
+                    if (!node.hasAttribute('role')) node.setAttribute('role', 'link');
+                    wireLink(node, '');
+                    wireHighlight(node);
+                  }
+	              }
+              // Vendors: always non-interactive (no click, no hover/category behavior).
+              if (isVendorBooth) {
                 try {
-                  node.classList.add('shape-interactive');
-                  node.style.removeProperty('pointer-events');
-                  node.style.removeProperty('cursor');
-                  if (!node.hasAttribute('tabindex')) node.setAttribute('tabindex', '0');
-                  if (!node.hasAttribute('role')) node.setAttribute('role', 'link');
-                } catch (_) {}
+                  node.classList.remove('shape-interactive');
+                  node.style.pointerEvents = 'none';
+                  node.style.cursor = 'default';
+                  node.removeAttribute('tabindex');
+	                  node.removeAttribute('role');
+	                  node.removeAttribute('data-click-behavior');
+	                  node.removeAttribute('data-legend-key');
+                    node.removeAttribute('data-segment-anchor');
+	                } catch (_) {}
+                disableLinkWrapper_(node);
               }
-            }
-          }
-        }
+	          }
+	        }
+	      }
       }
       // Helper: refresh occupants/colors and re-render currently selected list
       async function refreshOccupantsAndRerender(){
@@ -1406,6 +1775,7 @@ groupResolver: ({ booth, csv }) => {
           if (!svg || !mapData) return;
           await applyOccupantsToSvg_(svg, mapData);
           updateLegendCounts_(mapData);
+          renderArtistCampusList_(mapData);
           const key = window.__LAST_LIST_KEY;
           if (key){ try { renderResultsForKey(mapData, key); } catch(_){} }
         }catch(e){ console.warn('refreshOccupantsAndRerender error', e); }
@@ -1482,6 +1852,7 @@ groupResolver: ({ booth, csv }) => {
           applyInteractivity(frontSvg, mapData);
           wireLegendClicks(mapData);
           updateLegendCounts_(mapData);
+          renderArtistCampusList_(mapData);
           // Ensure wayfinding labels visually match room 131 label height with padding
           matchVisualLabelSize(frontSvg, '131');
           // Custom multi-line labels for specific shapes (runs after auto-labels)
@@ -1495,6 +1866,7 @@ groupResolver: ({ booth, csv }) => {
             // Expose mapData globally for later lookups
             window.__VOID_MAPDATA = mapData;
             updateLegendCounts_(mapData);
+            renderArtistCampusList_(mapData);
             // Quick-start renderer to mirror the minimal hookup instructions:
             window.renderLegendAndMap = function(listKey){
               try{
@@ -1509,6 +1881,7 @@ groupResolver: ({ booth, csv }) => {
             console.warn('applyOccupantsToSvg_ error', e);
             // Still expose mapData so the UI remains usable
             window.__VOID_MAPDATA = mapData;
+            renderArtistCampusList_(mapData);
             window.renderLegendAndMap = function(listKey){
               try{
                 renderResultsForKey(window.__VOID_MAPDATA, String(listKey));
@@ -1584,6 +1957,18 @@ groupResolver: ({ booth, csv }) => {
             n.removeAttribute('stroke');
           });
         }
+
+        // Hey Love / Secret Garden uses overlapping geometry ids.
+        // Force both ids so the whole area stays in sync.
+        svg.querySelectorAll('#heylovebar, [data-name=\"heylovebar\"], #sgphlb, [data-name=\"sgphlb\"], #hlblable, [data-name=\"hlblable\"]').forEach(n => {
+          try {
+            n.style.fill = HEY_LOVE_FILL;
+            n.style.stroke = HEY_LOVE_FILL;
+            n.style.strokeMiterlimit = '10';
+            n.removeAttribute('fill');
+            n.removeAttribute('stroke');
+          } catch (_) {}
+        });
 
         // 2) Hide strokes for ankeny and burnside
         ['ankeny','burnside'].forEach(id => {
@@ -1691,7 +2076,7 @@ groupResolver: ({ booth, csv }) => {
         ['dreambox', 'Dream\\nBox'],
         ['thinktank', 'Think\\nTank'],
         ['command', 'Command\\nCenter'],
-        ['_9thst', '9th Street - Street Fair - Saturday Only'],
+        ['_9thst', '9th Street- Street Fair-Saturday Only'],
         ['rr1', 'R'],
         ['ankeny', 'Ankeny'],
         ['burnside', 'Burnside'],
@@ -1830,6 +2215,10 @@ groupResolver: ({ booth, csv }) => {
             target = findShapeNode(svgElement, eid);
           }
           if (!target) {
+            if (/^sf\d+$/i.test(canonicalName)) {
+              // Street Fair booth geometry intentionally removed from the map layer.
+              continue;
+            }
             console.warn("SVG element not found for shape:", shapeName, "resolved id:", elementId, "canonical:", canonicalName);
             continue;
           }
@@ -1896,11 +2285,18 @@ groupResolver: ({ booth, csv }) => {
         });
       }
 
-      function decorateShape(node, label, payload, mapData) {
-        // Normalize booth_type so comparisons like boothType === 'SLEEP' work reliably
-        const boothType = payload && payload.csv ? String(payload.csv.booth_type || '').trim().toUpperCase() : '';
-        node.setAttribute("data-shape", label);
-        const boothName = payload.csv && payload.csv.booth_name ? payload.csv.booth_name : `Shape ${label}`;
+		      function decorateShape(node, label, payload, mapData) {
+		        // Normalize booth_type so comparisons like boothType === 'SLEEP' work reliably
+		        const boothType = payload && payload.csv ? String(payload.csv.booth_type || '').trim().toUpperCase() : '';
+		        const csv = payload && payload.csv ? payload.csv : null;
+		        const shapeSpaceKey = deriveSpaceKeyForRow({ id: label, csv }) || String(label || '').replace(/^_+/, '');
+            const artistSegmentAnchor = artistSegmentAnchorFor_(
+              boothType,
+              csv && csv.building_label,
+              csv && csv.booth_name
+            );
+		        node.setAttribute("data-shape", label);
+	        const boothName = payload.csv && payload.csv.booth_name ? payload.csv.booth_name : `Shape ${label}`;
         node.setAttribute("aria-label", `${boothName} (${label})`);
         if (!node.querySelector("title")) {
           const title = document.createElementNS(SVG_NS, "title");
@@ -1928,40 +2324,81 @@ groupResolver: ({ booth, csv }) => {
           }
           if (!assigned) node.style.removeProperty('fill');
         }
-        const baseLabel = (payload && payload.label) ? String(payload.label) : String(label);
-        const displayLabel = normalizeLabel(baseLabel);
-        appendLabel(node, displayLabel, label);
-        let url = (payload && payload.bookwhen_url ? String(payload.bookwhen_url).trim() : "");
-        const published = isPublishedKey_(mapData || window.__VOID_MAPDATA || {}, label);
+	        const baseLabel = (payload && payload.label) ? String(payload.label) : String(label);
+	        const displayLabel = normalizeLabel(baseLabel);
+	        appendLabel(node, displayLabel, label);
+		        if (VOID_ACTIVATION_SPACES.has(shapeSpaceKey)) {
+		          try {
+		            node.style.fill = VOID_ACTIVATION_FILL;
+		          } catch (_) {}
+		          node.classList.remove("shape-interactive");
+	          node.removeAttribute("tabindex");
+	          node.removeAttribute("role");
+		          node.style.pointerEvents = 'none';
+		          node.style.cursor = 'default';
+              node.removeAttribute('data-segment-anchor');
+		          disableLinkWrapper_(node);
+		          return;
+		        }
+	          if (/^VND/i.test(boothType)) {
+	            node.classList.remove("shape-interactive");
+            node.removeAttribute("tabindex");
+	            node.removeAttribute("role");
+	            node.removeAttribute("data-click-behavior");
+	            node.removeAttribute("data-legend-key");
+              node.removeAttribute('data-segment-anchor');
+	            node.style.pointerEvents = 'none';
+	            node.style.cursor = 'default';
+	            disableLinkWrapper_(node);
+	            return;
+          }
+	        let url = resolveBookwhenUrl_(payload, payload && payload.csv ? payload.csv : null, label);
+	        const published = isPublishedKey_(mapData || window.__VOID_MAPDATA || {}, label);
 
-        if (!published) {
-          node.classList.remove("shape-interactive");
-          node.removeAttribute("tabindex");
-          node.removeAttribute("role");
-          node.style.pointerEvents = 'none';
-          node.style.cursor = 'default';
-          node.setAttribute('data-unpublished', 'true');
+	        if (!published) {
+	          node.classList.remove("shape-interactive");
+	          node.removeAttribute("tabindex");
+	          node.removeAttribute("role");
+            node.removeAttribute("data-click-behavior");
+            node.removeAttribute("data-legend-key");
+            node.removeAttribute("data-segment-anchor");
+	          node.style.pointerEvents = 'none';
+	          node.style.cursor = 'default';
+	          node.setAttribute('data-unpublished', 'true');
           if (!keepOriginal) {
             try { node.style.fill = '#999999'; } catch (_) {}
           }
           disableLinkWrapper_(node);
-        } else {
-          node.removeAttribute('data-unpublished');
-          node.style.removeProperty('pointer-events');
-          node.style.removeProperty('cursor');
-          if (url) {
-            node.classList.add("shape-interactive");
-            node.setAttribute("tabindex", "0");
-            node.setAttribute("role", "link");
-            wireLink(node, url);
-            wireHighlight(node);
-          } else {
-            node.classList.remove("shape-interactive");
-            node.removeAttribute("tabindex");
-            node.removeAttribute("role");
-          }
-        }
-      }
+	        } else {
+	          node.removeAttribute('data-unpublished');
+	          node.style.removeProperty('pointer-events');
+	          node.style.removeProperty('cursor');
+            if (artistSegmentAnchor) {
+              node.classList.add("shape-interactive");
+              node.setAttribute("tabindex", "0");
+              node.setAttribute("role", "link");
+              node.setAttribute("data-click-behavior", "artist-segment");
+              node.setAttribute("data-segment-anchor", artistSegmentAnchor);
+              node.removeAttribute("data-legend-key");
+              wireLink(node, "");
+              wireHighlight(node);
+            } else if (url) {
+	            node.classList.add("shape-interactive");
+	            node.setAttribute("tabindex", "0");
+	            node.setAttribute("role", "link");
+              node.removeAttribute("data-segment-anchor");
+	            wireLink(node, url);
+	            wireHighlight(node);
+	          } else {
+	            node.classList.remove("shape-interactive");
+	            node.removeAttribute("tabindex");
+	            node.removeAttribute("role");
+              node.removeAttribute("data-click-behavior");
+              node.removeAttribute("data-legend-key");
+              node.removeAttribute("data-segment-anchor");
+	          }
+	        }
+	      }
 
       function appendLabel(node, label, shapeKey){
         label = String(label).replace(/^_+/, '');
@@ -2013,6 +2450,8 @@ groupResolver: ({ booth, csv }) => {
       }
 
       function wireLink(node, url){
+        if (!node || node.getAttribute('data-link-wired') === 'true') return;
+        node.setAttribute('data-link-wired', 'true');
         const trimmed = (url || "").trim();
         const openLink = (event) => {
           event.preventDefault();
@@ -2020,24 +2459,46 @@ groupResolver: ({ booth, csv }) => {
 
           const behavior = node.getAttribute('data-click-behavior');
           const legendKey = node.getAttribute('data-legend-key');
+          const segmentAnchor = node.getAttribute('data-segment-anchor');
 
           // If this shape is in "category" mode, mirror clicking the matching legend row:
           // render the list for that category and scroll/highlight the Notes panel.
           if (behavior === 'category' && legendKey) {
             try {
               const mapData = window.__VOID_MAPDATA;
-              if (mapData && typeof renderResultsForKey === 'function') {
-                renderResultsForKey(mapData, legendKey);
+	              if (mapData && typeof renderResultsForKey === 'function') {
+	                renderResultsForKey(mapData, legendKey);
+	              }
+	              const targetId = legendKey === 'artist_campus' ? 'artist-catalog' : 'notes';
+	              const target = document.getElementById(targetId);
+	              if (target) {
+	                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+	                target.setAttribute('tabindex','-1');
+	                target.focus({ preventScroll:true });
+	                if (targetId === 'notes') {
+	                  target.classList.remove('flash-notes');
+	                  // force reflow so the flash animation can re-trigger
+	                  void target.offsetWidth;
+	                  target.classList.add('flash-notes');
+	                }
+	              }
+	            } catch (_) {}
+            try { node.blur(); } catch (_) {}
+            return false;
+          }
+
+          if (behavior === 'artist-segment') {
+            try {
+              const mapData = window.__VOID_MAPDATA;
+              if (mapData && typeof renderArtistCampusList_ === 'function') {
+                renderArtistCampusList_(mapData);
               }
-              const notes = document.getElementById('notes');
-              if (notes) {
-                notes.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                notes.setAttribute('tabindex','-1');
-                notes.focus({ preventScroll:true });
-                notes.classList.remove('flash-notes');
-                // force reflow so the flash animation can re-trigger
-                void notes.offsetWidth;
-                notes.classList.add('flash-notes');
+              const target = (segmentAnchor ? document.getElementById(segmentAnchor) : null)
+                || document.getElementById('artist-catalog');
+              if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                target.setAttribute('tabindex','-1');
+                target.focus({ preventScroll:true });
               }
             } catch (_) {}
             try { node.blur(); } catch (_) {}
@@ -2057,6 +2518,8 @@ groupResolver: ({ booth, csv }) => {
       }
 
       function wireHighlight(node) {
+        if (!node || node.getAttribute('data-highlight-wired') === 'true') return;
+        node.setAttribute('data-highlight-wired', 'true');
         const toggle = (isActive) => { node.classList.toggle("shape-hover", isActive); };
         node.addEventListener("mouseenter", () => toggle(true));
         node.addEventListener("mouseleave", () => toggle(false));
@@ -2068,7 +2531,26 @@ groupResolver: ({ booth, csv }) => {
       function wireLegendClicks(mapData){
         const grid = document.querySelector('.legend .legend-grid');
         if(!grid) return;
+        const jumpToArtistCatalog = () => {
+          try {
+            if (mapData && typeof renderArtistCampusList_ === 'function') {
+              renderArtistCampusList_(mapData);
+            }
+            const target = document.getElementById('artist-catalog');
+            if (target) {
+              target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              target.setAttribute('tabindex','-1');
+              target.focus({ preventScroll:true });
+            }
+          } catch(_) {}
+        };
         grid.addEventListener('click', (e)=>{
+          const artistJump = e.target.closest('.legend-swatch.artist-wayfinding-jump');
+          if (artistJump){
+            e.preventDefault();
+            jumpToArtistCatalog();
+            return;
+          }
           const row = e.target.closest('.legend-row[data-list-key]');
           if(!row) return;
           const key = row.getAttribute('data-list-key');
@@ -2088,6 +2570,12 @@ groupResolver: ({ booth, csv }) => {
         });
         grid.addEventListener('keydown', (e)=>{
           if(!(e.key==='Enter' || e.key===' ')) return;
+          const artistJump = e.target.closest('.legend-swatch.artist-wayfinding-jump');
+          if (artistJump){
+            e.preventDefault();
+            jumpToArtistCatalog();
+            return;
+          }
           const row = e.target.closest('.legend-row[data-list-key]');
           if(!row) return;
           e.preventDefault();
@@ -2113,35 +2601,37 @@ groupResolver: ({ booth, csv }) => {
         (function wireKeyJump(){
           const jump = document.querySelector('.legend h2 a.key-jump');
           if (!jump) return;
+          const scrollToTarget = () => {
+            const href = String(jump.getAttribute('href') || '').trim();
+            const targetId = href.startsWith('#') ? href.slice(1) : 'notes';
+            const target = document.getElementById(targetId);
+            if (!target) return;
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            target.setAttribute('tabindex','-1');
+            target.focus({ preventScroll:true });
+            if (targetId === 'notes') {
+              target.classList.remove('flash-notes');
+              void target.offsetWidth;
+              target.classList.add('flash-notes');
+            }
+          };
           jump.addEventListener('click', function(ev){
             //ev.preventDefault();
-            try{
-              const notes = document.getElementById('notes');
-              if (notes) { notes.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
-              if (notes){
-                notes.setAttribute('tabindex','-1');
-                notes.focus({ preventScroll:true });
-                notes.classList.remove('flash-notes'); void notes.offsetWidth; notes.classList.add('flash-notes');
-              }
-            }catch(_){}
+            try { scrollToTarget(); } catch(_){}
           });
           jump.addEventListener('keydown', function(ev){
             if(ev.key!=='Enter' && ev.key!==' ') return;
             ev.preventDefault();
-            try{
-              const notes = document.getElementById('notes');
-              if (notes) { notes.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
-              if (notes){
-                notes.setAttribute('tabindex','-1');
-                notes.focus({ preventScroll:true });
-                notes.classList.remove('flash-notes'); void notes.offsetWidth; notes.classList.add('flash-notes');
-              }
-            }catch(_){}
+            try { scrollToTarget(); } catch(_){}
           });
         })();
       }
 
       function renderResultsForKey(mapData, key){
+        if (key === 'artist_campus') {
+          renderArtistCampusList_(mapData || window.__VOID_MAPDATA || {});
+          return;
+        }
         // Render now; if occupants are still loading, schedule a one-time re-render
         (function maybeRerenderWhenOccupantsArrive(){
           if (window.__VOID_OCCUPANTS) return;
@@ -2157,6 +2647,7 @@ groupResolver: ({ booth, csv }) => {
         window.__LAST_LIST_KEY = key;
         const spec = LEGEND_FILTERS[key];
         if(!spec || !notesPanel) return;
+        notesPanel.style.display = 'block';
         const { container, count } = buildListFromData(mapData, spec);
         notesPanel.innerHTML = '';
         const h2 = document.createElement('h2');
@@ -2194,6 +2685,237 @@ groupResolver: ({ booth, csv }) => {
         return candidate;
       }
 
+      function roomNumberFromLabel_(value){
+        const src = String(value || '').trim();
+        const m = src.match(/\b(\d{3})\b/);
+        return m ? parseInt(m[1], 10) : NaN;
+      }
+
+      function boothNumberFromLabel_(value){
+        const src = String(value || '').trim();
+        const m = src.match(/\b(\d{1,2})\b/);
+        return m ? parseInt(m[1], 10) : NaN;
+      }
+
+      function aBoothNumberFromLabel_(value){
+        const src = String(value || '').trim();
+        const m = src.match(/\bA(\d{1,2})\b/i);
+        return m ? parseInt(m[1], 10) : NaN;
+      }
+
+      function artistSegmentAnchorFor_(boothTypeRaw, buildingRaw, boothNameRaw){
+        const boothType = String(boothTypeRaw || '').trim().toUpperCase();
+        const building = String(buildingRaw || '').trim();
+        const boothName = String(boothNameRaw || '').trim();
+        const deluxeTypes = new Set(['SDL','SSDL','MDL','LDL','XLDL']);
+        const roomNumber = roomNumberFromLabel_(boothName);
+        const aNumber = aBoothNumberFromLabel_(boothName);
+
+        if (deluxeTypes.has(boothType) && building === 'Jupiter Original' && Number.isFinite(roomNumber)) {
+          if (roomNumber >= 100 && roomNumber < 200) return ARTIST_SEGMENT_ANCHORS.ORIGINAL_LEVEL1;
+          if (roomNumber >= 200 && roomNumber < 300) return ARTIST_SEGMENT_ANCHORS.ORIGINAL_LEVEL2;
+        }
+        if (boothType === 'STD10TENT' && building === 'Dream Tent') {
+          return ARTIST_SEGMENT_ANCHORS.ORIGINAL_DREAM_TENT;
+        }
+        if (boothType === 'STD10IN' && building === 'Jupiter NEXT' && Number.isFinite(aNumber)) {
+          // Intentionally swapped per request: Flex Lounge = A1/A2, Arium = A3+.
+          if (aNumber <= 2) return ARTIST_SEGMENT_ANCHORS.NEXT_FLEX;
+          return ARTIST_SEGMENT_ANCHORS.NEXT_ARIUM;
+        }
+        return null;
+      }
+
+      function isHiddenInNav_(payload, csv){
+        return !!(
+          (payload && (payload.hide_in_nav === true || String(payload.hide_in_nav).toLowerCase() === 'true')) ||
+          (csv && (csv.hide_in_nav === true || String(csv.hide_in_nav).toLowerCase() === 'true'))
+        );
+      }
+
+      function collectArtistRows_(mapData){
+        const shapes = mapData && mapData.shapes ? mapData.shapes : {};
+        const rows = [];
+        const deluxeTypes = new Set(['SDL','SSDL','MDL','LDL','XLDL']);
+        for (const [id, payload] of Object.entries(shapes)) {
+          const csv = payload && payload.csv ? payload.csv : null;
+          if (!csv) continue;
+          if (!isPublishedKey_(mapData, id)) continue;
+          if (isHiddenInNav_(payload, csv)) continue;
+
+          const boothType = String(csv.booth_type || '').trim().toUpperCase();
+          if (!ARTIST_BOOTH_TYPES.has(boothType)) continue;
+
+          const building = String(csv.building_label || '').trim();
+          const boothName = String(csv.booth_name || id).trim();
+          const roomMatch = boothName.match(/\b(\d{3})\b/);
+          const displayLabel = (deluxeTypes.has(boothType) && roomMatch)
+            ? `Room ${roomMatch[1]}`
+            : (/^A\d{1,2}$/i.test(boothName)
+            ? `Booth ${boothName.toUpperCase()}`
+            : (/^\d{1,2}$/.test(boothName) ? `Booth ${boothName}` : boothName));
+
+          const row = {
+            id: String(id).replace(/^_+/, ''),
+            payload,
+            csv,
+            booth_type: boothType,
+            building,
+            boothName,
+            displayLabel
+          };
+          row.spaceKey = deriveSpaceKeyForRow(row);
+          row.roomNumber = roomNumberFromLabel_(boothName);
+          row.dreamTentNumber = boothNumberFromLabel_(boothName);
+          row.aBoothNumber = aBoothNumberFromLabel_(boothName);
+          row.segmentAnchor = artistSegmentAnchorFor_(boothType, building, boothName);
+          rows.push(row);
+        }
+        return rows;
+      }
+
+      function compareRowsByNumericLabel_(a, b, field){
+        const av = Number(a && a[field]);
+        const bv = Number(b && b[field]);
+        const aHas = Number.isFinite(av);
+        const bHas = Number.isFinite(bv);
+        if (aHas && bHas && av !== bv) return av - bv;
+        if (aHas && !bHas) return -1;
+        if (!aHas && bHas) return 1;
+        return naturalStringCompare((a && a.displayLabel) || '', (b && b.displayLabel) || '');
+      }
+
+      function buildArtistLineItem_(row){
+        const li = document.createElement('li');
+        const spaceKey = row.spaceKey || deriveSpaceKeyForRow(row);
+        const boothType = String((row && row.booth_type) || '').trim().toUpperCase();
+        const cap = resolveCapacityFor(spaceKey, boothType, (row.csv && row.csv.capacity_1_to_4));
+
+        const occMap = (window.__VOID_OCCUPANTS || {});
+        let picked = spaceKey ? pickOccupantEntry_(occMap, spaceKey) : null;
+        if ((!picked || !picked.entry) && row && row.id) picked = pickOccupantEntry_(occMap, row.id);
+        if ((!picked || !picked.entry) && row && row.csv && row.csv.space_key) {
+          const raw = String(row.csv.space_key || '').trim().replace(/_/g, '');
+          if (raw) picked = pickOccupantEntry_(occMap, raw);
+        }
+        const occKey = (picked && picked.key) ? picked.key : (spaceKey || (row && row.id) || '');
+        const occEntry = (picked && picked.entry) ? picked.entry : null;
+        const statusSummary = occEntry
+          ? computeFullStatus((spaceKey || occKey), boothType, (row.csv && row.csv.capacity_1_to_4), occEntry)
+          : null;
+        const groups = statusSummary ? (statusSummary.groups || []) : (occKey ? occupantArrayForSpaceKey(occKey) : []);
+        const isFull = statusSummary ? !!statusSummary.isFull : ((cap > 0) ? (groups.length >= cap) : false);
+
+        if (isFull) {
+          const { name, href } = derivePrimaryOccupantLink_(occKey || spaceKey);
+          const primaryGroup = (groups && groups.length) ? groups[0] : null;
+          const socialLabel = primaryGroup
+            ? formatSocialLabel_(
+                primaryGroup.social ||
+                primaryGroup.url ||
+                primaryGroup.website ||
+                primaryGroup.link ||
+                ''
+              )
+            : '';
+          const displayName = name || (primaryGroup && primaryGroup.name) || socialLabel || 'Booked';
+          const lineText = `${row.displayLabel} - ${displayName}`;
+          li.classList.add('artist-full');
+          if (href) {
+            const a = document.createElement('a');
+            a.href = href;
+            a.target = '_blank';
+            a.rel = 'noopener';
+            a.textContent = lineText;
+            li.appendChild(a);
+          } else {
+            const span = document.createElement('span');
+            span.className = 'nolink';
+            span.textContent = lineText;
+            li.appendChild(span);
+          }
+        } else {
+          const normalizedSpaceKey = String(spaceKey || '').replace(/^_+/, '');
+          if (ARTIST_PLACEHOLDER_LINK_SPACES.has(normalizedSpaceKey)) {
+            const a = document.createElement('a');
+            a.href = '#';
+            a.textContent = row.displayLabel;
+            a.addEventListener('click', function(ev){ ev.preventDefault(); });
+            li.appendChild(a);
+          } else {
+            const span = document.createElement('span');
+            span.className = 'nolink';
+            span.textContent = row.displayLabel;
+            li.appendChild(span);
+          }
+        }
+        return li;
+      }
+
+      function appendArtistSubgroup_(host, title, rows, headingTag, headingId){
+        const subgroup = document.createElement('section');
+        subgroup.className = 'subgroup';
+
+        const heading = document.createElement(headingTag || 'h4');
+        if (headingId) heading.id = headingId;
+        heading.textContent = title;
+        subgroup.appendChild(heading);
+
+        const ul = document.createElement('ul');
+        rows.forEach((row) => ul.appendChild(buildArtistLineItem_(row)));
+        subgroup.appendChild(ul);
+        host.appendChild(subgroup);
+      }
+
+      function renderArtistCampusList_(mapData){
+        if (!artistCatalogPanel || !mapData) return;
+
+        const allRows = collectArtistRows_(mapData);
+
+        const deluxeTypes = new Set(['SDL','SSDL','MDL','LDL','XLDL']);
+        const originalLevel1 = allRows
+          .filter(r => r.building === 'Jupiter Original' && deluxeTypes.has(r.booth_type) && Number.isFinite(r.roomNumber) && r.roomNumber >= 100 && r.roomNumber < 200)
+          .sort((a,b) => compareRowsByNumericLabel_(a, b, 'roomNumber'));
+        const originalDreamTent = allRows
+          .filter(r => r.building === 'Dream Tent' && r.booth_type === 'STD10TENT')
+          .sort((a,b) => compareRowsByNumericLabel_(a, b, 'dreamTentNumber'));
+        const originalLevel2 = allRows
+          .filter(r => r.building === 'Jupiter Original' && deluxeTypes.has(r.booth_type) && Number.isFinite(r.roomNumber) && r.roomNumber >= 200 && r.roomNumber < 300)
+          .sort((a,b) => compareRowsByNumericLabel_(a, b, 'roomNumber'));
+        const nextFlex = allRows
+          .filter(r => r.building === 'Jupiter NEXT' && r.booth_type === 'STD10IN' && Number.isFinite(r.aBoothNumber) && r.aBoothNumber <= 2)
+          .sort((a,b) => compareRowsByNumericLabel_(a, b, 'aBoothNumber'));
+        const nextArium = allRows
+          .filter(r => r.building === 'Jupiter NEXT' && r.booth_type === 'STD10IN' && Number.isFinite(r.aBoothNumber) && r.aBoothNumber >= 3)
+          .sort((a,b) => compareRowsByNumericLabel_(a, b, 'aBoothNumber'));
+
+        artistCatalogPanel.innerHTML = '';
+
+        const h1 = document.createElement('h1');
+        h1.className = 'artist-list-title';
+        h1.textContent = 'Artist List';
+        artistCatalogPanel.appendChild(h1);
+
+        const original = document.createElement('section');
+        original.className = 'results-group campus-group';
+        const originalH2 = document.createElement('h2');
+        originalH2.textContent = 'Jupiter Original';
+        original.appendChild(originalH2);
+        appendArtistSubgroup_(original, 'Level 1 - Studios', originalLevel1, 'h3', ARTIST_SEGMENT_ANCHORS.ORIGINAL_LEVEL1);
+        appendArtistSubgroup_(original, 'Dream Tent', originalDreamTent, 'h3', ARTIST_SEGMENT_ANCHORS.ORIGINAL_DREAM_TENT);
+        appendArtistSubgroup_(original, 'Level 2 - Studios', originalLevel2, 'h3', ARTIST_SEGMENT_ANCHORS.ORIGINAL_LEVEL2);
+        artistCatalogPanel.appendChild(original);
+
+        const next = document.createElement('section');
+        next.className = 'results-group campus-group';
+        const nextH2 = document.createElement('h2');
+        nextH2.textContent = 'Jupiter Next';
+        next.appendChild(nextH2);
+        appendArtistSubgroup_(next, 'Flex Lounge', nextFlex, 'h3', ARTIST_SEGMENT_ANCHORS.NEXT_FLEX);
+        appendArtistSubgroup_(next, 'Arium', nextArium, 'h3', ARTIST_SEGMENT_ANCHORS.NEXT_ARIUM);
+        artistCatalogPanel.appendChild(next);
+      }
+
       function buildListFromData(mapData, spec){
         const shapes = mapData && mapData.shapes ? mapData.shapes : {};
         const wantTypes = new Set((spec.boothTypes || []).map(String));
@@ -2223,7 +2945,11 @@ groupResolver: ({ booth, csv }) => {
           const building = String(csv.building_label || '').trim();
           if(restrict && !restrict.has(building)) continue;
           const booth = String(csv.booth_name || id).trim();
-          const url = String(payload.bookwhen_url || csv.bookwhen_url || '').trim();
+          if (spec && spec.sleepCategory) {
+            const cat = sleepCategoryForRow_(booth, csv);
+            if (cat !== String(spec.sleepCategory)) continue;
+          }
+          const url = resolveBookwhenUrl_(payload, csv, id);
           const context = { id, payload, csv, booth, building };
           let group = null;
           if(groupResolver){

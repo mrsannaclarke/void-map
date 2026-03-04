@@ -21,7 +21,7 @@
       "#8ff0f5"
     ],
     "Orange": [
-      "#e05600",
+      "#ff7300",
       "#ff9959"
     ],
     "Pink": [
@@ -572,7 +572,8 @@
       }
     },
     "106": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-soxcg-20260522000000",
+      "bookwhen_url": "",
+      "hide_in_nav": true,
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L1",
@@ -2093,7 +2094,8 @@
       }
     },
     "244": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-s60gi-20260521000000",
+      "bookwhen_url": "",
+      "hide_in_nav": true,
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L2",

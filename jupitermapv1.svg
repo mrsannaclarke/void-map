@@ -8,7 +8,7 @@
       }
 
       .st1, .st2 {
-        fill: #1a563d;
+        fill: #00e5ff;
       }
 
       .st1, .st3, .st4, .st13, .st5, .st6, .st7, .st8, .st9, .st10, .st11, .st12, .st15 {
@@ -17,7 +17,7 @@
       }
 
       .st3 {
-        fill: #51b848;
+        fill: #25FF29;
       }
 
       .st13, .st4 {
@@ -25,11 +25,11 @@
       }
 
       .st5 {
-        fill: #c5862b;
+        fill: #CB00F5;
       }
 
       .st6 {
-        fill: #dd3ac6;
+        fill: #FF69B4;
       }
 
       .st7 {
@@ -41,11 +41,11 @@
       }
 
       .st14 {
-        fill: #fbe200d8;
+        fill: #e7ff00;
       }
 
       .st9 {
-        fill: #8551c8;
+        fill: #CB00F5;
       }
 
       .st10 {
@@ -53,7 +53,7 @@
       }
 
       .st11 {
-        fill: #e05600;
+        fill: #ff7300;
       }
 
       .st12 {
@@ -145,7 +145,7 @@
     <rect id="_239" class="st15" x="108.8" y="239.8" width="17.4" height="8.9"/>
     <rect id="_236" class="st9" x="108.8" y="266.1" width="17.4" height="8.6"/>
     <rect id="_234" class="st9" x="108.8" y="283.1" width="17.4" height="8.2"/>
-    <rect id="_244" class="st15" x="161.1" y="230.6" width="16.8" height="8.9"/>
+    <rect id="_244" class="st5" x="161.1" y="230.6" width="16.8" height="8.9"/>
     <rect id="_245" class="st9" x="161.1" y="239.5" width="16.7" height="8.7"/>
     <rect id="_246" class="st9" x="161.1" y="248.3" width="16.7" height="8.5"/>
     <rect id="_248" class="st9" x="161.1" y="266" width="16.7" height="8.5"/>
@@ -154,27 +154,16 @@
     <rect id="_222" class="st15" x="30.1" y="255.3" width="14.6" height="8.6"/>
     <rect id="_221" class="st15" x="30" y="270.8" width="14.7" height="8.2"/>
     <rect id="_219" class="st15" x="30" y="294.4" width="14.7" height="8.7"/>
-    <rect id="_226" class="st6" x="69.9" y="308.7" width="8.8" height="12.9"/>
+    <rect id="_226" class="st3" x="69.9" y="308.7" width="8.8" height="12.9"/>
     <rect id="_227" class="st6" x="83" y="308.7" width="8.5" height="12.9"/>
     <rect id="_228" class="st6" x="91.5" y="308.7" width="8.5" height="12.9"/>
     <rect id="_229" class="st6" x="104.8" y="308.9" width="8.5" height="12.9"/>
     <rect id="_232" class="st6" x="108.8" y="300.3" width="17.4" height="8.1"/>
     <rect id="_243" class="st6" x="142.6" y="230.6" width="9.6" height="12.7"/>
     <rect id="_242" class="st6" x="132" y="230.6" width="9.4" height="12.7"/>
-    <rect id="_252" class="st6" x="161.1" y="300.3" width="16.7" height="9.1"/>
+    <rect id="_252" class="st3" x="161.1" y="300.3" width="16.7" height="9.1"/>
     <rect id="_254" class="st6" x="161.1" y="317.4" width="16.5" height="9.7"/>
-    <rect id="s1" class="st12" x="30.3" y="422.5" width="11.1" height="11.1"/>
-    <rect id="s2" class="st12" x="43.8" y="422.5" width="11.1" height="11.1"/>
-    <rect id="s6" class="st12" x="98.1" y="422.5" width="11.1" height="11.1"/>
-    <rect id="s5" class="st12" x="84.3" y="422.5" width="11.1" height="11.1"/>
-    <rect id="s4" class="st12" x="70.8" y="422.5" width="11.1" height="11.1"/>
-    <rect id="s3" class="st12" x="57.3" y="422.5" width="11.1" height="11.1"/>
-    <rect id="s8" class="st12" x="125.3" y="422.5" width="11.1" height="11.1"/>
-    <rect id="s7" class="st12" x="111.7" y="422.5" width="11.1" height="11.1"/>
-    <rect id="s9" class="st12" x="138.9" y="422.5" width="11.1" height="11.1"/>
-    <rect id="s10" class="st12" x="152.5" y="422.5" width="11.1" height="11.1"/>
-    <rect id="s11" class="st12" x="166.1" y="422.5" width="11.1" height="11.1"/>
-    <rect id="_9thst" class="st5" x="39.3" y="400.8" width="130" height="11.4"/>
+    <rect id="_9thst" class="st5" x="39.3" y="422.5" width="130" height="11.4"/>
     <rect id="command" class="st5" x="161.1" y="99.86" width="17.1" height="24.74"/>
     <rect id="thinktank" class="st5" x="161.17" y="74.8" width="17.1" height="13.7"/>
     <rect id="dreambox" class="st5" x="158.32" y="35.21" width="20.27" height="35.07"/>
@@ -209,8 +198,8 @@
     <rect id="_6" class="st8" x="148.4" y="115.8" width="8.5" height="7.8"/>
     <rect id="ina1" class="st13" x="70.7" y="36" width="38.1" height="77"/>
     <rect id="ina2" class="st4" x="72.3" y="232.5" width="34.2" height="73.6"/>
-    <polygon id="sgphlb" class="st1" points="25.1 527.2 25.1 623.2 73 623.2 73 552.6 79.2 552.6 79.2 516.6 64.9 516.6 65 527.5 25.1 527.2"/>
-    <rect id="hlblable" class="st2" x="26.2" y="527.8" width="45.7" height="94.5"/>
+    <polygon id="sgphlb" class="st1" style="fill:#FF69B4;stroke:#FF69B4;stroke-miterlimit:10" points="25.1 527.2 25.1 623.2 73 623.2 73 552.6 79.2 552.6 79.2 516.6 64.9 516.6 65 527.5 25.1 527.2"/>
+    <rect id="hlblable" class="st2" style="fill:#FF69B4;stroke:#FF69B4;stroke-miterlimit:10" x="26.2" y="527.8" width="45.7" height="94.5"/>
     <rect id="a2" class="st10" x="64.3" y="466.1" width="14.9" height="15.5"/>
     <rect id="a1" class="st10" x="64.3" y="481.4" width="14.9" height="15.5"/>
     <rect id="a13" class="st10" x="119.81758" y="553.06213" width="15.3" height="16.1"/>
@@ -239,7 +228,7 @@
   </g>
   <g id="Layer_4">
     <rect id="arium" class="st0" x="86.4" y="588.8" width="50" height="14.5"/>
-    <rect id="heylovebar" class="st0" x="27.7" y="529.5" width="42.5" height="91.2"/>
+    <rect id="heylovebar" class="st0" style="fill:#FF69B4;stroke:#FF69B4;stroke-miterlimit:10" x="27.7" y="529.5" width="42.5" height="91.2"/>
     <rect id="elevators" class="st0" x="89.4" y="518.1" width="25.7" height="9.2"/>
     <rect id="restrooms" class="st0" x="26.2" y="472.6" width="36.7" height="19.3"/>
     <rect id="dreamtentroof" class="st0" x="130" y="258.9" width="26.1" height="46.9"/>

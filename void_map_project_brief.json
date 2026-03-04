@@ -1,0 +1,407 @@
+{
+  "meta": {
+    "project_name": "VOID Tattoo Fest 2026 \u2013 Interactive Booking Map",
+    "version": "1.0.0",
+    "generated_at": "2025-12-23T22:15:01.116690",
+    "contact_note": "This JSON is a technical handoff for a developer who has no prior context."
+  },
+  "purpose": {
+    "high_level": "Provide an embeddable, interactive map of the Jupiter Hotel campus for VOID Tattoo Fest 2026. The map visually shows which booths/rooms are available or full, lets users click shapes to open the relevant booking page on Bookwhen, and provides list-style navigation by category for artists, vendors, and sleep rooms.",
+    "primary_users": [
+      "Festival organizers (to monitor occupancy)",
+      "Tattoo artists and vendors (to pick a booth/room)",
+      "Attendees booking vendor booths or sleeping rooms"
+    ]
+  },
+  "high_level_architecture": {
+    "overview": "Data flows from Bookwhen confirmation emails \u2192 Gmail \u2192 Google Sheets \u2192 Google Apps Script Web App JSON feed \u2192 static frontend (index.html + SVG + JSON) hosted on GitHub Pages.",
+    "components": [
+      {
+        "name": "Bookwhen",
+        "role": "Source of truth for bookings. Each booking generates a confirmation email."
+      },
+      {
+        "name": "Gmail label pipeline",
+        "role": "Confirmation emails are labeled; Apps Script reads from these labels."
+      },
+      {
+        "name": "Google Apps Script parser (Code.gs)",
+        "role": "Parses labeled Gmail threads, extracts booking data, writes to two sheets ('bookings_raw' and 'occupants') and exposes a public JSON feed via doGet()."
+      },
+      {
+        "name": "Google Sheets",
+        "sheets": [
+          {
+            "name": "bookings_raw",
+            "purpose": "Archival per-booking rows including extended metadata."
+          },
+          {
+            "name": "occupants",
+            "purpose": "One row per space_key, used as a simpler fallback / legacy source."
+          }
+        ]
+      },
+      {
+        "name": "Apps Script Web App",
+        "role": "Public HTTP endpoint that returns a privacy-safe JSON summary of occupancy. index.html fetches this feed."
+      },
+      {
+        "name": "Front-end (GitHub Pages)",
+        "files": [
+          "index.html (single-page app with all CSS/JS inline)",
+          "jupitermapv1.svg (overlay geometry and labels)",
+          "jupiter.png (background raster map)",
+          "jupitervoid.json (static booth metadata per shape)",
+          "favicon.webp (tab icon)"
+        ]
+      }
+    ]
+  },
+  "google_apps_script": {
+    "file": "Code.gs (stored in Script Editor, not in this repo)",
+    "key_constants": {
+      "SPREADSHEET_ID": "1Bdqi7a_3M10pkSNcGSnCpwdLaQ-7XhMQvQT-cewgGmw",
+      "SHEET_NAME": "occupants",
+      "SHEET_RAW_NAME": "bookings_raw",
+      "L_CONFIRM_CANDIDATES": [
+        "2026-admin-bookwhen---confirmations",
+        "2026/Admin/Bookwhen / confirmations",
+        "2026/Admin/Bookwhen/confirmations"
+      ],
+      "L_PARSED_CANDIDATES": [
+        "2026-admin-bookwhen---confirmations-bookwhen---parsed",
+        "2026/Admin/Bookwhen / confirmations/Bookwhen/Parsed",
+        "2026/Admin/Bookwhen/confirmations/Bookwhen/Parsed"
+      ],
+      "PAGE_SIZE": 100
+    },
+    "sheets_and_columns": {
+      "bookings_raw": {
+        "header": [
+          "ref",
+          "space_key",
+          "subject",
+          "from",
+          "date",
+          "display",
+          "social",
+          "status",
+          "ticket",
+          "lead_name",
+          "lead_email",
+          "lead_phone",
+          "public_team_name",
+          "public_social",
+          "group_address",
+          "booking_contact_email",
+          "thread_id",
+          "message_id",
+          "kv_json",
+          "updated_at"
+        ],
+        "semantics": {
+          "space_key": "Canonical key used to join against the map/frontend (e.g. 'a5', '136', '5').",
+          "display": "Public-facing name for nav (shop/team/artist).",
+          "social": "Public social handle or website. Parser normalizes some cases to an @handle.",
+          "ticket": "Exact ticket name from Bookwhen, used to determine slot usage and buyout/full.",
+          "kv_json": "JSON-encoded key/value pairs scraped generically from the confirmation table (e.g. 'Instagram (preferred), or website')."
+        }
+      },
+      "occupants": {
+        "header": [
+          "space_key",
+          "display",
+          "social",
+          "status",
+          "ticket",
+          "lead_name",
+          "last_ref",
+          "updated_at"
+        ],
+        "semantics": {
+          "status": "Currently used mainly for legacy; new feed logic references bookings_raw instead."
+        }
+      }
+    },
+    "booking_logic": {
+      "booth_types": {
+        "SDL": "Small Deluxe artist room",
+        "MDL": "Medium Deluxe artist room",
+        "LDL": "Large Deluxe artist room",
+        "XLDL": "Extra-large room (room 108 logical type)",
+        "STD10IN": "Standard indoor 10x10 artist booth (Arium/Flex A-series)",
+        "STD10TENT": "Dream Tent artist 10x10",
+        "VND10TENT": "Dream Tent vendor space",
+        "VND10OUT": "Jupiter Original vendor space (outdoor)",
+        "VND10IN": "Jupiter NEXT vendor space (indoor)",
+        "VND10STREET": "Street fair vendor (Saturday only)",
+        "SLEEP": "Sleep room (hotel room configured as overnight housing)"
+      },
+      "capacity_by_type": {
+        "SDL": 1,
+        "MDL": 3,
+        "LDL": 4,
+        "XLDL": 8,
+        "STD10IN": 2,
+        "STD10TENT": 2,
+        "VND10TENT": 1,
+        "VND10OUT": 1,
+        "VND10IN": 1,
+        "VND10STREET": 1
+      },
+      "capacity_overrides_note": "CAPACITY_OVERRIDES is a per-space map (e.g. { '131': 4 }) used when a specific room does not match the default type capacity. Currently mostly empty but present for tuning.",
+      "space_flags": {
+        "_note": "buyoutOnly means any non-empty booking marks the space full even if not all slots are specified. This flag is intended for NON-sleep spaces only. Sleep rooms rely exclusively on status: 'full' due to privacy (no public names/groups), so the frontend must not use buyoutOnly name/group presence checks for sleepers."
+      },
+      "sleepers": {
+        "SLEEPER_KEYS": [
+          "117",
+          "202",
+          "203",
+          "204",
+          "205",
+          "206",
+          "207",
+          "208",
+          "210",
+          "212",
+          "213",
+          "214",
+          "215",
+          "216",
+          "217",
+          "218",
+          "219",
+          "220",
+          "221",
+          "222",
+          "223",
+          "224",
+          "231",
+          "233",
+          "235",
+          "239",
+          "244",
+          "247",
+          "249",
+          "251",
+          "253"
+        ],
+        "privacy": "For any space_key in SLEEPER_KEYS, the public JSON feed only exposes status: 'full' or '' (no occupant names or socials). Frontend occupancy for sleep rooms must be derived from status only."
+      },
+      "ticket_rules": {
+        "meaning": "Ticket name patterns determine slot usage and whether a booking is treated as a full buy-out.",
+        "patterns": [
+          {
+            "regex": "buy[-\\s]?out.*full\\s*booth",
+            "slots": null,
+            "buyout": true,
+            "example": "Buy-out (Full Booth)"
+          },
+          {
+            "regex": "\\bhalf\\s*booth\\s*\\(4\\s*artists?\\)",
+            "slots": 4,
+            "buyout": false
+          },
+          {
+            "regex": "\\bduo\\s*\\(?.*2\\s*artist\\s*slots?\\)?",
+            "slots": 2
+          },
+          {
+            "regex": "\\bvendor\\s*booth\\b",
+            "slots": 1
+          },
+          {
+            "regex": "\\bsingle\\s*artist\\s*slot\\b",
+            "slots": 1
+          }
+        ]
+      }
+    },
+    "do_get_feed": {
+      "endpoint_note": "This is the FEED_URL used by index.html.",
+      "shape": {
+        "spaces": {
+          "<space_key>": {
+            "status": "'' or 'full' (sleepers rely on this only)",
+            "name": "Primary public name for the first group (non-sleeper)",
+            "social": "Primary public social/URL for the first group",
+            "groups": [
+              {
+                "name": "Public-facing team/shop/artist name",
+                "social": "@handle or URL",
+                "ticket": "Ticket label used for slot calculation"
+              }
+            ]
+          }
+        },
+        "updated_at": "ISO timestamp"
+      },
+      "privacy_and_merging": "The feed groups multiple bookings per space_key into a single logical 'space' entry. Sleeper rooms only expose status; other bookings expose groups[]."
+    }
+  },
+  "frontend": {
+    "hosting": "Static site hosted on GitHub Pages in a repo with at least index.html and the map assets.",
+    "main_files": {
+      "index_html": {
+        "role": "Single-page app with inline CSS and JS. Fetches SVG, JSON metadata, and the occupancy feed.",
+        "key_resources": {
+          "SVG_URL": "jupitermapv1.svg",
+          "DATA_URL": "jupitervoid.json",
+          "FEED_URL": "Google Apps Script Web App URL (currently hard-coded)"
+        },
+        "favicon": {
+          "file": "favicon.webp",
+          "placement": "Linked in <head> via <link rel=\"icon\" type=\"image/webp\" href=\"favicon.webp\">"
+        },
+        "layout": {
+          "panels": [
+            "Legend panel (Navigation Key) in top-left",
+            "Notes / results panel in top-right (shows lists by category)",
+            "Map table containing raster map + SVG overlay",
+            "Hidden status area (used only for non-embed debugging)"
+          ],
+          "embedding": "Page is designed to be embedded via an <iframe> in other sites."
+        }
+      },
+      "jupitermapv1_svg": {
+        "role": "Vector overlay of the Jupiter campus. Contains named shapes per booth/room, plus wayfinding shapes (e.g., restrooms, exits, stage).",
+        "shape_ids": "Each booth/room has an ID or data-name that corresponds (directly or via mapping) to a space_key used in the data JSON (jupitervoid.json).",
+        "label_layer": "The JS script injects a <g id=\"label-layer\"> with <text> labels per shape, including custom multi-line labels for some wayfinding areas."
+      },
+      "jupitervoid_json": {
+        "role": "Static metadata for each map shape. Maps shapeName \u2192 { csv, bookwhen_url, color, ... }. csv.booth_type is the main switch for category, color, and capacity rules."
+      }
+    },
+    "map_interactions": {
+      "shape_lookup": {
+        "functions": [
+          "findShapeNode(svgElement, canonicalName)",
+          "normalizeLabel(raw)"
+        ],
+        "notes": "javascript resolves various naming conventions (e.g. 'a5', '_a5', 'sf1', 'dt5') and attaches data-shape attributes for easier reference."
+      },
+      "color_logic": {
+        "available_colors": {
+          "SDL": "#51b848",
+          "MDL": "#dd3ac6",
+          "LDL": "#8551c8",
+          "XLDL": "#8551c8",
+          "SLEEP": "#288699",
+          "STD10IN": "#3d7ef2",
+          "STD10TENT": "#00e5ff",
+          "VND10TENT": "#e05600",
+          "VND10OUT": "#e05600",
+          "VND10IN": "#e05600",
+          "VND10STREET": "#af003f"
+        },
+        "full_gradients": {
+          "non_sleep": "Available chip color \u2192 white gradient at ~45\u00b0 angle for full shapes.",
+          "sleep_rooms": "Teal (#288699) \u2192 white gradient at ~45\u00b0 when full; solid teal when available."
+        },
+        "preserve_color": {
+          "PRESERVE_COLOR_SET": [
+            "_9thst",
+            "arium",
+            "bunker",
+            "command",
+            "dreambox",
+            "dreamtentroof",
+            "e1",
+            "e2",
+            "e3",
+            "e4",
+            "e5",
+            "e6",
+            "e7",
+            "e8",
+            "e9",
+            "e10",
+            "e11",
+            "sb",
+            "stage",
+            "thinktank"
+          ],
+          "effect": "Shapes in this set keep their original SVG fill and are not recolored."
+        }
+      },
+      "click_behavior": {
+        "available_shapes": "If a shape is published and has a bookwhen_url, it is given .shape-interactive and clicking opens the booking URL in a new tab.",
+        "full_shapes_non_sleep": "For non-sleep shapes whose booth_type maps to a legend category, full shapes have a gradient fill and clicking them behaves like clicking the corresponding legend row (jump to that category list in the Notes panel) instead of opening a booking link.",
+        "sleep_shapes": "Sleep rooms are not clickable when full and use gradient fill. When available, they are solid teal and follow the usual booking URL behavior (if one exists).",
+        "category_click_mode": {
+          "attributes": [
+            "data-click-behavior=\"category\"",
+            "data-legend-key=\"<category key>\""
+          ],
+          "logic": "wireLink() checks data-click-behavior. If 'category', it calls renderResultsForKey() and scrolls the Notes panel instead of window.open()."
+        }
+      },
+      "legend_and_lists": {
+        "legend_filters": "LEGEND_FILTERS constant in index.html maps category \u2192 booth_types + grouping rules.",
+        "categories": {
+          "streetfair": "VND10STREET \u2013 Street fair vendor booths (Saturday only).",
+          "vendor": "VND10TENT, VND10OUT, VND10IN \u2013 Vendor booths grouped by building (Dream Tent / Original / NEXT).",
+          "ariumflex": "STD10IN \u2013 A-series 10x10 booths grouped into Arium vs Flex Lounge.",
+          "dreamtent_artist": "STD10TENT \u2013 Dream Tent artist booths.",
+          "small_deluxe": "SDL / SSDL \u2013 Small Deluxe artist rooms, grouped by accessible vs stair-only floors.",
+          "medium_deluxe": "MDL \u2013 Medium Deluxe artist rooms, same grouping scheme.",
+          "large_deluxe": "LDL / XLDL \u2013 Large and extra-large artist rooms, same grouping scheme.",
+          "sleep": "SLEEP \u2013 Sleep rooms, grouped into Opener/Entourage/Headliner/Encore based on room numbers. Occupants are not shown due to privacy; list is used mainly to find room types."
+        },
+        "renderResultsForKey": "When a legend row is clicked (or a full shape in category-click-mode is clicked), renderResultsForKey(mapData, key) rebuilds the Notes panel with a list of booked/available spaces. Rows display a short human-readable label and, if present, the occupant name + social."
+      }
+    }
+  },
+  "data_consistency_and_mapping": {
+    "space_key_definition": "space_key is the canonical identifier used to join Map SVG/JSON shapes with booking data. Examples: 'a5', '136', '5', 'sf3'. Apps Script extracts space keys from Bookwhen subjects and bodies and normalizes them to the same forms expected by the frontend.",
+    "dream_tent_note": "Dream Tent artist booths currently show up in the Apps Script feed with numeric keys ('1'..'6') for DT1..DT6. The frontend needs to ensure its spaceKey derivation matches this scheme when looking up occupants for Dream Tent booths. If you see Dream Tent entries marked 'full' but showing as 'Available' in the list, the join key normalization is the first place to check.",
+    "publish_control": {
+      "published": "Optional array of shape keys in jupitervoid.json to explicitly publish.",
+      "unpublished": "Optional array of shape keys in jupitervoid.json to explicitly hide.",
+      "fallback": "If neither is present, all shapes in mapData.shapes are treated as published."
+    }
+  },
+  "known_behaviors_and_expectations": {
+    "sleeper_privacy": "Sleep rooms should NEVER display names or socials publicly; map only shows occupancy.",
+    "auto_refresh": "index.html periodically calls refreshOccupantsAndRerender() to re-fetch the feed (~1\u00d7 per minute).",
+    "manual_debug": {
+      "window.getOccupancy": "Helper to quickly inspect the occupants feed from the browser console.",
+      "window.refreshNotes": "Helper to force-refresh occupants and rerender the last used category."
+    },
+    "coupon_code": {
+      "current_copy": "At checkout, enter GETAROOM to take $100 off any overnight sleeping room. One use per purchaser; cannot be combined with other offers.",
+      "location": "Hard-coded in the Notes panel near the top of index.html."
+    }
+  },
+  "developer_onboarding": {
+    "prerequisites": [
+      "Comfort with vanilla JS and DOM manipulation (no framework used).",
+      "Basic understanding of Google Apps Script and Gmail/Sheets APIs.",
+      "Ability to deploy a Script Web App and update FEED_URL in index.html."
+    ],
+    "local_setup_steps": [
+      "Clone the GitHub repo containing index.html, jupitermapv1.svg, jupiter.png, jupitervoid.json, favicon.webp.",
+      "Open index.html in a local HTTP server (to avoid CORS issues when fetching local files).",
+      "If testing against production data, ensure FEED_URL points to the deployed Apps Script Web App.",
+      "To work offline, you can temporarily replace FEED_URL with a local JSON fixture matching doGet output."
+    ],
+    "deployment_notes": [
+      "GitHub Pages auto-redeploys when main branch changes; index.html is the entry point.",
+      "When the Apps Script deployment URL changes, FEED_URL in index.html MUST be updated and committed.",
+      "Any structural changes to jupitervoid.json or the SVG ids require coordinated updates in index.html."
+    ]
+  },
+  "todo_and_open_issues": [
+    {
+      "id": "DT-join-key",
+      "summary": "Ensure Dream Tent artist booths use the same spaceKey in frontend and feed.",
+      "details": "The feed uses numeric keys '1'..'6' under spaces for Dream Tent booths currently named like 'Dream Tent 5'. The frontend's buildListFromData must normalize its internal spaceKey to the same numeric form before calling occupantArrayForSpaceKey(). If not, Dream Tent bookings appear full on the map but the list shows them as 'Available' and/or missing occupant info.",
+      "suggested_fix_direction": [
+        "In buildListFromData, derive a spaceKey per row: prefer csv.space_key; else shape key with underscores removed.",
+        "If spaceKey matches /^dt(\\d{1,2})$/i, convert to just the numeric part (e.g. 'dt5' \u2192 '5').",
+        "Use this spaceKey when calling occupantArrayForSpaceKey(spaceKey) and when constructing any dedupe keys."
+      ]
+    }
+  ]
+}
