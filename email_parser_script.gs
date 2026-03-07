@@ -697,6 +697,7 @@ function doGet(e) {
     ref: header.indexOf('ref'),
     space_key: header.indexOf('space_key'),
     display: header.indexOf('display'),
+    lead_name: header.indexOf('lead_name'),
     social: header.indexOf('social'),
     status: header.indexOf('status'),
     ticket: header.indexOf('ticket'),
@@ -712,6 +713,8 @@ function doGet(e) {
     if (!key) continue;
 
     const display = String(r[idx.display] || '').trim();
+    const leadName = idx.lead_name >= 0 ? String(r[idx.lead_name] || '').trim() : '';
+    const registeredName = display || leadName;
     const social  = String(r[idx.social]  || '').trim();
     const ticket  = String(r[idx.ticket]  || '').trim();
     const status  = String(r[idx.status]  || '').trim();
@@ -736,8 +739,8 @@ function doGet(e) {
 
     // Push group (dedupe loose by display+social+ticket)
     const arr = groupsBySpace[key];
-    const exists = arr.some(g => g.name === display && g.social === social && g.ticket === ticket);
-    if (!exists) arr.push({ name: display, social: social, ticket: ticket });
+    const exists = arr.some(g => g.name === registeredName && g.social === social && g.ticket === ticket);
+    if (!exists) arr.push({ name: registeredName, social: social, ticket: ticket });
   }
 
   // Build response
@@ -783,6 +786,7 @@ function buildMinimalFromOcc_(sh) {
   const idx = {
     space_key: header.indexOf('space_key'),
     display: header.indexOf('display'),
+    lead_name: header.indexOf('lead_name'),
     social: header.indexOf('social'),
     status: header.indexOf('status')
   };
@@ -791,7 +795,9 @@ function buildMinimalFromOcc_(sh) {
     const r = vals[i];
     const key = String(r[idx.space_key] || '').trim();
     if (!key) continue;
-    const name   = String(r[idx.display] || '').trim();
+    const display = String(r[idx.display] || '').trim();
+    const leadName = idx.lead_name >= 0 ? String(r[idx.lead_name] || '').trim() : '';
+    const name   = display || leadName;
     const social = String(r[idx.social] || '').trim();
     const status = String(r[idx.status] || '').trim();
     spaces[key] = { name, social, status, groups: name || social ? [{ name, social, ticket: '' }] : [] };

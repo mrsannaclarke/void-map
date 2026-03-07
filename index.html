@@ -854,21 +854,33 @@
 
         if (Array.isArray(feedSpace.groups)){
           // Keep the original order but drop entries that have no usable name/social
-          const cleaned = feedSpace.groups.filter(g => {
-            const name = String((g && g.name) || '').trim();
-            const social = String((g && g.social) || '').trim();
-            return !!(name || social);
-          });
+          const cleaned = feedSpace.groups
+            .map(g => {
+              const name = occupantNameFrom_(g);
+              const social = occupantSocialFrom_(g);
+              return {
+                name,
+                social,
+                ticket: String((g && g.ticket) || '').trim()
+              };
+            })
+            .filter(g => !!(g.name || g.social));
 
           // Start from the cleaned list; fall back to the raw array if *every* entry was empty.
-          let groups = cleaned.length ? cleaned : feedSpace.groups.slice();
+          let groups = cleaned.length
+            ? cleaned
+            : feedSpace.groups.slice().map(g => ({
+                name: occupantNameFrom_(g),
+                social: occupantSocialFrom_(g),
+                ticket: String((g && g.ticket) || '').trim()
+              }));
 
           // If groups is still empty but the top-level feedSpace has a name/social,
           // synthesize a single group from those so the nav can still show an occupant.
-          if ((!groups || groups.length === 0) && (feedSpace.name || feedSpace.social)) {
+          if ((!groups || groups.length === 0) && (occupantNameFrom_(feedSpace) || occupantSocialFrom_(feedSpace))) {
             groups = [{
-              name: String(feedSpace.name || '').trim(),
-              social: String(feedSpace.social || '').trim(),
+              name: occupantNameFrom_(feedSpace),
+              social: occupantSocialFrom_(feedSpace),
               ticket: ''
             }];
           }
@@ -893,8 +905,8 @@
         }
 
         // Legacy single occupant
-        if (feedSpace.name || feedSpace.social){
-          result.groups = [{ name: feedSpace.name || '', social: feedSpace.social || '' }];
+        if (occupantNameFrom_(feedSpace) || occupantSocialFrom_(feedSpace)){
+          result.groups = [{ name: occupantNameFrom_(feedSpace), social: occupantSocialFrom_(feedSpace) }];
           // Assume single slot if legacy without tickets
           result.used = 1;
           result.hasBuyout = /buy[-\s]?out/i.test(String(feedSpace.ticket||'')); // rarely present
@@ -910,7 +922,7 @@
         if (flags.buyoutOnly && feedSpace && boothType !== 'SLEEP'){
           // Any booking makes it full
           const s = summarizeFeedBookings(feedSpace);
-          const any = (Array.isArray(s.groups) && s.groups.length > 0) || !!(feedSpace.name || feedSpace.social);
+          const any = (Array.isArray(s.groups) && s.groups.length > 0) || !!(occupantNameFrom_(feedSpace) || occupantSocialFrom_(feedSpace));
           return { isFull: !!any, capacity: resolveCapacityFor(spaceKey, boothType, csvCapRaw), usedSlots: s.used, groups: s.groups };
         }
 
@@ -1133,7 +1145,6 @@
         '235': 'opener',
         '239': 'opener',
         '247': 'opener',
-        '249': 'opener',
         '251': 'opener',
         '253': 'opener',
         '202': 'entourage',
@@ -1384,6 +1395,43 @@ groupResolver: ({ booth, csv }) => {
         return null;
       }
 
+      function occupantNameFrom_(obj) {
+        if (!obj) return '';
+        const candidates = [
+          obj.name,
+          obj.display,
+          obj.registered_name,
+          obj.registeredName,
+          obj.lead_name,
+          obj.leadName,
+          obj.public_team_name,
+          obj.publicTeamName
+        ];
+        for (const v of candidates) {
+          const s = String(v || '').trim();
+          if (s) return s;
+        }
+        return '';
+      }
+
+      function occupantSocialFrom_(obj) {
+        if (!obj) return '';
+        const candidates = [
+          obj.social,
+          obj.url,
+          obj.website,
+          obj.link,
+          obj.instagram,
+          obj.public_social,
+          obj.publicSocial
+        ];
+        for (const v of candidates) {
+          const s = String(v || '').trim();
+          if (s) return s;
+        }
+        return '';
+      }
+
       // Build a list of possible keys to use when looking up a space in the occupants feed.
       // Keeps map/SVG ids stable (e.g. dt5) while still joining feeds that may use "5".
       function candidateFeedKeys_(rawKey){
@@ -1465,27 +1513,17 @@ groupResolver: ({ booth, csv }) => {
         const occ = (picked && picked.entry) ? picked.entry : {};
         const primary = (Array.isArray(occ.groups) && occ.groups.length) ? occ.groups[0] : null;
 
-        const name = String((primary && primary.name) || occ.name || '').trim();
+        const name = occupantNameFrom_(primary) || occupantNameFrom_(occ);
 
         // Prefer an explicit social/URL field from the primary group, then fall back to the
         // top-level occupant object. This lets us use things like "url" or "website"
         // that came from the spreadsheet, not just "social".
         let rawSocial = '';
         if (primary) {
-          rawSocial =
-            primary.social ||
-            primary.url ||
-            primary.website ||
-            primary.link ||
-            '';
+          rawSocial = occupantSocialFrom_(primary);
         }
         if (!rawSocial) {
-          rawSocial =
-            occ.social ||
-            occ.url ||
-            occ.website ||
-            occ.link ||
-            '';
+          rawSocial = occupantSocialFrom_(occ);
         }
         rawSocial = String(rawSocial).trim();
 
@@ -1597,8 +1635,8 @@ groupResolver: ({ booth, csv }) => {
             feedSpace && (
               String(feedSpace.status || '').trim() ||
               (Array.isArray(feedSpace.groups) && feedSpace.groups.length) ||
-              String(feedSpace.name || '').trim() ||
-              String(feedSpace.social || '').trim()
+              occupantNameFrom_(feedSpace) ||
+              occupantSocialFrom_(feedSpace)
             )
           );
           const isStaticNonOccupancyShape = hideInNav && !rawBookwhenUrl && !hasFeedSignal;

@@ -2208,15 +2208,16 @@
       }
     },
     "249": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-smdhi-20260521000000",
+      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-s0rlj-20260522000000",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L2",
         "shape name": "249",
         "booth_name": "Room 249",
-        "booth_type": "SLEEP",
+        "booth_type": "SDL",
+        "capacity_1_to_4": "2",
         "ada_note": "stair-access",
-        "Color Code": "sleeproom"
+        "Color Code": "Green"
       },
       "svg": {
         "id": "_249",
