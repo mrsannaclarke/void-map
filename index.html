@@ -771,7 +771,6 @@
         '104',
         '105',
         '106',
-        '107',
         '139',
         '140',
         '244'
@@ -789,7 +788,6 @@
         '104',
         '105',
         '106',
-        '107',
         '139',
         '140',
         '244',
@@ -2856,8 +2854,10 @@ groupResolver: ({ booth, csv }) => {
                 ''
               )
             : '';
-          const displayName = name || (primaryGroup && primaryGroup.name) || socialLabel || 'Booked';
-          const lineText = `${row.displayLabel} - ${displayName}`;
+          const fallbackName = occupantNameFrom_(occEntry);
+          const fallbackSocial = formatSocialLabel_(occupantSocialFrom_(occEntry));
+          const displayName = name || (primaryGroup && primaryGroup.name) || fallbackName || socialLabel || fallbackSocial || '';
+          const lineText = `${row.displayLabel} - ${displayName || 'Occupied'}`;
           li.classList.add('artist-full');
           if (href) {
             const a = document.createElement('a');
@@ -3126,9 +3126,9 @@ groupResolver: ({ booth, csv }) => {
               if (isFull && (groups && groups.length || /^VND/i.test(boothType))) {
                 // For fully booked booths, show a single bracketed line:
                 // [ Room 136 - Switchblade Tattoo Club ]
-                const { name, href } = derivePrimaryOccupantLink_(occKey || spaceKey);
-                const primaryGroup = (groups && groups.length) ? groups[0] : null;
-                const socialLabel = primaryGroup
+              const { name, href } = derivePrimaryOccupantLink_(occKey || spaceKey);
+              const primaryGroup = (groups && groups.length) ? groups[0] : null;
+              const socialLabel = primaryGroup
                   ? formatSocialLabel_(
                       primaryGroup.social ||
                       primaryGroup.url ||
@@ -3137,8 +3137,10 @@ groupResolver: ({ booth, csv }) => {
                       ''
                     )
                   : '';
-                const primaryName = name || (primaryGroup && primaryGroup.name) || '';
-                const displayName = primaryName || socialLabel || 'Booked';
+                const fallbackName = occupantNameFrom_(occEntry);
+                const fallbackSocial = formatSocialLabel_(occupantSocialFrom_(occEntry));
+                const primaryName = name || (primaryGroup && primaryGroup.name) || fallbackName || '';
+                const displayName = primaryName || socialLabel || fallbackSocial || 'Occupied';
                 const lineText = `${textValue} - ${displayName}`;
 
                 if (href) {
@@ -3272,10 +3274,12 @@ groupResolver: ({ booth, csv }) => {
                     ''
                   )
                 : '';
-              const displayName = name || (primaryGroup && primaryGroup.name) || socialLabel || '';
+              const fallbackName = occupantNameFrom_(occEntry);
+              const fallbackSocial = formatSocialLabel_(occupantSocialFrom_(occEntry));
+              const displayName = name || (primaryGroup && primaryGroup.name) || fallbackName || socialLabel || fallbackSocial || '';
 
               if (boothType === 'STD10TENT' || /^VND/i.test(boothType)) {
-                const lineText = `${textValue} - ${displayName || 'Booked'}`;
+                const lineText = `${textValue} - ${displayName || 'Occupied'}`;
                 if (href) {
                   const a = document.createElement('a');
                   a.href = href; a.target = '_blank'; a.rel = 'noopener';

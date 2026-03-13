@@ -58,7 +58,7 @@ const SPACE_FLAGS = {
 const SLEEPER_KEYS = new Set([
   '117','202','203','204','205','206','207','208','210','212','213','214','215','216',
   '217','218','219','220','221','222','223','224','231','233','235','239','244','247',
-  '249','251','253'
+  '251','253'
 ]);
 
 // Ticket patterns → slot cost and buyout flag
@@ -697,10 +697,12 @@ function doGet(e) {
     ref: header.indexOf('ref'),
     space_key: header.indexOf('space_key'),
     display: header.indexOf('display'),
-    lead_name: header.indexOf('lead_name'),
     social: header.indexOf('social'),
     status: header.indexOf('status'),
     ticket: header.indexOf('ticket'),
+    lead_name: header.indexOf('lead_name'),
+    public_team_name: header.indexOf('public_team_name'),
+    public_social: header.indexOf('public_social'),
     updated_at: header.indexOf('updated_at')
   };
 
@@ -713,11 +715,14 @@ function doGet(e) {
     if (!key) continue;
 
     const display = String(r[idx.display] || '').trim();
-    const leadName = idx.lead_name >= 0 ? String(r[idx.lead_name] || '').trim() : '';
-    const registeredName = display || leadName;
     const social  = String(r[idx.social]  || '').trim();
     const ticket  = String(r[idx.ticket]  || '').trim();
     const status  = String(r[idx.status]  || '').trim();
+    const leadName = idx.lead_name >= 0 ? String(r[idx.lead_name] || '').trim() : '';
+    const publicTeamName = idx.public_team_name >= 0 ? String(r[idx.public_team_name] || '').trim() : '';
+    const publicSocial = idx.public_social >= 0 ? String(r[idx.public_social] || '').trim() : '';
+    const resolvedName = display || publicTeamName || leadName;
+    const resolvedSocial = social || publicSocial;
     const updated = r[idx.updated_at] instanceof Date ? r[idx.updated_at] : new Date(r[idx.updated_at] || new Date());
 
     const isSleeper = SLEEPER_KEYS.has(key);
@@ -739,8 +744,17 @@ function doGet(e) {
 
     // Push group (dedupe loose by display+social+ticket)
     const arr = groupsBySpace[key];
-    const exists = arr.some(g => g.name === registeredName && g.social === social && g.ticket === ticket);
-    if (!exists) arr.push({ name: registeredName, social: social, ticket: ticket });
+    const exists = arr.some(g => g.name === resolvedName && g.social === resolvedSocial && g.ticket === ticket);
+    if (!exists) {
+      arr.push({
+        name: resolvedName,
+        social: resolvedSocial,
+        ticket: ticket,
+        lead_name: leadName,
+        public_team_name: publicTeamName,
+        public_social: publicSocial
+      });
+    }
   }
 
   // Build response
@@ -786,7 +800,6 @@ function buildMinimalFromOcc_(sh) {
   const idx = {
     space_key: header.indexOf('space_key'),
     display: header.indexOf('display'),
-    lead_name: header.indexOf('lead_name'),
     social: header.indexOf('social'),
     status: header.indexOf('status')
   };
@@ -795,9 +808,7 @@ function buildMinimalFromOcc_(sh) {
     const r = vals[i];
     const key = String(r[idx.space_key] || '').trim();
     if (!key) continue;
-    const display = String(r[idx.display] || '').trim();
-    const leadName = idx.lead_name >= 0 ? String(r[idx.lead_name] || '').trim() : '';
-    const name   = display || leadName;
+    const name   = String(r[idx.display] || '').trim();
     const social = String(r[idx.social] || '').trim();
     const status = String(r[idx.status] || '').trim();
     spaces[key] = { name, social, status, groups: name || social ? [{ name, social, ticket: '' }] : [] };
