@@ -477,28 +477,6 @@
         }
       }
     },
-    "102": {
-      "bookwhen_url": "",
-      "hide_in_nav": true,
-      "csv": {
-        "building_label": "Jupiter Original",
-        "floor_code": "L1",
-        "shape name": "102",
-        "booth_name": "Room 102",
-        "booth_type": "LDL",
-        "ada_note": "accessible"
-      },
-      "svg": {
-        "id": "_102",
-        "tag": "rect",
-        "attributes": {
-          "x": "98.3",
-          "y": "175.2",
-          "width": "8.6",
-          "height": "16.7"
-        }
-      }
-    },
     "103": {
       "bookwhen_url": "",
       "hide_in_nav": true,

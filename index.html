@@ -177,7 +177,7 @@
       width:100%;
       height:auto;
       border-radius:15px;
-      border:2px solid #CB00F5;
+      border:3px solid #fff;
     }
 	    @keyframes notesFlash {
 	      0% { box-shadow:0 0 0 0 rgba(63,161,255,.0), inset 0 0 0 0 rgba(63,161,255,.0) }
@@ -208,6 +208,15 @@
       cursor:default;
     }
     .legend-row[data-list-key^="sleep_"][data-row-state="soldout"]:hover{
+      transform:none;
+      box-shadow:none;
+      border-color:var(--panel-border);
+      background:var(--panel-inner);
+    }
+    .legend-row[data-expand-disabled="true"]{
+      cursor:default;
+    }
+    .legend-row[data-expand-disabled="true"]:hover{
       transform:none;
       box-shadow:none;
       border-color:var(--panel-border);
@@ -329,12 +338,35 @@
       font-size:14px;
       font-weight:500;
       color:var(--text-primary);
+      line-height:1.45;
     }
     .artist-catalog .results-group a{
-      color:var(--accent);
-      text-decoration:underline;
+      display:inline-block;
+      margin:1px 4px 1px 0;
+      padding:2px 10px;
+      border:1px solid rgba(124,201,255,.4);
+      border-radius:999px;
+      background:linear-gradient(140deg,rgba(124,201,255,.2),rgba(124,201,255,.08));
+      color:#dff1ff;
+      text-decoration:none;
+      font-weight:600;
+      box-shadow:0 6px 16px rgba(6,10,25,.25);
+      transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease, background .18s ease, color .18s ease;
     }
-    .artist-catalog .results-group a:hover{ color:var(--accent-strong); }
+    .artist-catalog .results-group a:hover{
+      color:#ffffff;
+      border-color:rgba(162,213,250,.8);
+      background:linear-gradient(140deg,rgba(162,213,250,.34),rgba(124,201,255,.12));
+      box-shadow:0 10px 20px rgba(6,10,25,.35);
+      transform:translateY(-1px);
+    }
+    .artist-catalog .results-group a:focus-visible{
+      outline:2px solid rgba(162,213,250,.95);
+      outline-offset:2px;
+      color:#ffffff;
+      border-color:rgba(162,213,250,.9);
+      background:linear-gradient(140deg,rgba(162,213,250,.4),rgba(124,201,255,.14));
+    }
 
     /* Map table container */
     .map-table-wrap{ width:min(100%,var(--maxw)); border-radius:24px; box-shadow:var(--card-shadow); overflow:hidden; border:1px solid var(--panel-border) }
@@ -399,6 +431,7 @@
 	    }
     @media (prefers-reduced-motion:reduce){
       .legend-row{ transition:none }
+      .artist-catalog .results-group a{ transition:none }
       #page-loader{ transition:none }
       .page-loader-spinner{ animation:none }
     }
@@ -766,7 +799,6 @@
       const VOID_ACTIVATION_FILL = '#CB00F5';
       const HEY_LOVE_FILL = '#FF69B4';
       const VOID_ACTIVATION_SPACES = new Set([
-        '102',
         '103',
         '104',
         '105',
@@ -783,7 +815,7 @@
         'VND10STREET'
       ]);
       const BOOKING_DISABLED_SPACE_KEYS = new Set([
-        '102',
+        '112',
         '103',
         '104',
         '105',
@@ -795,6 +827,7 @@
         '252'
       ]);
       const ARTIST_PLACEHOLDER_LINK_SPACES = new Set([
+        '112',
         '226',
         '252'
       ]);
@@ -2567,6 +2600,12 @@ groupResolver: ({ booth, csv }) => {
       function wireLegendClicks(mapData){
         const grid = document.querySelector('.legend .legend-grid');
         if(!grid) return;
+        const isLegendRowExpandable_ = (key) => {
+          const k = String(key || '').trim();
+          if (!k) return false;
+          if (k.startsWith('sleep_')) return k === 'sleep_opener';
+          return true;
+        };
         const jumpToArtistCatalog = () => {
           try {
             if (mapData && typeof renderArtistCampusList_ === 'function') {
@@ -2590,6 +2629,7 @@ groupResolver: ({ booth, csv }) => {
           const row = e.target.closest('.legend-row[data-list-key]');
           if(!row) return;
           const key = row.getAttribute('data-list-key');
+          if (!isLegendRowExpandable_(key)) return;
           renderResultsForKey(mapData, key);
           try { const notes = document.getElementById('notes'); if (notes) { notes.scrollIntoView({ behavior: 'smooth', block: 'start' }); } } catch(_) {}
           try {
@@ -2616,6 +2656,7 @@ groupResolver: ({ booth, csv }) => {
           if(!row) return;
           e.preventDefault();
           const key = row.getAttribute('data-list-key');
+          if (!isLegendRowExpandable_(key)) return;
           renderResultsForKey(mapData, key);
           try { const notes = document.getElementById('notes'); if (notes) { notes.scrollIntoView({ behavior: 'smooth', block: 'start' }); } } catch(_) {}
           try {
@@ -2631,7 +2672,21 @@ groupResolver: ({ booth, csv }) => {
           } catch(_) {}
         });
         document.querySelectorAll('.legend .legend-row[data-list-key]').forEach(row=>{
-          row.setAttribute('tabindex','0'); row.setAttribute('role','button'); row.setAttribute('aria-pressed','false');
+          const key = row.getAttribute('data-list-key');
+          const expandable = isLegendRowExpandable_(key);
+          if (expandable) {
+            row.removeAttribute('data-expand-disabled');
+            row.removeAttribute('aria-disabled');
+            row.setAttribute('tabindex','0');
+            row.setAttribute('role','button');
+            row.setAttribute('aria-pressed','false');
+          } else {
+            row.setAttribute('data-expand-disabled','true');
+            row.setAttribute('aria-disabled','true');
+            row.setAttribute('tabindex','-1');
+            row.removeAttribute('aria-pressed');
+            row.setAttribute('role','presentation');
+          }
         });
         // Key heading "jump" control
         (function wireKeyJump(){
