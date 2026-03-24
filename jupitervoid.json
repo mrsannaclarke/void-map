@@ -1979,15 +1979,16 @@
       }
     },
     "239": {
-      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-s3ix0-20260521000000",
+      "bookwhen_url": "https://bookwhen.com/voidtattoofest/e/ev-srhm0-20260522000000",
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L2",
         "shape name": "239",
         "booth_name": "Room 239",
-        "booth_type": "SLEEP",
+        "booth_type": "LDL",
+        "capacity_1_to_4": "4",
         "ada_note": "stair-access",
-        "Color Code": "sleeproom"
+        "Color Code": "Lavender"
       },
       "svg": {
         "id": "_239",
