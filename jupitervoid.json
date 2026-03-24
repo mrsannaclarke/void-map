@@ -551,7 +551,7 @@
     },
     "106": {
       "bookwhen_url": "",
-      "hide_in_nav": true,
+      "hide_in_nav": false,
       "csv": {
         "building_label": "Jupiter Original",
         "floor_code": "L1",
@@ -2079,9 +2079,10 @@
         "floor_code": "L2",
         "shape name": "244",
         "booth_name": "Room 244",
-        "booth_type": "SLEEP",
+        "booth_type": "LDL",
+        "capacity_1_to_4": "4",
         "ada_note": "stair-access",
-        "Color Code": "sleeproom"
+        "Color Code": "Lavender"
       },
       "svg": {
         "id": "_244",
