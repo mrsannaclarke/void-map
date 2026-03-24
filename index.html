@@ -1395,15 +1395,23 @@ groupResolver: ({ booth, csv }) => {
         const s = String(raw || '').trim();
         if (!s) return null;
 
-        // If value begins with '@' and contains a dot, treat it as a website (user provided @www.example.com)
-        if (s.startsWith('@') && s.indexOf('.') !== -1) {
-          const candidate = s.replace(/^@+/, '');
-          return /^https?:\/\//i.test(candidate) ? candidate : ('https://' + candidate);
-        }
+        // If it already looks like a full URL
+        if (/^https?:\/\//i.test(s)) return s;
 
-        // If value begins with '@' and no dot, treat as an Instagram handle
+        // If it contains instagram.com somewhere, ensure it has a protocol
+        if (/instagram\.com/i.test(s)) return (/^https?:\/\//i.test(s) ? s : 'https://' + s);
+
         if (s.startsWith('@')) {
           const handle = s.replace(/^@+/, '');
+          if (handle.indexOf('.') !== -1) {
+            const tld = handle.split('.').pop().toLowerCase();
+            // Keep obvious domains as websites (e.g. @example.com),
+            // but treat uncommon dot-handles as Instagram (e.g. @cyborg.nn).
+            const webTlds = new Set(['com','net','org','io','co','edu','gov','biz','info','dev','app','studio','shop','store','tattoo']);
+            if (webTlds.has(tld)) {
+              return /^https?:\/\//i.test(handle) ? handle : ('https://' + handle);
+            }
+          }
           return 'https://instagram.com/' + handle;
         }
 
@@ -1412,9 +1420,6 @@ groupResolver: ({ booth, csv }) => {
         if (igWord && !/^(preferred|website|public|instagram|or)$/i.test(igWord[1])) {
           return 'https://instagram.com/' + igWord[1];
         }
-
-        // If it already looks like a full URL
-        if (/^https?:\/\//i.test(s)) return s;
 
         // If it looks like a bare domain (example.com or www.example.com)
         if (/^[a-z0-9.-]+\.[a-z]{2,}([\/?#].*)?$/i.test(s)) {
@@ -1425,9 +1430,6 @@ groupResolver: ({ booth, csv }) => {
         // If string contains an @handle somewhere, prefer that as an Instagram link
         const m = s.match(/@([a-z0-9._]{2,})/i);
         if (m) return 'https://instagram.com/' + m[1];
-
-        // If it contains instagram.com somewhere, ensure it has a protocol
-        if (/instagram\.com/i.test(s)) return (/^https?:\/\//i.test(s) ? s : 'https://' + s);
 
         return null;
       }
@@ -1454,13 +1456,13 @@ groupResolver: ({ booth, csv }) => {
       function occupantSocialFrom_(obj) {
         if (!obj) return '';
         const candidates = [
-          obj.social,
           obj.url,
           obj.website,
           obj.link,
           obj.instagram,
           obj.public_social,
-          obj.publicSocial
+          obj.publicSocial,
+          obj.social
         ];
         for (const v of candidates) {
           const s = String(v || '').trim();
@@ -1574,7 +1576,9 @@ groupResolver: ({ booth, csv }) => {
             occ.social,
             occ.url,
             occ.website,
-            occ.link
+            occ.link,
+            occ.public_social,
+            occ.publicSocial
           ]
             .filter(Boolean)
             .join(' ');
