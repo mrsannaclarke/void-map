@@ -488,14 +488,16 @@ function normalizeSocial(raw) {
   if (/^(public|instagram|website|n\/a|\-+)$/i.test(s)) return '';
 
   const lower = s.toLowerCase();
+  // Ignore copied field-label text from forms/emails
+  if (/\(public\)\s*instagram/.test(lower) || /instagram\s*\(preferred\)\s*or\s*website/.test(lower)) return '';
 
   // Instagram URLs → @handle
   let m = lower.match(/(?:https?:\/\/)?(?:www\.)?instagram\.com\/([a-z0-9._]+)/i);
   if (m) return '@' + m[1];
 
   // "instagram anatomytattoo"
-  m = lower.match(/\binstagram\b[^@a-z0-9._-]*([a-z0-9._]+)/i);
-  if (m) return '@' + m[1];
+  m = lower.match(/\binstagram\b[^@a-z0-9._-]*@?([a-z0-9._]{2,})\b/i);
+  if (m && !/^(preferred|website|public|instagram|or)$/i.test(m[1])) return '@' + m[1];
 
   // Raw handle with/without @
   m = lower.match(/^@?([a-z0-9._]{2,})$/i);
@@ -722,7 +724,8 @@ function doGet(e) {
     const publicTeamName = idx.public_team_name >= 0 ? String(r[idx.public_team_name] || '').trim() : '';
     const publicSocial = idx.public_social >= 0 ? String(r[idx.public_social] || '').trim() : '';
     const resolvedName = display || publicTeamName || leadName;
-    const resolvedSocial = social || publicSocial;
+    const resolvedSocialRaw = social || publicSocial;
+    const resolvedSocial = normalizeSocial(resolvedSocialRaw) || resolvedSocialRaw;
     const updated = r[idx.updated_at] instanceof Date ? r[idx.updated_at] : new Date(r[idx.updated_at] || new Date());
 
     const isSleeper = SLEEPER_KEYS.has(key);
@@ -809,7 +812,8 @@ function buildMinimalFromOcc_(sh) {
     const key = String(r[idx.space_key] || '').trim();
     if (!key) continue;
     const name   = String(r[idx.display] || '').trim();
-    const social = String(r[idx.social] || '').trim();
+    const socialRaw = String(r[idx.social] || '').trim();
+    const social = normalizeSocial(socialRaw) || socialRaw;
     const status = String(r[idx.status] || '').trim();
     spaces[key] = { name, social, status, groups: name || social ? [{ name, social, ticket: '' }] : [] };
   }

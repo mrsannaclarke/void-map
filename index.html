@@ -791,6 +791,7 @@
       // Temporary local overrides for spaces that should ignore the live occupancy feed.
       // This keeps the map/nav using the JSON classification + booking URL.
       const FEED_IGNORE_SPACES = new Set([
+        '106',
         '244'
       ]);
       // Space-specific available-color overrides (used sparingly for feed exceptions).
@@ -801,6 +802,7 @@
         '103',
         '104',
         '105',
+        '106',
         '139',
         '140',
         '244'
@@ -817,6 +819,7 @@
         '103',
         '104',
         '105',
+        '106',
         '139',
         '140',
         '244',
@@ -1171,6 +1174,7 @@
         '231': 'opener',
         '233': 'opener',
         '235': 'opener',
+        '239': 'opener',
         '247': 'opener',
         '251': 'opener',
         '253': 'opener',
@@ -1401,6 +1405,12 @@ groupResolver: ({ booth, csv }) => {
         if (s.startsWith('@')) {
           const handle = s.replace(/^@+/, '');
           return 'https://instagram.com/' + handle;
+        }
+
+        // "instagram handle" or "instagram @handle"
+        const igWord = s.match(/\binstagram\b[^@a-z0-9._-]*@?([a-z0-9._]{2,})\b/i);
+        if (igWord && !/^(preferred|website|public|instagram|or)$/i.test(igWord[1])) {
+          return 'https://instagram.com/' + igWord[1];
         }
 
         // If it already looks like a full URL
